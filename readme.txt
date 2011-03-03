@@ -3,14 +3,14 @@ signed-request is an implementation of "OAuth Consumer Request 1.0 Draft 1".
 "OAuth Consumer Request 1.0 Draft 1"
 http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
 
-How to install
+* How to install
 ------------
 
-1.download jar file
+- download jar file
 
  ./download/*.jar
 
-2.pom.xml
+- pom.xml
  
 <repositories>
   <repository>
@@ -29,7 +29,7 @@ How to install
   <version>1.0</version>
 </dependency>
 
-Snippet
+* Snippet
 ------------
 import com.github.seratch.signedrequest.HttpMethod;
 import com.github.seratch.signedrequest.OAuthConsumer;
@@ -60,7 +60,7 @@ public class Snippet {
 
 }
 
-Contributors
+* Contributors
 ------------
 Kazuhiro Sera <seratch at gmail.com>
 Kenichi Dewa
