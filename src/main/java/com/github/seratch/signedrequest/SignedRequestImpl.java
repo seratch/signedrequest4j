@@ -81,6 +81,9 @@ class SignedRequestImpl implements SignedRequest {
 
 	private Map<String, String> additionalParameters;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setOAuthNonceAndOAuthTimestamp(String oAuthNonce,
 			Long oAuthTimestamp) {
@@ -89,27 +92,42 @@ class SignedRequestImpl implements SignedRequest {
 		oneTimeValues.oAuthTimestamp = oAuthTimestamp;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doDeleteRequest(String url) throws IOException {
 		return doRequest(url, HttpMethod.DELETE, null, null);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doGetRequest(String url, String charset)
 			throws IOException {
 		return doRequest(url, HttpMethod.GET, null, charset);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doHeadRequest(String url) throws IOException {
 		return doRequest(url, HttpMethod.HEAD, null, null);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doOptionsRequest(String url) throws IOException {
 		return doRequest(url, HttpMethod.OPTIONS, null, null);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doPostRequest(String url,
 			Map<String, Object> requestParameters, String charset)
@@ -117,16 +135,25 @@ class SignedRequestImpl implements SignedRequest {
 		return doRequest(url, HttpMethod.POST, requestParameters, charset);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doPutRequest(String url) throws IOException {
 		return doRequest(url, HttpMethod.PUT, null, null);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doTraceRequest(String url) throws IOException {
 		return doRequest(url, HttpMethod.DELETE, null, null);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HttpResponse doRequest(String url, HttpMethod method,
 			Map<String, Object> requestParameters, String charset)

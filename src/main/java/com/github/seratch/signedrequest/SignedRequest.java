@@ -92,20 +92,82 @@ public interface SignedRequest {
 			Map<String, Object> requestParameters, String charset)
 			throws IOException;
 
+	/**
+	 * Do GET / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @param charset
+	 *            Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doGetRequest(String url, String charset) throws IOException;
 
+	/**
+	 * Do POST / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @param requestParameters
+	 *            Request parameters
+	 * @param charset
+	 *            Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doPostRequest(String url,
 			Map<String, Object> requestParameters, String charset)
 			throws IOException;
 
+	/**
+	 * Do PUT / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doPutRequest(String url) throws IOException;
 
+	/**
+	 * Do DELETE / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doDeleteRequest(String url) throws IOException;
 
+	/**
+	 * Do HEAD / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doHeadRequest(String url) throws IOException;
 
+	/**
+	 * Do OPTIONS / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doOptionsRequest(String url) throws IOException;
 
+	/**
+	 * Do TRACE / HTTP/1.1 request and returns Http response
+	 * 
+	 * @param url
+	 *            Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
 	HttpResponse doTraceRequest(String url) throws IOException;
 
 }
