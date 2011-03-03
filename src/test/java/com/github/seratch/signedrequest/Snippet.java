@@ -14,6 +14,8 @@ public class Snippet {
 						"consumer_secret"));
 		HttpResponse response = signedRequest.doGetRequest(
 				"https://github.com/seratch/signed-request", "UTF-8");
+		System.out.println(response.getStatusCode());
+		System.out.println(response.getHeaders());
 		System.out.println(response.getContent());
 	}
 
