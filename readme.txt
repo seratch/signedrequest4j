@@ -31,7 +31,7 @@ http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
 
 * Snippet
 ------------
-import com.github.seratch.signedrequest.HttpMethod;
+import com.github.seratch.signedrequest.HttpResponse;
 import com.github.seratch.signedrequest.OAuthConsumer;
 import com.github.seratch.signedrequest.SignedRequest;
 import com.github.seratch.signedrequest.SignedRequestFactory;
@@ -44,21 +44,21 @@ import java.net.HttpURLConnection;
 public class Snippet {
 
 	public static void main(String[] args) throws Exception {
-		SignedRequest request = SignedRequestFactory.getInstance(null,
-				new OAuthConsumer("consumer_key", "consumer_secret"));
-		HttpURLConnection conn = request.getHttpURLConnection(
-				"http://example.com/", HttpMethod.GET);
-		InputStream is = conn.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String line;
-		while ((line = br.readLine()) != null) {
-			System.out.println(line);
-		}
-		br.close();
-		is.close();
+		SignedRequest signedRequest = SignedRequestFactory.getInstance(
+				"http://sp.example.com/", new OAuthConsumer("consumer_key",
+						"consumer_secret"));
+		HttpResponse response = signedRequest.doGetRequest(
+				"https://github.com/seratch/signed-request", "UTF-8");
+		System.out.println(response.getContent());
 	}
 
 }
+
+// GET / HTTP/1.1
+// User-Agent: Signed Request Client
+// (+https://github.com/seratch/signed-request)
+// Authorization: OAuth realm="http://sp.example.com/",
+// oauth_consumer_key="consumer_key",oauth_signature_method="HMAC-SHA1",oauth_signature="q9eXspUbaYB6NEmAXxxXXuBrk10=",oauth_timestamp="1299157615628",oauth_nonce="-4568253211378628139",oauth_version="1.0",
 
 * Contributors
 ------------

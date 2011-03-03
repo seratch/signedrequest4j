@@ -2,12 +2,9 @@ package com.github.seratch.signedrequest;
 
 import static org.junit.Assert.*;
 
-import com.github.seratch.signedrequest.HttpMethod;
-import com.github.seratch.signedrequest.OAuthConsumer;
-import com.github.seratch.signedrequest.SignatureMethod;
-import com.github.seratch.signedrequest.SignedRequestImpl;
-
 import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -44,28 +41,6 @@ public class SignedRequestImplTest {
 		HttpMethod method = HttpMethod.GET;
 		// when
 		HttpURLConnection actual = target.getHttpURLConnection(url, method);
-		// then
-		assertNotNull(actual);
-	}
-
-	@Test
-	public void getHttpURLConnection_A$String$HttpMethod$String$Long()
-			throws Exception {
-		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
-		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
-				signatureMethod);
-		// given
-		String url = "http://localhost:8080/";
-		HttpMethod method = HttpMethod.GET;
-		String oAuthNonce = null;
-		Long oAuthTimestamp = null;
-		// when
-		HttpURLConnection actual = target.getHttpURLConnection(url, method,
-				oAuthNonce, oAuthTimestamp);
 		// then
 		assertNotNull(actual);
 	}
@@ -140,36 +115,53 @@ public class SignedRequestImplTest {
 	}
 
 	@Test
-	public void getContent_A$String$HttpMethod() throws Exception {
+	public void setOAuthNonceAndOAuthTimestamp_A$String$Long() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer("sdfafa", "sdfa22");
+		OAuthConsumer consumer = new OAuthConsumer();
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String oAuthNonce = null;
+		Long oAuthTimestamp = null;
+		// when
+		target.setOAuthNonceAndOAuthTimestamp(oAuthNonce, oAuthTimestamp);
+		// then
+	}
+
+	@Test
+	public void doRequest_A$String$HttpMethod$Map$String() throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer();
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
 		HttpMethod method = HttpMethod.GET;
+		Map<String, Object> requestParameters = new HashMap<String, Object>();
+		String charset = "UTF-8";
 		// when
-		String actual = target.getContent(url, method);
+		HttpResponse actual = target.doRequest(url, method, requestParameters,
+				charset);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void getContent_A$String$HttpMethod$String$Long() throws Exception {
+	public void getResponseCotent_A$HttpURLConnection$String() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer("sdfafa", "sdfa22");
+		OAuthConsumer consumer = new OAuthConsumer();
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
 		HttpMethod method = HttpMethod.GET;
-		String oAuthNonce = "sdfaa";
-		Long oAuthTimestamp = 12345L;
+		HttpURLConnection conn = target.getHttpURLConnection(url, method);
+		String charset = "UTF-8";
 		// when
-		String actual = target.getContent(url, method, oAuthNonce,
-				oAuthTimestamp);
+		String actual = target.getResponseCotent(conn, charset);
 		// then
 		assertNotNull(actual);
 	}

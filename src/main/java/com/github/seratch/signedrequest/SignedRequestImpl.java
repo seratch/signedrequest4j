@@ -19,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -70,7 +72,108 @@ class SignedRequestImpl implements SignedRequest {
 
 	private String oAuthVersion = "1.0";
 
+	static class OneTimeValues {
+		String oAuthNonce;
+		Long oAuthTimestamp;
+	}
+
+	private OneTimeValues oneTimeValues;
+
 	private Map<String, String> additionalParameters;
+
+	@Override
+	public void setOAuthNonceAndOAuthTimestamp(String oAuthNonce,
+			Long oAuthTimestamp) {
+		oneTimeValues = new OneTimeValues();
+		oneTimeValues.oAuthNonce = oAuthNonce;
+		oneTimeValues.oAuthTimestamp = oAuthTimestamp;
+	}
+
+	@Override
+	public HttpResponse doDeleteRequest(String url) throws IOException {
+		return doRequest(url, HttpMethod.DELETE, null, null);
+	}
+
+	@Override
+	public HttpResponse doGetRequest(String url, String charset)
+			throws IOException {
+		return doRequest(url, HttpMethod.GET, null, charset);
+	}
+
+	@Override
+	public HttpResponse doHeadRequest(String url) throws IOException {
+		return doRequest(url, HttpMethod.HEAD, null, null);
+	}
+
+	@Override
+	public HttpResponse doOptionsRequest(String url) throws IOException {
+		return doRequest(url, HttpMethod.OPTIONS, null, null);
+	}
+
+	@Override
+	public HttpResponse doPostRequest(String url,
+			Map<String, Object> requestParameters, String charset)
+			throws IOException {
+		return doRequest(url, HttpMethod.POST, requestParameters, charset);
+	}
+
+	@Override
+	public HttpResponse doPutRequest(String url) throws IOException {
+		return doRequest(url, HttpMethod.PUT, null, null);
+	}
+
+	@Override
+	public HttpResponse doTraceRequest(String url) throws IOException {
+		return doRequest(url, HttpMethod.DELETE, null, null);
+	}
+
+	@Override
+	public HttpResponse doRequest(String url, HttpMethod method,
+			Map<String, Object> requestParameters, String charset)
+			throws IOException {
+		HttpResponse response = new HttpResponse();
+		HttpURLConnection conn = getHttpURLConnection(url, method);
+		if (method == HttpMethod.GET && requestParameters != null
+				&& requestParameters.size() > 0) {
+			for (String key : requestParameters.keySet()) {
+				String param = key + requestParameters.get(key);
+				url += (url.contains("?") ? "&" : "?") + param;
+			}
+		}
+		if (method == HttpMethod.POST && requestParameters != null
+				&& requestParameters.size() > 0) {
+			OutputStream os = null;
+			OutputStreamWriter writer = null;
+			try {
+				conn.setDoOutput(true);
+				os = conn.getOutputStream();
+				writer = new OutputStreamWriter(os);
+				for (String key : requestParameters.keySet()) {
+					writer.append(key);
+					writer.append("=");
+					writer.append(requestParameters.get(key).toString());
+				}
+			} finally {
+				if (writer != null) {
+					try {
+						writer.close();
+					} catch (Exception e) {
+					}
+				}
+				if (os != null) {
+					try {
+						os.close();
+					} catch (Exception e) {
+					}
+				}
+			}
+		}
+		conn.connect();
+		response.setStatusCode(conn.getResponseCode());
+		response.setHeaders(conn.getHeaderFields());
+		response.setContent(getResponseCotent(conn, charset));
+		return response;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -78,76 +181,31 @@ class SignedRequestImpl implements SignedRequest {
 	@Override
 	public HttpURLConnection getHttpURLConnection(String url, HttpMethod method)
 			throws IOException {
-		HttpURLConnection conn = (HttpURLConnection) new URL(url)
-				.openConnection();
-		conn.setRequestMethod(method.toString());
-		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
-		Long oAuthTimestamp = System.currentTimeMillis();
-		String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
-		conn.setRequestProperty("Authorization",
-				getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp));
-		return conn;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public HttpURLConnection getHttpURLConnection(String url,
-			HttpMethod method, String oAuthNonce, Long oAuthTimestamp)
-			throws IOException {
-		HttpURLConnection conn = (HttpURLConnection) new URL(url)
-				.openConnection();
-		conn.setRequestMethod(method.toString());
-		String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
-		conn.setRequestProperty("Authorization",
-				getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp));
-		return conn;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getContent(String url, HttpMethod method) throws IOException {
-		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
-		Long oAuthTimestamp = System.currentTimeMillis();
-		return getContent(url, method, oAuthNonce, oAuthTimestamp);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getContent(String url, HttpMethod method, String oAuthNonce,
-			Long oAuthTimestamp) throws IOException {
-		HttpURLConnection conn = getHttpURLConnection(url, method, oAuthNonce,
-				oAuthTimestamp);
-		InputStream is = null;
-		BufferedReader br = null;
-		try {
-			is = conn.getInputStream();
-			br = new BufferedReader(new InputStreamReader(is));
-			StringBuilder buf = new StringBuilder();
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				buf.append(line);
-			}
-			return buf.toString();
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (Exception e2) {
-				}
-			}
-			if (br != null) {
-				try {
-					br.close();
-				} catch (Exception e2) {
-				}
-			}
+		if (oneTimeValues == null) {
+			oneTimeValues = new OneTimeValues();
 		}
+		if (oneTimeValues.oAuthNonce == null) {
+			oneTimeValues.oAuthNonce = String.valueOf(new SecureRandom()
+					.nextLong());
+		}
+		if (oneTimeValues.oAuthTimestamp == null) {
+			oneTimeValues.oAuthTimestamp = System.currentTimeMillis();
+		}
+		String signature = getSignature(url, method, oneTimeValues.oAuthNonce,
+				oneTimeValues.oAuthTimestamp);
+		String authorizationHeader = getAuthorizationHeader(signature,
+				oneTimeValues.oAuthNonce, oneTimeValues.oAuthTimestamp);
+		oneTimeValues = null;
+
+		HttpURLConnection conn = (HttpURLConnection) new URL(url)
+				.openConnection();
+		conn.setConnectTimeout(3000);
+		conn.setReadTimeout(10000);
+		conn.setRequestProperty("User-Agent",
+				"Signed Request Client (+https://github.com/seratch/signed-request)");
+		conn.setRequestMethod(method.toString());
+		conn.setRequestProperty("Authorization", authorizationHeader);
+		return conn;
 	}
 
 	/**
@@ -227,6 +285,36 @@ class SignedRequestImpl implements SignedRequest {
 			}
 		}
 		return buf.toString();
+	}
+
+	String getResponseCotent(HttpURLConnection conn, String charset)
+			throws IOException {
+		InputStream is = null;
+		BufferedReader br = null;
+		try {
+			is = conn.getInputStream();
+			br = new BufferedReader(new InputStreamReader(is, charset));
+			StringBuilder buf = new StringBuilder();
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				buf.append(line);
+				buf.append("\n");
+			}
+			return buf.toString();
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (Exception e2) {
+				}
+			}
+			if (br != null) {
+				try {
+					br.close();
+				} catch (Exception e2) {
+				}
+			}
+		}
 	}
 
 }
