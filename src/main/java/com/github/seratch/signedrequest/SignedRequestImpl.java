@@ -133,15 +133,14 @@ class SignedRequestImpl implements SignedRequest {
     public HttpResponse doRequest(String url, HttpMethod method,
                                   Map<String, Object> requestParameters, String charset)
             throws IOException {
-        HttpResponse response = new HttpResponse();
-        HttpURLConnection conn = getHttpURLConnection(url, method);
         if (method == HttpMethod.GET && requestParameters != null
                 && requestParameters.size() > 0) {
             for (String key : requestParameters.keySet()) {
-                String param = key + requestParameters.get(key);
+                String param = key + "=" + requestParameters.get(key);
                 url += (url.contains("?") ? "&" : "?") + param;
             }
         }
+        HttpURLConnection conn = getHttpURLConnection(url, method);
         if (method == HttpMethod.POST && requestParameters != null
                 && requestParameters.size() > 0) {
             OutputStream os = null;
@@ -171,6 +170,7 @@ class SignedRequestImpl implements SignedRequest {
             }
         }
         conn.connect();
+        HttpResponse response = new HttpResponse();
         response.setStatusCode(conn.getResponseCode());
         response.setHeaders(conn.getHeaderFields());
         response.setContent(getResponseCotent(conn, charset));

@@ -126,6 +126,7 @@ public class SignedRequestImplTest {
         String url = "http://seratch.net/";
         HttpMethod method = HttpMethod.GET;
         Map<String, Object> requestParameters = new HashMap<String, Object>();
+        requestParameters.put("hoge", "foo");
         String charset = "UTF-8";
         // when
         HttpResponse actual = target.doRequest(url, method, requestParameters,
