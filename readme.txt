@@ -3,12 +3,38 @@ signed-request is an implementation of "OAuth Consumer Request 1.0 Draft 1".
 "OAuth Consumer Request 1.0 Draft 1"
 http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
 
+How to install
+------------
+
+1.download jar file
+
+ ./download/*.jar
+
+2.pom.xml
+ 
+<repositories>
+  <repository>
+    <id>signed-request-releases</id>
+    <url>https://github.com/seratch/signed-request/raw/master/mvn-repo/releases</url>
+  </repository>
+  <repository>
+    <id>signed-request-snapshots</id>
+    <url>https://github.com/seratch/signed-request/raw/master/mvn-repo/snapshots</url>
+  </repository>
+</repositories>
+
+<dependency>
+  <groupId>com.github.seratch</groupId>
+  <artifactId>signed-request</artifactId>
+  <version>1.0</version>
+</dependency>
+
 Snippet
 ------------
-import com.github.signedrequest.HttpMethod;
-import com.github.signedrequest.OAuthConsumer;
-import com.github.signedrequest.SignedRequest;
-import com.github.signedrequest.SignedRequestFactory;
+import com.github.seratch.signedrequest.HttpMethod;
+import com.github.seratch.signedrequest.OAuthConsumer;
+import com.github.seratch.signedrequest.SignedRequest;
+import com.github.seratch.signedrequest.SignedRequestFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
