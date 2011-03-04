@@ -299,6 +299,10 @@ class SignedRequestImpl implements SignedRequest {
 				throw new SignedRequestClientException("Invalid key : "
 						+ e.getLocalizedMessage());
 			}
+		} else if (signatureMethod == SignatureMethod.RSA_SHA1) {
+			// TODO
+			throw new UnsupportedOperationException(
+					"I'm sorry. RSA-SHA1 signature has not been implemented.");
 		} else if (signatureMethod == SignatureMethod.PLAINTEXT) {
 			return baseString;
 		} else {

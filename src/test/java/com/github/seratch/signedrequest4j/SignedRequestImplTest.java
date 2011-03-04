@@ -66,6 +66,28 @@ public class SignedRequestImplTest {
 	}
 
 	@Test
+	public void getGeneratedSignature_A$String$HttpMethod$String$Long_RSA()
+			throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.RSA_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://localhost:8080/";
+		HttpMethod method = HttpMethod.GET;
+		String oAuthNonce = "sdfaaaa";
+		Long oAuthTimestamp = 12345L;
+		// when
+		String actual = target.getSignature(url, method, oAuthNonce,
+				oAuthTimestamp);
+		// then
+		// e.g. : verify(mocked).called();
+		String expected = "I/ci60MwaIR2x2mWvCZPFaWjaEI=";
+		assertEquals(expected, actual);
+	}
+
+	@Test
 	public void getSignature_A$String$HttpMethod$String$Long_HMAC_AdditionalParams()
 			throws Exception {
 		String realm = null;
