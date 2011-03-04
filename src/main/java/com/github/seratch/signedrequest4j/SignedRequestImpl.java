@@ -339,6 +339,9 @@ class SignedRequestImpl implements SignedRequest {
 		if (realm != null) {
 			buf.append("realm=\"" + realm + "\",");
 		}
+		if (token != null) {
+			buf.append("oauth_token=\"" + token + "\",");
+		}
 		buf.append("oauth_consumer_key=\"" + consumerKey + "\",");
 		buf.append("oauth_signature_method=\"" + signatureMethod + "\",");
 		buf.append("oauth_signature=\"" + signature + "\",");
