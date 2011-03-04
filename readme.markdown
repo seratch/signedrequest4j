@@ -1,4 +1,4 @@
-# signed-request
+# Signed Request for Java
 
 ## What's this?
 
