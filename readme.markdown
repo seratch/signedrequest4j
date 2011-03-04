@@ -8,7 +8,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 ### 2-legged OAuth 
 
-* Service Provider, Consumer
+* Service Provider, OAuth Consumer
 
 * a.k.a Signed Fetch, Phone Home in the OpenSocial community
 
@@ -18,7 +18,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 ### 3-legged OAuth
 
-* Service Provider, Consumer, End User
+* Service Provider, OAuth Consumer, End User
 
 * "OAuth" term mostly means 3-legged OAuth protocol
 
