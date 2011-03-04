@@ -18,9 +18,7 @@ public class SignedRequestImplTest {
 	@Test
 	public void instantiation() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
@@ -30,9 +28,7 @@ public class SignedRequestImplTest {
 	@Test
 	public void getHttpURLConnection_A$String$HttpMethod() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
@@ -49,9 +45,7 @@ public class SignedRequestImplTest {
 	public void getGeneratedSignature_A$String$HttpMethod$String$Long_HMAC()
 			throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
@@ -70,12 +64,10 @@ public class SignedRequestImplTest {
 	}
 
 	@Test
-	public void getGeneratedSignature_A$String$HttpMethod$String$Long_HMAC_AdditionalParams()
+	public void getSignature_A$String$HttpMethod$String$Long_HMAC_AdditionalParams()
 			throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		Map<String, Object> additionalparams = new HashMap<String, Object>();
 		additionalparams.put("partnerId", "p1234");
@@ -107,9 +99,7 @@ public class SignedRequestImplTest {
 	public void getSignature_A$String$HttpMethod$String$Long_PLAINTEXT()
 			throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.PLAINTEXT;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
@@ -130,9 +120,7 @@ public class SignedRequestImplTest {
 	@Test
 	public void getAuthorizationHeader_A$String$String$Long() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfada");
-		consumer.setConsumerSecret("sdfafdsafsa");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
@@ -144,14 +132,14 @@ public class SignedRequestImplTest {
 		String actual = target.getAuthorizationHeader(signature, oAuthNonce,
 				oAuthTimestamp);
 		// then
-		String expected = "OAuth oauth_consumer_key=\"sdfada\",oauth_signature_method=\"HMAC-SHA1\",oauth_signature=\"signatureXXX\",oauth_timestamp=\"12345\",oauth_nonce=\"noncenonce\",oauth_version=\"1.0\",";
+		String expected = "OAuth oauth_consumer_key=\"sdfsa\",oauth_signature_method=\"HMAC-SHA1\",oauth_signature=\"signatureXXX\",oauth_timestamp=\"12345\",oauth_nonce=\"noncenonce\",oauth_version=\"1.0\",";
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void doRequest_A$String$HttpMethod$Map$String() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);
@@ -171,7 +159,7 @@ public class SignedRequestImplTest {
 	@Test
 	public void getResponseCotent_A$HttpURLConnection$String() throws Exception {
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
 				signatureMethod);

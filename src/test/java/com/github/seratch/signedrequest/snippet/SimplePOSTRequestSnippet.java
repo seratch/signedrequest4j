@@ -10,12 +10,12 @@ import java.util.Map;
 
 public class SimplePOSTRequestSnippet {
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory.getInstance(
-				"http://sp.example.com/", new OAuthConsumer("consumer_key",
-						"consumer_secret"));
+		SignedRequest signedRequest = SignedRequestFactory
+				.get2LeggedOAuthRequest("http://sp.example.com/",
+						new OAuthConsumer("consumer_key", "consumer_secret"));
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
-		HttpResponse response = signedRequest.doPostRequest(
+		HttpResponse response = signedRequest.doPost(
 				"https://github.com/seratch/signed-request", requestParameters,
 				"UTF-8");
 		System.out.println(response.getStatusCode());

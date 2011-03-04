@@ -1,7 +1,6 @@
 package com.github.seratch.signedrequest;
 
 import static org.junit.Assert.*;
-import com.github.seratch.signedrequest.OAuthConsumer;
 import org.junit.Test;
 
 public class OAuthConsumerTest {
@@ -13,7 +12,7 @@ public class OAuthConsumerTest {
 
 	@Test
 	public void instantiation() throws Exception {
-		OAuthConsumer target = new OAuthConsumer();
+		OAuthConsumer target = new OAuthConsumer("aa", "bb");
 		assertNotNull(target);
 	}
 

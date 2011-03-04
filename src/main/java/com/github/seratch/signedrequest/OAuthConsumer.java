@@ -18,23 +18,20 @@ package com.github.seratch.signedrequest;
 /**
  * OAuth Consumer
  * 
- * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  */
 public class OAuthConsumer {
 
 	/**
 	 * OAuth consumer key
 	 */
-	private String consumerKey;
+	private final String consumerKey;
 
 	/**
 	 * OAuth consumer secret
 	 */
-	private String consumerSecret;
-
-	public OAuthConsumer() {
-	}
+	private final String consumerSecret;
 
 	public OAuthConsumer(String consumerKey, String consumerSecret) {
 		this.consumerKey = consumerKey;
@@ -45,16 +42,8 @@ public class OAuthConsumer {
 		return consumerKey;
 	}
 
-	public void setConsumerKey(String consumerKey) {
-		this.consumerKey = consumerKey;
-	}
-
 	public String getConsumerSecret() {
 		return consumerSecret;
-	}
-
-	public void setConsumerSecret(String consumerSecret) {
-		this.consumerSecret = consumerSecret;
 	}
 
 }

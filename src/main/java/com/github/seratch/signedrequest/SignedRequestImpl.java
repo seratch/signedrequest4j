@@ -43,23 +43,36 @@ import javax.crypto.spec.SecretKeySpec;
 class SignedRequestImpl implements SignedRequest {
 
 	/**
-	 * {@inheritDoc}
+	 * 2 Legged OAuth Request
 	 */
 	public SignedRequestImpl(String realm, OAuthConsumer consumer,
 			SignatureMethod signatureMethod) {
+		this(realm, consumer, null, signatureMethod);
+	}
+
+	/**
+	 * 2 Legged OAuth Request
+	 */
+	public SignedRequestImpl(String realm, OAuthConsumer consumer,
+			SignatureMethod signatureMethod,
+			Map<String, Object> additionalParameters) {
+		this(realm, consumer, null, signatureMethod, additionalParameters);
+	}
+
+	public SignedRequestImpl(String realm, OAuthConsumer consumer,
+			OAuthToken token, SignatureMethod signatureMethod) {
 		this.realm = realm;
+		this.token = token;
 		this.consumerKey = consumer.getConsumerKey();
 		this.consumerSecret = consumer.getConsumerSecret();
 		this.signatureMethod = signatureMethod;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public SignedRequestImpl(String realm, OAuthConsumer consumer,
-			SignatureMethod signatureMethod,
+			OAuthToken token, SignatureMethod signatureMethod,
 			Map<String, Object> additionalParameters) {
 		this.realm = realm;
+		this.token = token;
 		this.consumerKey = consumer.getConsumerKey();
 		this.consumerSecret = consumer.getConsumerSecret();
 		this.signatureMethod = signatureMethod;
@@ -72,6 +85,8 @@ class SignedRequestImpl implements SignedRequest {
 
 	private String consumerSecret;
 
+	private OAuthToken token;
+
 	private SignatureMethod signatureMethod;
 
 	private String oAuthVersion = "1.0";
@@ -82,7 +97,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doDeleteRequest(String url) throws IOException {
+	public HttpResponse doDelete(String url) throws IOException {
 		return doRequest(url, HttpMethod.DELETE, null, null);
 	}
 
@@ -90,7 +105,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doGetRequest(String url, String charset)
+	public HttpResponse doGet(String url, String charset)
 			throws IOException {
 		return doRequest(url, HttpMethod.GET, null, charset);
 	}
@@ -99,7 +114,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doHeadRequest(String url) throws IOException {
+	public HttpResponse doHead(String url) throws IOException {
 		return doRequest(url, HttpMethod.HEAD, null, null);
 	}
 
@@ -107,7 +122,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doOptionsRequest(String url) throws IOException {
+	public HttpResponse doOptions(String url) throws IOException {
 		return doRequest(url, HttpMethod.OPTIONS, null, null);
 	}
 
@@ -115,7 +130,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doPostRequest(String url,
+	public HttpResponse doPost(String url,
 			Map<String, Object> requestParameters, String charset)
 			throws IOException {
 		return doRequest(url, HttpMethod.POST, requestParameters, charset);
@@ -125,7 +140,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doPutRequest(String url) throws IOException {
+	public HttpResponse doPut(String url) throws IOException {
 		return doRequest(url, HttpMethod.PUT, null, null);
 	}
 
@@ -133,7 +148,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doTraceRequest(String url) throws IOException {
+	public HttpResponse doTrace(String url) throws IOException {
 		return doRequest(url, HttpMethod.DELETE, null, null);
 	}
 
@@ -230,27 +245,6 @@ class SignedRequestImpl implements SignedRequest {
 
 	}
 
-	List<Parameter> getNormalizedParameters(String oAuthNonce,
-			Long oAuthTimestamp) {
-		List<Parameter> params = new ArrayList<Parameter>();
-		params.add(new Parameter("oauth_consumer_key", consumerKey));
-		params.add(new Parameter("oauth_nonce", oAuthNonce));
-		params.add(new Parameter("oauth_signature_method", signatureMethod));
-		params.add(new Parameter("oauth_timestamp", oAuthTimestamp));
-		params.add(new Parameter("oauth_version", oAuthVersion));
-		if (additionalParameters != null && additionalParameters.size() > 0) {
-			for (String key : additionalParameters.keySet()) {
-				params.add(new Parameter(key, additionalParameters.get(key)));
-			}
-		}
-		Collections.sort(params, new Comparator<Parameter>() {
-			public int compare(Parameter p1, Parameter p2) {
-				return p1.getKey().compareTo(p2.getKey());
-			};
-		});
-		return params;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -312,6 +306,31 @@ class SignedRequestImpl implements SignedRequest {
 					"Invalid Signature Method (oauth_signature_method) : "
 							+ signatureMethod.toString());
 		}
+	}
+
+	List<Parameter> getNormalizedParameters(String oAuthNonce,
+			Long oAuthTimestamp) {
+		List<Parameter> params = new ArrayList<Parameter>();
+		params.add(new Parameter("oauth_consumer_key", consumerKey));
+		if (token != null) {
+			// 2 Legged OAuth does not need
+			params.add(new Parameter("oauth_token", token));
+		}
+		params.add(new Parameter("oauth_nonce", oAuthNonce));
+		params.add(new Parameter("oauth_signature_method", signatureMethod));
+		params.add(new Parameter("oauth_timestamp", oAuthTimestamp));
+		params.add(new Parameter("oauth_version", oAuthVersion));
+		if (additionalParameters != null && additionalParameters.size() > 0) {
+			for (String key : additionalParameters.keySet()) {
+				params.add(new Parameter(key, additionalParameters.get(key)));
+			}
+		}
+		Collections.sort(params, new Comparator<Parameter>() {
+			public int compare(Parameter p1, Parameter p2) {
+				return p1.getKey().compareTo(p2.getKey());
+			};
+		});
+		return params;
 	}
 
 	String getAuthorizationHeader(String signature, String oAuthNonce,

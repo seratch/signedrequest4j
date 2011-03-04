@@ -21,62 +21,60 @@ public class SignedRequestFactoryTest {
 	}
 
 	@Test
-	public void getInstance_A$String$OAuthConsumer$SignatureMethod()
+	public void get2LeggedOAuthRequest_A$String$OAuthConsumer$SignatureMethod()
 			throws Exception {
 		// given
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		// when
-		SignedRequest actual = SignedRequestFactory.getInstance(realm,
-				consumer, signatureMethod);
+		SignedRequest actual = SignedRequestFactory.get2LeggedOAuthRequest(
+				realm, consumer, signatureMethod);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void getInstance_A$String$OAuthConsumer$SignatureMethod$Map()
+	public void get2LeggedOAuthRequest_A$String$OAuthConsumer$SignatureMethod$Map()
 			throws Exception {
 		// given
 		String realm = null;
-		OAuthConsumer consumer = new OAuthConsumer();
-		consumer.setConsumerKey("sdfsa");
-		consumer.setConsumerSecret("sdfafa33333");
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
-		SignedRequest actual = SignedRequestFactory.getInstance(realm,
-				consumer, signatureMethod, additionalParameters);
+		SignedRequest actual = SignedRequestFactory.get2LeggedOAuthRequest(
+				realm, consumer, signatureMethod, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void getInstance_A$String$OAuthConsumer() throws Exception {
+	public void get2LeggedOAuthRequest_A$String$OAuthConsumer()
+			throws Exception {
 		// given
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key",
 				"consumer_secret");
 		// when
-		SignedRequest actual = SignedRequestFactory
-				.getInstance(realm, consumer);
+		SignedRequest actual = SignedRequestFactory.get2LeggedOAuthRequest(
+				realm, consumer);
 		// then
 		// e.g. : verify(mocked).called();
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void getInstance_A$String$OAuthConsumer$Map() throws Exception {
+	public void get2LeggedOAuthRequest_A$String$OAuthConsumer$Map()
+			throws Exception {
 		// given
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key",
 				"consumer_secret");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
-		SignedRequest actual = SignedRequestFactory.getInstance(realm,
-				consumer, additionalParameters);
+		SignedRequest actual = SignedRequestFactory.get2LeggedOAuthRequest(
+				realm, consumer, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}

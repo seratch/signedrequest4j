@@ -7,10 +7,10 @@ import com.github.seratch.signedrequest.SignedRequestFactory;
 
 public class SimpleGETRequestSnippet {
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory.getInstance(
-				"http://sp.example.com/", new OAuthConsumer("consumer_key",
-						"consumer_secret"));
-		HttpResponse response = signedRequest.doGetRequest(
+		SignedRequest signedRequest = SignedRequestFactory
+				.get2LeggedOAuthRequest("http://sp.example.com/",
+						new OAuthConsumer("consumer_key", "consumer_secret"));
+		HttpResponse response = signedRequest.doGet(
 				"https://github.com/seratch/signed-request-for-java", "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());

@@ -18,6 +18,7 @@ package com.github.seratch.signedrequest;
 /**
  * Signature Method
  * 
+ * @see <a href="http://tools.ietf.org/html/rfc5849#section-3.4">[RFC5849]</a>
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  */
 public enum SignatureMethod {
@@ -26,6 +27,10 @@ public enum SignatureMethod {
 	 * HMAC-SHA1
 	 */
 	HMAC_SHA1("HMAC-SHA1"),
+	/**
+	 * RSA-SHA1
+	 */
+	RSA_SHA1("RSA-SHA1"),
 	/**
 	 * PLAINTEXT
 	 */
