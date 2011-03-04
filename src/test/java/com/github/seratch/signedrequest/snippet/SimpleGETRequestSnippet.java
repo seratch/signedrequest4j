@@ -1,13 +1,11 @@
-package com.github.seratch.signedrequest;
+package com.github.seratch.signedrequest.snippet;
 
-public class Snippet {
+import com.github.seratch.signedrequest.HttpResponse;
+import com.github.seratch.signedrequest.OAuthConsumer;
+import com.github.seratch.signedrequest.SignedRequest;
+import com.github.seratch.signedrequest.SignedRequestFactory;
 
-	// GET / HTTP/1.1
-	// User-Agent: Signed Request Client
-	// (+https://github.com/seratch/signed-request)
-	// Authorization: OAuth realm="http://sp.example.com/",
-	// oauth_consumer_key="consumer_key",oauth_signature_method="HMAC-SHA1",oauth_signature="q9eXspUbaYB6NEmAXxxXXuBrk10=",oauth_timestamp="1299157615628",oauth_nonce="-4568253211378628139",oauth_version="1.0",
-
+public class SimpleGETRequestSnippet {
 	public static void main(String[] args) throws Exception {
 		SignedRequest signedRequest = SignedRequestFactory.getInstance(
 				"http://sp.example.com/", new OAuthConsumer("consumer_key",
@@ -18,5 +16,4 @@ public class Snippet {
 		System.out.println(response.getHeaders());
 		System.out.println(response.getContent());
 	}
-
 }
