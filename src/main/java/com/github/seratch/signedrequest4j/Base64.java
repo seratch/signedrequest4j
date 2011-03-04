@@ -25,11 +25,11 @@ public final class Base64 {
 
     private final static char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
-    private static int[] charToIntMapping = new int[128];
+    private static int[] charToInt = new int[128];
 
     static {
         for (int i = 0; i < chars.length; i++) {
-            charToIntMapping[chars[i]] = i;
+            charToInt[chars[i]] = i;
         }
     }
 
@@ -64,22 +64,21 @@ public final class Base64 {
         int mask = 0xFF;
         int index = 0;
         for (int i = 0; i < str.length(); i += 4) {
-            int c0 = charToIntMapping[str.charAt(i)];
-            int c1 = charToIntMapping[str.charAt(i + 1)];
+            int c0 = charToInt[str.charAt(i)];
+            int c1 = charToInt[str.charAt(i + 1)];
             bytes[index++] = (byte) (((c0 << 2) | (c1 >> 4)) & mask);
             if (index >= bytes.length) {
                 return bytes;
             }
-            int c2 = charToIntMapping[str.charAt(i + 2)];
+            int c2 = charToInt[str.charAt(i + 2)];
             bytes[index++] = (byte) (((c1 << 4) | (c2 >> 2)) & mask);
             if (index >= bytes.length) {
                 return bytes;
             }
-            int c3 = charToIntMapping[str.charAt(i + 3)];
+            int c3 = charToInt[str.charAt(i + 3)];
             bytes[index++] = (byte) (((c2 << 6) | c3) & mask);
         }
         return bytes;
     }
-
 
 }

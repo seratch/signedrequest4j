@@ -17,27 +17,27 @@ package com.github.seratch.signedrequest4j;
 
 /**
  * Exception thrown by this client library
- * 
+ *
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  */
 public class SignedRequestClientException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String detailMessage;
+    private String detailMessage;
 
-	public SignedRequestClientException(String message) {
-		this.detailMessage = message;
-	}
+    public SignedRequestClientException(String message) {
+        this.detailMessage = message;
+    }
 
-	@Override
-	public String getLocalizedMessage() {
-		return detailMessage;
-	}
+    @Override
+    public String getLocalizedMessage() {
+        return detailMessage;
+    }
 
-	@Override
-	public String getMessage() {
-		return detailMessage;
-	}
+    @Override
+    public String getMessage() {
+        return detailMessage;
+    }
 
 }

@@ -17,49 +17,49 @@ package com.github.seratch.signedrequest4j;
 
 /**
  * HTTP/1.1 Method Definitions
- * 
+ *
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  */
 public enum HttpMethod {
 
-	/**
-	 * GET
-	 */
-	GET("GET"),
-	/**
-	 * HEAD
-	 */
-	HEAD("HEAD"),
-	/**
-	 * POST
-	 */
-	POST("POST"),
-	/**
-	 * OPTIONS
-	 */
-	OPTIONS("OPTIONS"),
-	/**
-	 * PUT
-	 */
-	PUT("PUT"),
-	/**
-	 * DELETE
-	 */
-	DELETE("DELETE"),
-	/**
-	 * TRACE
-	 */
-	TRACE("TRACE");
+    /**
+     * GET
+     */
+    GET("GET"),
+    /**
+     * HEAD
+     */
+    HEAD("HEAD"),
+    /**
+     * POST
+     */
+    POST("POST"),
+    /**
+     * OPTIONS
+     */
+    OPTIONS("OPTIONS"),
+    /**
+     * PUT
+     */
+    PUT("PUT"),
+    /**
+     * DELETE
+     */
+    DELETE("DELETE"),
+    /**
+     * TRACE
+     */
+    TRACE("TRACE");
 
-	private String str;
+    private String str;
 
-	private HttpMethod(String str) {
-		this.str = str;
-	}
+    private HttpMethod(String str) {
+        this.str = str;
+    }
 
-	@Override
-	public String toString() {
-		return this.str;
-	}
+    @Override
+    public String toString() {
+        return this.str;
+    }
 
 }
