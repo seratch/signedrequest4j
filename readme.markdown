@@ -2,7 +2,7 @@
 
 ## What's this?
 
-"signed-request" is an implementation of "OAuth Consumer Request 1.0 Draft 1" in Java.
+Signed Request for Java is an implementation of OAuth Consumer Request 1.0 Draft 1.
 
 * OAuth Consumer Request 1.0 Draft 1
 
