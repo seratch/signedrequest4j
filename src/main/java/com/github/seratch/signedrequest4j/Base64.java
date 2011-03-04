@@ -23,38 +23,63 @@ package com.github.seratch.signedrequest4j;
  */
 public final class Base64 {
 
-    private static final String[] MAPPING_TABLE = {"A", "B", "C", "D", "E",
-            "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
-            "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e",
-            "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
-            "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4",
-            "5", "6", "7", "8", "9", "+", "/"};
+    private final static char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
+
+    private static int[] charToIntMapping = new int[128];
+
+    static {
+        for (int i = 0; i < chars.length; i++) {
+            charToIntMapping[chars[i]] = i;
+        }
+    }
 
     public static String encode(byte[] bytes) {
-        StringBuilder bitPatterns = new StringBuilder();
-        for (int i = 0; i < bytes.length; ++i) {
-            int b = bytes[i];
-            if (b < 0) {
-                b += 256;
-            }
-            String bitStr = Integer.toBinaryString(b);
-            while (bitStr.length() < 8) {
-                bitStr = "0" + bitStr;
-            }
-            bitPatterns.append(bitStr);
+        int size = bytes.length;
+        char[] ar = new char[((size + 2) / 3) * 4];
+        int a = 0;
+        int i = 0;
+        while (i < size) {
+            byte b0 = bytes[i++];
+            byte b1 = (i < size) ? bytes[i++] : 0;
+            byte b2 = (i < size) ? bytes[i++] : 0;
+
+            int mask = 0x3F;
+            ar[a++] = chars[(b0 >> 2) & mask];
+            ar[a++] = chars[((b0 << 4) | ((b1 & 0xFF) >> 4)) & mask];
+            ar[a++] = chars[((b1 << 2) | ((b2 & 0xFF) >> 6)) & mask];
+            ar[a++] = chars[b2 & mask];
         }
-        while (bitPatterns.length() % 6 != 0) {
-            bitPatterns.append("0");
+        switch (size % 3) {
+            case 1:
+                ar[--a] = '=';
+            case 2:
+                ar[--a] = '=';
         }
-        StringBuilder dest = new StringBuilder();
-        for (int i = 0; i < bitPatterns.length(); i += 6) {
-            int index = Integer.parseInt(bitPatterns.substring(i, i + 6), 2);
-            dest.append(MAPPING_TABLE[index]);
-        }
-        while (dest.length() % 4 != 0) {
-            dest.append("=");
-        }
-        return dest.toString();
+        return new String(ar);
     }
+
+    public static byte[] decode(String str) {
+        int delta = str.endsWith("==") ? 2 : str.endsWith("=") ? 1 : 0;
+        byte[] bytes = new byte[str.length() * 3 / 4 - delta];
+        int mask = 0xFF;
+        int index = 0;
+        for (int i = 0; i < str.length(); i += 4) {
+            int c0 = charToIntMapping[str.charAt(i)];
+            int c1 = charToIntMapping[str.charAt(i + 1)];
+            bytes[index++] = (byte) (((c0 << 2) | (c1 >> 4)) & mask);
+            if (index >= bytes.length) {
+                return bytes;
+            }
+            int c2 = charToIntMapping[str.charAt(i + 2)];
+            bytes[index++] = (byte) (((c1 << 4) | (c2 >> 2)) & mask);
+            if (index >= bytes.length) {
+                return bytes;
+            }
+            int c3 = charToIntMapping[str.charAt(i + 3)];
+            bytes[index++] = (byte) (((c2 << 6) | c3) & mask);
+        }
+        return bytes;
+    }
+
 
 }
