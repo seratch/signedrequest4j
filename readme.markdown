@@ -10,7 +10,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 * Service Provider, Consumer
 
-* a.k.a Signed Fetch, Phone HOme in the OpenSocial community
+* a.k.a Signed Fetch, Phone Home in the OpenSocial community
 
 * OAuth Consumer Request 1.0 Draft 1
 
