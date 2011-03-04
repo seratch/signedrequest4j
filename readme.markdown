@@ -3,6 +3,7 @@
 ## What's this?
 
 SignedRequest4J is a simple Java library supporting OAuth 1.0 signing. 
+
 With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP requests.
 
 ### 2-legged OAuth 
@@ -13,7 +14,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 * OAuth Consumer Request 1.0 Draft 1
 
-    http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
+    <a href="http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html">http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html</a>
 
 ### 3-legged OAuth
 
@@ -23,11 +24,11 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 * OAuth Core 1.0
 
-    http://oauth.net/core/1.0/#signing_process
+    <a href="http://oauth.net/core/1.0/#signing_process">http://oauth.net/core/1.0/#signing_process</a>
 
 * RFC 5849: The OAuth 1.0 Protocol
 
-    http://tools.ietf.org/html/rfc5849
+    <a href="http://tools.ietf.org/html/rfc5849">http://tools.ietf.org/html/rfc5849</a>
 
 ## How to install
 
@@ -140,13 +141,13 @@ No additional jars required.
     HttpResponse response = signedRequest.doTrace(
             "https://github.com/seratch/signed-request-for-java");
 
-### Taking HttpURLConnection instance(not connected yet)
+### HttpURLConnection(not connected yet)
     HttpURLConnection conn = signedRequest.getHttpURLConnection(
             "https://github.com/seratch/signed-request-for-java", 
             HttpMethod.GET);
 
 ## Contributors
 
-* Kazuhiro Sera &lt;seratch at gmail.com&gt;
-* Kenichi Dewa
+* <a href="https://github.com/seratch">Kazuhiro Sera</a> &lt;seratch at gmail.com&gt;
+* <a href="https://github.com/dewaken">Kenichi Dewa</a>
 
