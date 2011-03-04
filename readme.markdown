@@ -114,6 +114,6 @@
 
 ## Contributors
 
-* Kazuhiro Sera &gt;seratch at gmail.com&lt;
+* Kazuhiro Sera &lt;seratch at gmail.com&gt;
 * Kenichi Dewa
 
