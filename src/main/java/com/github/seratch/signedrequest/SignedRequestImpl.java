@@ -204,7 +204,7 @@ class SignedRequestImpl implements SignedRequest {
 		conn.setConnectTimeout(3000);
 		conn.setReadTimeout(10000);
 		conn.setRequestProperty("User-Agent",
-				"Signed Request Client (+https://github.com/seratch/signed-request)");
+				"Signed Request Client (+https://github.com/seratch/signed-request-for-java)");
 		conn.setRequestMethod(method.toString());
 		conn.setRequestProperty("Authorization", authorizationHeader);
 		return conn;

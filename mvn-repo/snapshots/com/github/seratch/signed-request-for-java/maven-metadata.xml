@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>com.github.seratch</groupId>
-  <artifactId>signed-request</artifactId>
+  <artifactId>signed-request-for-java</artifactId>
   <version>1.0-SNAPSHOT</version>
   <versioning>
-    <snapshot>
-      <buildNumber>6</buildNumber>
-    </snapshot>
-    <lastUpdated>20110303144752</lastUpdated>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20110304030757</lastUpdated>
   </versioning>
 </metadata>
