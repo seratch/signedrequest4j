@@ -1,15 +1,11 @@
 package com.github.seratch.signedrequest4j;
 
 import static org.junit.Assert.*;
-
-import com.github.seratch.signedrequest4j.HttpMethod;
-import com.github.seratch.signedrequest4j.HttpResponse;
-import com.github.seratch.signedrequest4j.OAuthConsumer;
-import com.github.seratch.signedrequest4j.SignatureMethod;
-import com.github.seratch.signedrequest4j.SignedRequestImpl;
+import com.github.seratch.signedrequest4j.SignedRequestImpl.Parameter;
 
 import java.net.HttpURLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -176,6 +172,116 @@ public class SignedRequestImplTest {
 		String charset = "UTF-8";
 		// when
 		String actual = target.getResponseCotent(conn, charset);
+		// then
+		assertNotNull(actual);
+	}
+
+	@Test
+	public void doGet_A$String$String() throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://seratch.net/";
+		String charset = "UTF-8";
+		// e.g. : given(mocked.called()).willReturn(1);
+		// when
+		HttpResponse actual = target.doGet(url, charset);
+		// then
+		// e.g. : verify(mocked).called();
+		assertNotNull(actual);
+		assertTrue(200 == actual.getStatusCode());
+		assertTrue(actual.getContent().length() > 0);
+	}
+
+	@Test
+	public void doHead_A$String() throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://seratch.net/";
+		// e.g. : given(mocked.called()).willReturn(1);
+		// when
+		HttpResponse actual = target.doHead(url);
+		// then
+		// e.g. : verify(mocked).called();
+		assertNotNull(actual);
+		assertTrue(200 == actual.getStatusCode());
+	}
+
+	@Test
+	public void doOptions_A$String() throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://seratch.net/";
+		// when
+		HttpResponse actual = target.doOptions(url);
+		// then
+		assertNotNull(actual);
+		assertTrue(200 == actual.getStatusCode());
+		assertTrue(actual.getHeaders().get("Allow").size() > 0);
+	}
+
+	@Test
+	public void doPost_A$String$Map$String() throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://seratch.net/";
+		Map<String, Object> requestParameters = new HashMap<String, Object>();
+		String charset = "UTF-8";
+		// when
+		HttpResponse actual = target.doPost(url, requestParameters, charset);
+		// then
+		assertNotNull(actual);
+		assertTrue(200 == actual.getStatusCode());
+	}
+
+	@Test
+	public void getSignatureBaseString_A$String$HttpMethod$String$Long()
+			throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://seratch.net/";
+		HttpMethod method = HttpMethod.GET;
+		String oAuthNonce = "sfdafs";
+		Long oAuthTimestamp = 12345L;
+		// when
+		String actual = target.getSignatureBaseString(url, method, oAuthNonce,
+				oAuthTimestamp);
+		// then
+		assertNotNull(actual);
+	}
+
+	@Test
+	public void getNormalizedParameters_A$String$Long() throws Exception {
+		String realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String oAuthNonce = "nonce";
+		Long oAuthTimestamp = 123L;
+		// when
+		List<Parameter> actual = target.getNormalizedParameters(oAuthNonce,
+				oAuthTimestamp);
 		// then
 		assertNotNull(actual);
 	}

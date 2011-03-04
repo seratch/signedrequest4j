@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -362,7 +363,9 @@ class SignedRequestImpl implements SignedRequest {
 		BufferedReader br = null;
 		try {
 			is = conn.getInputStream();
-			br = new BufferedReader(new InputStreamReader(is, charset));
+			Reader isr = (charset != null) ? new InputStreamReader(is, charset)
+					: new InputStreamReader(is);
+			br = new BufferedReader(isr);
 			StringBuilder buf = new StringBuilder();
 			String line = null;
 			while ((line = br.readLine()) != null) {
