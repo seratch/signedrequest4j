@@ -326,11 +326,8 @@ class SignedRequestImpl implements SignedRequest {
                 signer.update(baseString.getBytes());
                 return Base64.encode(signer.sign());
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new UnsupportedOperationException(
-                        "I'm sorry. RSA-SHA1 signature has not been implemented.");
+                throw new SignedRequestClientException("Cannot make a signature(RSA)", e);
             }
-
         } else if (signatureMethod == SignatureMethod.PLAINTEXT) {
             return baseString;
         } else {

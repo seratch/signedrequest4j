@@ -30,6 +30,10 @@ public class SignedRequestClientException extends RuntimeException {
         this.detailMessage = message;
     }
 
+    public SignedRequestClientException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     @Override
     public String getLocalizedMessage() {
         return detailMessage;
