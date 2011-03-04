@@ -63,10 +63,10 @@ No additional jars required.
 
 ### 2-legged OAuth
 
-    import com.github.seratch.signedrequest.HttpResponse;
-    import com.github.seratch.signedrequest.OAuthConsumer;
-    import com.github.seratch.signedrequest.SignedRequest;
-    import com.github.seratch.signedrequest.SignedRequestFactory;
+    import com.github.seratch.signedrequest4j.HttpResponse;
+    import com.github.seratch.signedrequest4j.OAuthConsumer;
+    import com.github.seratch.signedrequest4j.SignedRequest;
+    import com.github.seratch.signedrequest4j.SignedRequestFactory;
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/",
@@ -74,7 +74,7 @@ No additional jars required.
 
 ### 3-legged OAuth
 
-    import com.github.seratch.signedrequest.OAuthToken;
+    import com.github.seratch.signedrequest4j.OAuthToken;
     
     SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
             "http://sp.example.com/",
@@ -82,6 +82,9 @@ No additional jars required.
             new OAuthToken("access_token"));
 
 ### OAuth Signature with Additional Parameters
+
+    import java.util.HashMap;
+    import java.util.Map;
 
     Map<String, Object> additionalParams = new HashMap<String, Object>();
     additionalParams.put("xoauth_requestor_id", "user@example.com");
@@ -111,9 +114,6 @@ No additional jars required.
 
 ### POST / HTTP/1.1
 
-    import java.util.HashMap;
-    import java.util.Map;
-
     Map<String, Object> requestParameters = new HashMap<String, Object>();
     requestParameters.put("something", "updated");
     HttpResponse response = signedRequest.doPost(
@@ -142,6 +142,9 @@ No additional jars required.
             "https://github.com/seratch/signedrequest4j");
 
 ### HttpURLConnection(not connected yet)
+
+    import com.github.seratch.signedrequest4j.HttpMethod;
+    
     HttpURLConnection conn = signedRequest.getHttpURLConnection(
             "https://github.com/seratch/signedrequest4j", 
             HttpMethod.GET);
