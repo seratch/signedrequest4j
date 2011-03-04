@@ -108,6 +108,7 @@ No additional jars required.
             "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
+
     import com.github.seratch.signedrequest4j.SignatureMethod;
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/",
@@ -122,7 +123,7 @@ No additional jars required.
             SignatureMethod.RSA_SHA1)
     signedRequest.setRsaPrivateKeyValue("-----BEGIN RSA PRIVATE KEY-----\n...");
 
-### OAuth Signature Method : PLAINTEXT
+### Signature Method : PLAINTEXT
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/",
