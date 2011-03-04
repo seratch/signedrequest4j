@@ -61,7 +61,7 @@ No additional jars required.
 
 ## Snippets
 
-### 2 Legged OAuth
+### 2-legged OAuth
 
     import com.github.seratch.signedrequest.HttpResponse;
     import com.github.seratch.signedrequest.OAuthConsumer;
@@ -72,7 +72,7 @@ No additional jars required.
             "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
-### 3 Legged OAuth
+### 3-legged OAuth
 
     import com.github.seratch.signedrequest.OAuthToken;
     
