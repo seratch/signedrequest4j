@@ -36,26 +36,26 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 No additional jars required.
 
-    ./download/signed-request-for-java-1.0-SNAPSHOT.jar
+    ./download/signedrequest4j-1.0-SNAPSHOT.jar
 
 ### via Maven
 
     <repositories>
       ...
       <repository>
-        <id>signed-request-for-java-releases</id>
-        <url>https://github.com/seratch/signed-request-for-java/raw/master/mvn-repo/releases</url>
+        <id>signedrequest4j-releases</id>
+        <url>https://github.com/seratch/signedrequest4j/raw/master/mvn-repo/releases</url>
       </repository>
       <repository>
-        <id>signed-request-for-java-snapshots</id>
-        <url>https://github.com/seratch/signed-request-for-java/raw/master/mvn-repo/snapshots</url>
+        <id>signedrequest4j-snapshots</id>
+        <url>https://github.com/seratch/signedrequest4j/raw/master/mvn-repo/snapshots</url>
       </repository>
       ...
     </repositories>
 
     <dependency>
       <groupId>com.github.seratch</groupId>
-      <artifactId>signed-request-for-java</artifactId>
+      <artifactId>signedrequest4j</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
@@ -102,7 +102,7 @@ No additional jars required.
 ### GET / HTTP/1.1
 
     HttpResponse response = signedRequest.doGet(
-            "https://github.com/seratch/signed-request-for-java", 
+            "https://github.com/seratch/signedrequest4j", 
             "UTF-8");
 
     System.out.println(response.getStatusCode());
@@ -117,33 +117,33 @@ No additional jars required.
     Map<String, Object> requestParameters = new HashMap<String, Object>();
     requestParameters.put("something", "updated");
     HttpResponse response = signedRequest.doPost(
-            "https://github.com/seratch/signed-request-for-java", 
+            "https://github.com/seratch/signedrequest4j", 
             requestParameters,
             "UTF-8");
 
 ### PUT / HTTP/1.1
     HttpResponse response = signedRequest.doPut(
-            "https://github.com/seratch/signed-request-for-java");
+            "https://github.com/seratch/signedrequest4j");
 
 ### DELETE / HTTP/1.1
     HttpResponse response = signedRequest.doDelete(
-            "https://github.com/seratch/signed-request-for-java");
+            "https://github.com/seratch/signedrequest4j");
 
 ### HEAD / HTTP/1.1
     HttpResponse response = signedRequest.doHead(
-            "https://github.com/seratch/signed-request-for-java");
+            "https://github.com/seratch/signedrequest4j");
 
 ### OPTIONS / HTTP/1.1
     HttpResponse response = signedRequest.doOptions(
-            "https://github.com/seratch/signed-request-for-java");
+            "https://github.com/seratch/signedrequest4j");
 
 ### TRACE / HTTP/1.1
     HttpResponse response = signedRequest.doTrace(
-            "https://github.com/seratch/signed-request-for-java");
+            "https://github.com/seratch/signedrequest4j");
 
 ### HttpURLConnection(not connected yet)
     HttpURLConnection conn = signedRequest.getHttpURLConnection(
-            "https://github.com/seratch/signed-request-for-java", 
+            "https://github.com/seratch/signedrequest4j", 
             HttpMethod.GET);
 
 ## Contributors

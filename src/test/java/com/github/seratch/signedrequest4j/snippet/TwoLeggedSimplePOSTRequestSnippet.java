@@ -16,8 +16,8 @@ public class TwoLeggedSimplePOSTRequestSnippet {
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
 		HttpResponse response = signedRequest.doPost(
-				"https://github.com/seratch/signed-request", requestParameters,
-				"UTF-8");
+				"https://github.com/seratch/signedrequest4j",
+				requestParameters, "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());
 		System.out.println(response.getContent());

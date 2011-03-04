@@ -11,7 +11,7 @@ public class TwoLeggedSimpleGETRequestSnippet {
 				.get2LeggedOAuthRequest("http://sp.example.com/",
 						new OAuthConsumer("consumer_key", "consumer_secret"));
 		HttpResponse response = signedRequest.doGet(
-				"https://github.com/seratch/signed-request-for-java", "UTF-8");
+				"https://github.com/seratch/signedrequest4j", "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());
 		System.out.println(response.getContent());

@@ -105,8 +105,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doGet(String url, String charset)
-			throws IOException {
+	public HttpResponse doGet(String url, String charset) throws IOException {
 		return doRequest(url, HttpMethod.GET, null, charset);
 	}
 
@@ -219,7 +218,7 @@ class SignedRequestImpl implements SignedRequest {
 		conn.setConnectTimeout(3000);
 		conn.setReadTimeout(10000);
 		conn.setRequestProperty("User-Agent",
-				"Signed Request Client (+https://github.com/seratch/signed-request-for-java)");
+				"SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)");
 		conn.setRequestMethod(method.toString());
 		conn.setRequestProperty("Authorization", authorizationHeader);
 		return conn;
