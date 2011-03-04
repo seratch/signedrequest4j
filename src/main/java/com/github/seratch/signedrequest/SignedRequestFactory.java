@@ -58,7 +58,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest getInstance(String realm,
-			OAuthConsumer consumer, Map<String, String> additionalParameters) {
+			OAuthConsumer consumer, Map<String, Object> additionalParameters) {
 		return new SignedRequestImpl(realm, consumer,
 				SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
@@ -94,7 +94,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest getInstance(String realm,
 			OAuthConsumer consumer, SignatureMethod signatureMethod,
-			Map<String, String> additionalParameters) {
+			Map<String, Object> additionalParameters) {
 		return new SignedRequestImpl(realm, consumer, signatureMethod,
 				additionalParameters);
 	}

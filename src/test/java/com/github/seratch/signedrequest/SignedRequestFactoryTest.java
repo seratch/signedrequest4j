@@ -2,11 +2,6 @@ package com.github.seratch.signedrequest;
 
 import static org.junit.Assert.*;
 
-import com.github.seratch.signedrequest.OAuthConsumer;
-import com.github.seratch.signedrequest.SignatureMethod;
-import com.github.seratch.signedrequest.SignedRequest;
-import com.github.seratch.signedrequest.SignedRequestFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +45,7 @@ public class SignedRequestFactoryTest {
 		consumer.setConsumerKey("sdfsa");
 		consumer.setConsumerSecret("sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		Map<String, String> additionalParameters = new HashMap<String, String>();
+		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.getInstance(realm,
 				consumer, signatureMethod, additionalParameters);
@@ -78,7 +73,7 @@ public class SignedRequestFactoryTest {
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key",
 				"consumer_secret");
-		Map<String, String> additionalParameters = new HashMap<String, String>();
+		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.getInstance(realm,
 				consumer, additionalParameters);
