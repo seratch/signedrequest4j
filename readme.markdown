@@ -89,33 +89,32 @@ No additional jars required.
     Map<String, Object> additionalParams = new HashMap<String, Object>();
     additionalParams.put("xoauth_requestor_id", "user@example.com");
     
-    // 2 Legged OAuth
+    // 2-legged OAuth
     SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/", 
             new OAuthConsumer("consumer_key", "consumer_secret"), 
             additionalParams);
     
-    // 3 Legged OAuth
+    // 3-legged OAuth
     SignedRequest signedRequest3 = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/", 
             new OAuthConsumer("consumer_key", "consumer_secret"), 
             new OAuthToken("access_token"),
             additionalParams);
 
-### OAuth Signature Method : HMAC-SHA1(default)
+### Signature Method: HMAC-SHA1(default)
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
     import com.github.seratch.signedrequest4j.SignatureMethod;
-
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.HMAC_SHA1);
 
-### OAuth Signature Method : RSA-SHA1
+### Signature Method: RSA-SHA1
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/",
