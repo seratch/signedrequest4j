@@ -85,7 +85,7 @@ public class SignedRequestFactoryTest {
 		// given
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token");
+		OAuthToken token = new OAuthToken("token", "token_secret");
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
 				realm, consumer, token);
@@ -99,7 +99,7 @@ public class SignedRequestFactoryTest {
 		// given
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token");
+		OAuthToken token = new OAuthToken("token", "token_secret");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
@@ -114,7 +114,7 @@ public class SignedRequestFactoryTest {
 		// given
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token");
+		OAuthToken token = new OAuthToken("token", "token_secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
@@ -129,7 +129,7 @@ public class SignedRequestFactoryTest {
 		// given
 		String realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token");
+		OAuthToken token = new OAuthToken("token", "token_secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when

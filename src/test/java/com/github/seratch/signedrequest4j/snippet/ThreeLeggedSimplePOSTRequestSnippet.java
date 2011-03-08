@@ -14,7 +14,7 @@ public class ThreeLeggedSimplePOSTRequestSnippet {
 		SignedRequest signedRequest = SignedRequestFactory
 				.get3LeggedOAuthRequest("http://sp.example.com/",
 						new OAuthConsumer("consumer_key", "consumer_secret"),
-						new OAuthToken("access_token"));
+						new OAuthToken("access_token", "token_secret"));
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
 		HttpResponse response = signedRequest.doPost(

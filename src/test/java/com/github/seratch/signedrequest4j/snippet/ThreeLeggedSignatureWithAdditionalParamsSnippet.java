@@ -16,7 +16,7 @@ public class ThreeLeggedSignatureWithAdditionalParamsSnippet {
 		SignedRequest signedRequest = SignedRequestFactory
 				.get3LeggedOAuthRequest("http://sp.example.com/",
 						new OAuthConsumer("consumer_key", "consumer_secret"),
-						new OAuthToken("access_token"), additionalParams);
+						new OAuthToken("access_token","token_secret"), additionalParams);
 		HttpResponse response = signedRequest.doGet(
 				"http://sp.example.com/api/?aaa=bbb", "UTF-8");
 		System.out.println(response.getStatusCode());

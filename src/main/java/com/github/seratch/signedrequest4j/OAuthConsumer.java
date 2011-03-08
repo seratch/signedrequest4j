@@ -21,7 +21,7 @@ package com.github.seratch.signedrequest4j;
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
  */
-public class OAuthConsumer {
+public class OAuthConsumer implements NotString {
 
     /**
      * OAuth consumer key
@@ -45,5 +45,10 @@ public class OAuthConsumer {
     public String getConsumerSecret() {
         return consumerSecret;
     }
+
+    @Override
+     public String toString() {
+         throw new IllegalAccessError();
+     }
 
 }

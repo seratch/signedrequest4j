@@ -23,7 +23,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.security.*;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -161,13 +160,13 @@ class SignedRequestImpl implements SignedRequest {
     public HttpResponse doRequest(String url, HttpMethod method,
                                   Map<String, Object> requestParameters, String charset)
             throws IOException {
-        if (method == HttpMethod.GET && requestParameters != null
-                && requestParameters.size() > 0) {
-            for (String key : requestParameters.keySet()) {
-                String param = key + "=" + requestParameters.get(key);
-                url += (url.contains("?") ? "&" : "?") + param;
+            if (method == HttpMethod.GET && requestParameters != null
+                    && requestParameters.size() > 0) {
+                for (String key : requestParameters.keySet()) {
+                    String param = key + "=" + requestParameters.get(key);
+                    url += (url.contains("?") ? "&" : "?") + param;
+                }
             }
-        }
         HttpURLConnection conn = getHttpURLConnection(url, method);
         if (method == HttpMethod.POST && requestParameters != null
                 && requestParameters.size() > 0) {
@@ -201,7 +200,11 @@ class SignedRequestImpl implements SignedRequest {
         HttpResponse response = new HttpResponse();
         response.setStatusCode(conn.getResponseCode());
         response.setHeaders(conn.getHeaderFields());
-        response.setContent(getResponseCotent(conn, charset));
+        try {
+            response.setContent(getResponseCotent(conn, charset));
+        } catch (IOException e) {
+            throw e;
+        }
         return response;
     }
 
@@ -234,6 +237,9 @@ class SignedRequestImpl implements SignedRequest {
 
         public Parameter(String key, Object value) {
             this.key = key;
+            if (value instanceof NotString) {
+                throw new IllegalArgumentException("Invalid parameter value");
+            }
             this.value = value;
         }
 
@@ -253,6 +259,7 @@ class SignedRequestImpl implements SignedRequest {
     @Override
     public String getSignatureBaseString(String url, HttpMethod method,
                                          String oAuthNonce, Long oAuthTimestamp) {
+        StringBuilder baseStringBuf = new StringBuilder();
         StringBuilder normalizedParamsBuf = new StringBuilder();
         for (Parameter param : getNormalizedParameters(oAuthNonce,
                 oAuthTimestamp)) {
@@ -263,17 +270,11 @@ class SignedRequestImpl implements SignedRequest {
             normalizedParamsBuf.append("=");
             normalizedParamsBuf.append(param.getValue());
         }
-        StringBuilder baseStringBuf = new StringBuilder();
-        try {
-            baseStringBuf.append(method.toString());
-            baseStringBuf.append("&");
-            baseStringBuf.append(URLEncoder.encode(url, "UTF-8"));
-            baseStringBuf.append("&");
-            baseStringBuf.append(URLEncoder.encode(
-                    normalizedParamsBuf.toString(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new SignedRequestClientException("Invalid URL Encoding");
-        }
+        baseStringBuf.append(OAuthEncoding.encode(method.toString().toUpperCase()));
+        baseStringBuf.append("&");
+        baseStringBuf.append(OAuthEncoding.encode(OAuthEncoding.normalizeURL(url)));
+        baseStringBuf.append("&");
+        baseStringBuf.append(OAuthEncoding.encode(normalizedParamsBuf.toString()));
         return baseStringBuf.toString();
     }
 
@@ -287,7 +288,9 @@ class SignedRequestImpl implements SignedRequest {
                 oAuthTimestamp);
         if (signatureMethod == SignatureMethod.HMAC_SHA1) {
             String algorithm = "HmacSHA1";
-            String key = consumerSecret + "&";
+            String key = consumerSecret + "&" +
+                    ((token != null && token.getTokenSecret() != null)
+                            ? token.getTokenSecret() : "");
             SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), algorithm);
             try {
                 Mac mac = Mac.getInstance(algorithm);
@@ -343,7 +346,7 @@ class SignedRequestImpl implements SignedRequest {
         params.add(new Parameter("oauth_consumer_key", consumerKey));
         if (token != null) {
             // 2 Legged OAuth does not need
-            params.add(new Parameter("oauth_token", token));
+            params.add(new Parameter("oauth_token", token.getToken()));
         }
         params.add(new Parameter("oauth_nonce", oAuthNonce));
         params.add(new Parameter("oauth_signature_method", signatureMethod));
@@ -351,15 +354,13 @@ class SignedRequestImpl implements SignedRequest {
         params.add(new Parameter("oauth_version", oAuthVersion));
         if (additionalParameters != null && additionalParameters.size() > 0) {
             for (String key : additionalParameters.keySet()) {
-                params.add(new Parameter(key, additionalParameters.get(key)));
+                params.add(new Parameter(key, OAuthEncoding.encode(additionalParameters.get(key))));
             }
         }
         Collections.sort(params, new Comparator<Parameter>() {
             public int compare(Parameter p1, Parameter p2) {
                 return p1.getKey().compareTo(p2.getKey());
             }
-
-            ;
         });
         return params;
     }
@@ -368,21 +369,38 @@ class SignedRequestImpl implements SignedRequest {
                                   Long oAuthTimestamp) {
         StringBuilder buf = new StringBuilder();
         buf.append("OAuth ");
+//        if (realm != null) {
+//            buf.append("realm=\"" + realm + "\",");
+//        }
+//        if (token != null) {
+//            buf.append("oauth_token=\"" + token.getToken() + "\",");
+//        }
+//        buf.append("oauth_consumer_key=\"" + consumerKey + "\",");
+//        buf.append("oauth_signature_method=\"" + signatureMethod + "\",");
+//        buf.append("oauth_signature=\"" + signature + "\",");
+//        buf.append("oauth_timestamp=\"" + oAuthTimestamp + "\",");
+//        buf.append("oauth_nonce=\"" + oAuthNonce + "\",");
+//        buf.append("oauth_version=\"" + oAuthVersion + "\"");
+//        if (additionalParameters != null && additionalParameters.size() > 0) {
+//            for (String key : additionalParameters.keySet()) {
+//                buf.append("," + key + "=\"" + additionalParameters.get(key) + "\"");
+//            }
+//        }
         if (realm != null) {
-            buf.append("realm=\"" + realm + "\",");
+            buf.append("realm=\"" + OAuthEncoding.encode(realm) + "\",");
         }
         if (token != null) {
-            buf.append("oauth_token=\"" + token + "\",");
+            buf.append("oauth_token=\"" + OAuthEncoding.encode(token.getToken()) + "\",");
         }
-        buf.append("oauth_consumer_key=\"" + consumerKey + "\",");
-        buf.append("oauth_signature_method=\"" + signatureMethod + "\",");
-        buf.append("oauth_signature=\"" + signature + "\",");
-        buf.append("oauth_timestamp=\"" + oAuthTimestamp + "\",");
-        buf.append("oauth_nonce=\"" + oAuthNonce + "\",");
-        buf.append("oauth_version=\"" + oAuthVersion + "\",");
+        buf.append("oauth_consumer_key=\"" + OAuthEncoding.encode(consumerKey) + "\",");
+        buf.append("oauth_signature_method=\"" + OAuthEncoding.encode(signatureMethod) + "\",");
+        buf.append("oauth_signature=\"" + OAuthEncoding.encode(signature) + "\",");
+        buf.append("oauth_timestamp=\"" + OAuthEncoding.encode(oAuthTimestamp) + "\",");
+        buf.append("oauth_nonce=\"" + OAuthEncoding.encode(oAuthNonce) + "\",");
+        buf.append("oauth_version=\"" + OAuthEncoding.encode(oAuthVersion) + "\"");
         if (additionalParameters != null && additionalParameters.size() > 0) {
             for (String key : additionalParameters.keySet()) {
-                buf.append(key + "=\"" + additionalParameters.get(key) + "\",");
+                buf.append("," + key + "=\"" + OAuthEncoding.encode(additionalParameters.get(key)) + "\"");
             }
         }
         return buf.toString();

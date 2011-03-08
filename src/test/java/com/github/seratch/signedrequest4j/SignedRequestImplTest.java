@@ -3,10 +3,13 @@ package com.github.seratch.signedrequest4j;
 import com.github.seratch.signedrequest4j.SignedRequestImpl.Parameter;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.Assert.*;
 
@@ -68,24 +71,43 @@ public class SignedRequestImplTest {
     @Test
     public void getGeneratedSignature_A$String$HttpMethod$String$Long_RSA()
             throws Exception {
-        SignedRequestImpl target = new SignedRequestImpl(null,
-                new OAuthConsumer("consumer_key", "consumer_secret"),
-                new OAuthToken("access_token"),
+        Properties props = new Properties();
+        props.load(this.getClass().getClassLoader().getResourceAsStream("TwitterOAuth.properties"));
+        String consumerKey = (String) props.get("consumer_key");
+        String consumerSecret = (String) props.get("consumer_secret");
+        String token = (String) props.get("access_token");
+        String tokenSecret = (String) props.get("token_secret");
+
+        SignedRequestImpl signedRequest = new SignedRequestImpl(null,
+                new OAuthConsumer(consumerKey, consumerSecret),
+                new OAuthToken(token, tokenSecret),
                 SignatureMethod.RSA_SHA1);
+
         String url = "https://www.google.com/calendar/feeds/default/allcalendars/full";
         HttpMethod method = HttpMethod.GET;
         String oAuthNonce = String.valueOf(System.currentTimeMillis());
         Long oAuthTimestamp = System.currentTimeMillis();
         try {
-            target.getSignature(url, method, oAuthNonce,
+            signedRequest.getSignature(url, method, oAuthNonce,
                     oAuthTimestamp);
             fail("SignedRequestClientException must be occurred.");
         } catch (SignedRequestClientException e) {
         }
-//        String rsaPrivateKey = "-----BEGIN RSA PRIVATE KEY-----\n*****\n-----END RSA PRIVATE KEY-----\n\n";
-//        String actual = target.setRsaPrivateKeyValue(rsaPrivateKey).getSignature(url, method, oAuthNonce,
+        StringBuilder rsaPrivateKey = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(
+                this.getClass().getClassLoader().getResourceAsStream("RSA_PrivateKey.txt")));
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            rsaPrivateKey.append(line);
+            rsaPrivateKey.append("\n");
+        }
+//        String actual = signedRequest.setRsaPrivateKeyValue(rsaPrivateKey.toString()).getSignature(url, method, oAuthNonce,
 //                oAuthTimestamp);
 //        assertTrue(actual.length() == 172);
+//        System.out.println(signedRequest.getAuthorizationHeader(actual, "hogehoge", 12345L));
+//        HttpResponse response = signedRequest.doGet(url, "UTF-8");
+//        System.out.println(response.getHeaders());
+//        System.out.println(response.getContent());
     }
 
     @Test
@@ -118,6 +140,33 @@ public class SignedRequestImplTest {
         // e.g. : verify(mocked).called();
         String expected = "UGerPB3op7qtQrhRCO87ssDbruA=";
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getSignature_A$String$HttpMethod$String$Long_HMAC_TwitterOAuthExample()
+            throws Exception {
+        Map<String, Object> additionalparams = new HashMap<String, Object>();
+        additionalparams.put("file", "vacation.jpg");
+        additionalparams.put("size", "original");
+        SignedRequestImpl target = new SignedRequestImpl(
+                null,
+                new OAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44"),
+                new OAuthToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00"),
+                SignatureMethod.HMAC_SHA1,
+                additionalparams);
+        // given
+        String url = "http://photos.example.net/photos";
+        HttpMethod method = HttpMethod.GET;
+        String oAuthNonce = "kllo9940pd9333jh";
+        Long oAuthTimestamp = 1191242096L;
+        String baseString = target.getSignatureBaseString(url, method,
+                oAuthNonce, oAuthTimestamp);
+        assertEquals(
+                "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal",
+                baseString);
+        assertEquals(
+                "tR3+Ty81lMeYAr/Fid0kMTYa/WM=",
+                target.getSignature(url, method, oAuthNonce, oAuthTimestamp));
     }
 
     @Test
@@ -157,7 +206,7 @@ public class SignedRequestImplTest {
         String actual = target.getAuthorizationHeader(signature, oAuthNonce,
                 oAuthTimestamp);
         // then
-        String expected = "OAuth oauth_consumer_key=\"sdfsa\",oauth_signature_method=\"HMAC-SHA1\",oauth_signature=\"signatureXXX\",oauth_timestamp=\"12345\",oauth_nonce=\"noncenonce\",oauth_version=\"1.0\",";
+        String expected = "OAuth oauth_consumer_key=\"sdfsa\",oauth_signature_method=\"HMAC-SHA1\",oauth_signature=\"signatureXXX\",oauth_timestamp=\"12345\",oauth_nonce=\"noncenonce\",oauth_version=\"1.0\"";
         assertEquals(expected, actual);
     }
 
@@ -179,6 +228,32 @@ public class SignedRequestImplTest {
                 charset);
         // then
         assertNotNull(actual);
+    }
+
+    @Test
+    public void doRequest_A$String$HttpMethod$Map$String_TwitterOAuth() throws Exception {
+        String realm = "http://api.twitter.com";
+        Properties props = new Properties();
+        props.load(this.getClass().getClassLoader().getResourceAsStream("TwitterOAuth.properties"));
+        String consumerKey = (String) props.get("consumer_key");
+        String consumerSecret = (String) props.get("consumer_secret");
+        OAuthConsumer consumer = new OAuthConsumer(consumerKey, consumerSecret);
+        String token = (String) props.get("access_token");
+        String tokenSecret = (String) props.get("token_secret");
+        OAuthToken accessToken = new OAuthToken(token, tokenSecret);
+        SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+        SignedRequestImpl target = new SignedRequestImpl(realm, consumer, accessToken,
+                signatureMethod);
+        // given
+        String url = "http://api.twitter.com/1/statuses/home_timeline.xml";
+        HttpMethod method = HttpMethod.GET;
+        String charset = "UTF-8";
+        // when
+//        HttpResponse actual = target.doRequest(url, method, null, charset);
+//        // then
+//        assertNotNull(actual);
+//        System.out.println(actual.getHeaders());
+//        System.out.println(actual.getContent());
     }
 
     @Test
