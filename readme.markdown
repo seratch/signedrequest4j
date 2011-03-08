@@ -129,7 +129,7 @@ No additional jars required.
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.PLAINTEXT)
 
-### GET / HTTP/1.1
+### GET HTTP/1.1
 
     HttpResponse response = signedRequest.doGet(
             "https://github.com/seratch/signedrequest4j", 
@@ -139,7 +139,7 @@ No additional jars required.
     System.out.println(response.getHeaders());
     System.out.println(response.getContent());
 
-### POST / HTTP/1.1
+### POST HTTP/1.1
 
     Map<String, Object> requestParameters = new HashMap<String, Object>();
     requestParameters.put("something", "updated");
@@ -148,23 +148,23 @@ No additional jars required.
             requestParameters,
             "UTF-8");
 
-### PUT / HTTP/1.1
+### PUT HTTP/1.1
     HttpResponse response = signedRequest.doPut(
             "https://github.com/seratch/signedrequest4j");
 
-### DELETE / HTTP/1.1
+### DELETE HTTP/1.1
     HttpResponse response = signedRequest.doDelete(
             "https://github.com/seratch/signedrequest4j");
 
-### HEAD / HTTP/1.1
+### HEAD HTTP/1.1
     HttpResponse response = signedRequest.doHead(
             "https://github.com/seratch/signedrequest4j");
 
-### OPTIONS / HTTP/1.1
+### OPTIONS HTTP/1.1
     HttpResponse response = signedRequest.doOptions(
             "https://github.com/seratch/signedrequest4j");
 
-### TRACE / HTTP/1.1
+### TRACE HTTP/1.1
     HttpResponse response = signedRequest.doTrace(
             "https://github.com/seratch/signedrequest4j");
 
