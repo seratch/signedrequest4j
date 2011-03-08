@@ -369,23 +369,6 @@ class SignedRequestImpl implements SignedRequest {
                                   Long oAuthTimestamp) {
         StringBuilder buf = new StringBuilder();
         buf.append("OAuth ");
-//        if (realm != null) {
-//            buf.append("realm=\"" + realm + "\",");
-//        }
-//        if (token != null) {
-//            buf.append("oauth_token=\"" + token.getToken() + "\",");
-//        }
-//        buf.append("oauth_consumer_key=\"" + consumerKey + "\",");
-//        buf.append("oauth_signature_method=\"" + signatureMethod + "\",");
-//        buf.append("oauth_signature=\"" + signature + "\",");
-//        buf.append("oauth_timestamp=\"" + oAuthTimestamp + "\",");
-//        buf.append("oauth_nonce=\"" + oAuthNonce + "\",");
-//        buf.append("oauth_version=\"" + oAuthVersion + "\"");
-//        if (additionalParameters != null && additionalParameters.size() > 0) {
-//            for (String key : additionalParameters.keySet()) {
-//                buf.append("," + key + "=\"" + additionalParameters.get(key) + "\"");
-//            }
-//        }
         if (realm != null) {
             buf.append("realm=\"" + OAuthEncoding.encode(realm) + "\",");
         }
@@ -400,7 +383,7 @@ class SignedRequestImpl implements SignedRequest {
         buf.append("oauth_version=\"" + OAuthEncoding.encode(oAuthVersion) + "\"");
         if (additionalParameters != null && additionalParameters.size() > 0) {
             for (String key : additionalParameters.keySet()) {
-                buf.append("," + key + "=\"" + OAuthEncoding.encode(additionalParameters.get(key)) + "\"");
+                buf.append("," + OAuthEncoding.encode(key) + "=\"" + OAuthEncoding.encode(additionalParameters.get(key)) + "\"");
             }
         }
         return buf.toString();
