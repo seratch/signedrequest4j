@@ -18,7 +18,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 ### 3-legged OAuth
 
-* Service Provider, Consumer, End User
+* Service Provider, Consumer, User
 
 * "OAuth" term mostly means 3-legged OAuth protocol
 
