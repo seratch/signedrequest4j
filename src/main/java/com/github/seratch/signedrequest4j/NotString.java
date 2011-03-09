@@ -16,7 +16,7 @@
 package com.github.seratch.signedrequest4j;
 
 /**
- * Not String Value
+ * Means Not String Value
  *
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  */

@@ -127,8 +127,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doPost(String url,
-							   Map<String, Object> requestParameters, String charset)
+	public HttpResponse doPost(String url, Map<String, Object> requestParameters, String charset)
 			throws IOException {
 		return doRequest(url, HttpMethod.POST, requestParameters, charset);
 	}
@@ -153,8 +152,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doRequest(
-			String url, HttpMethod method, Map<String, Object> requestParameters, String charset)
+	public HttpResponse doRequest(String url, HttpMethod method, Map<String, Object> requestParameters, String charset)
 			throws IOException {
 		if (method == HttpMethod.GET && requestParameters != null
 				&& requestParameters.size() > 0) {
