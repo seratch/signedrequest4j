@@ -36,31 +36,31 @@ class SignedRequestImpl implements SignedRequest {
 	/**
 	 * 2 Legged OAuth Request
 	 */
-	public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
-							 SignatureMethod signatureMethod) {
+	public SignedRequestImpl(
+			OAuthRealm realm, OAuthConsumer consumer, SignatureMethod signatureMethod) {
 		this(realm, consumer, null, signatureMethod);
 	}
 
 	/**
 	 * 2 Legged OAuth Request
 	 */
-	public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
-							 SignatureMethod signatureMethod,
-							 Map<String, Object> additionalParameters) {
+	public SignedRequestImpl(
+			OAuthRealm realm, OAuthConsumer consumer, SignatureMethod signatureMethod,
+			Map<String, Object> additionalParameters) {
 		this(realm, consumer, null, signatureMethod, additionalParameters);
 	}
 
-	public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
-							 OAuthToken token, SignatureMethod signatureMethod) {
+	public SignedRequestImpl(
+			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod) {
 		this.realm = realm;
 		this.consumer = consumer;
 		this.token = token;
 		this.signatureMethod = signatureMethod;
 	}
 
-	public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
-							 OAuthToken token, SignatureMethod signatureMethod,
-							 Map<String, Object> additionalParameters) {
+	public SignedRequestImpl(
+			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod,
+			Map<String, Object> additionalParameters) {
 		this.realm = realm;
 		this.consumer = consumer;
 		this.token = token;
@@ -153,8 +153,8 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doRequest(String url, HttpMethod method,
-								  Map<String, Object> requestParameters, String charset)
+	public HttpResponse doRequest(
+			String url, HttpMethod method, Map<String, Object> requestParameters, String charset)
 			throws IOException {
 		if (method == HttpMethod.GET && requestParameters != null
 				&& requestParameters.size() > 0) {
@@ -208,8 +208,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpURLConnection getHttpURLConnection(String url, HttpMethod method)
-			throws IOException {
+	public HttpURLConnection getHttpURLConnection(String url, HttpMethod method) throws IOException {
 		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
 		Long oAuthTimestamp = System.currentTimeMillis() / 1000;
 		String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
@@ -253,8 +252,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getSignatureBaseString(String url, HttpMethod method,
-										 String oAuthNonce, Long oAuthTimestamp) {
+	public String getSignatureBaseString(String url, HttpMethod method, String oAuthNonce, Long oAuthTimestamp) {
 		StringBuilder baseStringBuf = new StringBuilder();
 		StringBuilder normalizedParamsBuf = new StringBuilder();
 		for (Parameter param : getNormalizedParameters(oAuthNonce,
@@ -278,8 +276,7 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getSignature(String url, HttpMethod method,
-							   String oAuthNonce, Long oAuthTimestamp) {
+	public String getSignature(String url, HttpMethod method, String oAuthNonce, Long oAuthTimestamp) {
 		String baseString = getSignatureBaseString(url, method, oAuthNonce,
 				oAuthTimestamp);
 		if (signatureMethod == SignatureMethod.HMAC_SHA1) {
@@ -336,8 +333,7 @@ class SignedRequestImpl implements SignedRequest {
 		}
 	}
 
-	List<Parameter> getNormalizedParameters(String oAuthNonce,
-											Long oAuthTimestamp) {
+	List<Parameter> getNormalizedParameters(String oAuthNonce, Long oAuthTimestamp) {
 		List<Parameter> params = new ArrayList<Parameter>();
 		params.add(new Parameter("oauth_consumer_key", consumer.getConsumerKey()));
 		if (token != null) {
@@ -361,32 +357,50 @@ class SignedRequestImpl implements SignedRequest {
 		return params;
 	}
 
-	String getAuthorizationHeader(String signature, String oAuthNonce,
-								  Long oAuthTimestamp) {
+	String getAuthorizationHeader(String signature, String oAuthNonce, Long oAuthTimestamp) {
 		StringBuilder buf = new StringBuilder();
 		buf.append("OAuth ");
 		if (realm != null) {
-			buf.append("realm=\"" + OAuthEncoding.encode(realm) + "\",");
+			buf.append("realm=\"");
+			buf.append(OAuthEncoding.encode(realm));
+			buf.append("\",");
 		}
 		if (token != null) {
-			buf.append("oauth_token=\"" + OAuthEncoding.encode(token.getToken()) + "\",");
+			buf.append("oauth_token=\"");
+			buf.append(OAuthEncoding.encode(token.getToken()));
+			buf.append("\",");
 		}
-		buf.append("oauth_consumer_key=\"" + OAuthEncoding.encode(consumer.getConsumerKey()) + "\",");
-		buf.append("oauth_signature_method=\"" + OAuthEncoding.encode(signatureMethod) + "\",");
-		buf.append("oauth_signature=\"" + OAuthEncoding.encode(signature) + "\",");
-		buf.append("oauth_timestamp=\"" + OAuthEncoding.encode(oAuthTimestamp) + "\",");
-		buf.append("oauth_nonce=\"" + OAuthEncoding.encode(oAuthNonce) + "\",");
-		buf.append("oauth_version=\"" + OAuthEncoding.encode(oAuthVersion) + "\"");
+		buf.append("oauth_consumer_key=\"");
+		buf.append(OAuthEncoding.encode(consumer.getConsumerKey()));
+		buf.append("\",");
+		buf.append("oauth_signature_method=\"");
+		buf.append(OAuthEncoding.encode(signatureMethod));
+		buf.append("\",");
+		buf.append("oauth_signature=\"");
+		buf.append(OAuthEncoding.encode(signature));
+		buf.append("\",");
+		buf.append("oauth_timestamp=\"");
+		buf.append(OAuthEncoding.encode(oAuthTimestamp));
+		buf.append("\",");
+		buf.append("oauth_nonce=\"");
+		buf.append(OAuthEncoding.encode(oAuthNonce));
+		buf.append("\",");
+		buf.append("oauth_version=\"");
+		buf.append(OAuthEncoding.encode(oAuthVersion));
+		buf.append("\"");
 		if (additionalParameters != null && additionalParameters.size() > 0) {
 			for (String key : additionalParameters.keySet()) {
-				buf.append("," + OAuthEncoding.encode(key) + "=\"" + OAuthEncoding.encode(additionalParameters.get(key)) + "\"");
+				buf.append(",");
+				buf.append(OAuthEncoding.encode(key));
+				buf.append("=\"");
+				buf.append(OAuthEncoding.encode(additionalParameters.get(key)));
+				buf.append("\"");
 			}
 		}
 		return buf.toString();
 	}
 
-	String getResponseCotent(HttpURLConnection conn, String charset)
-			throws IOException {
+	String getResponseCotent(HttpURLConnection conn, String charset) throws IOException {
 		InputStream is = null;
 		BufferedReader br = null;
 		try {
