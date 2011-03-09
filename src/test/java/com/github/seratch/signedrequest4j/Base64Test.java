@@ -39,7 +39,9 @@ public class Base64Test {
 		byte[] actual = Base64.decode(str);
 		// then
 		byte[] expected = new byte[] { 1, 2, 3, 4, 5 };
-		assertEquals(expected, actual);
+		for(int i =0; i<expected.length; i++) {
+			assertEquals(expected[i], actual[i]);
+		}
 	}
 
 }
