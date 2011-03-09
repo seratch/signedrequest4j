@@ -12,10 +12,9 @@ public class TwoLeggedSignatureWithAdditionalParamsSnippet {
 	public static void main(String[] args) throws Exception {
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
 		additionalParams.put("xoauth_requestor_id", "user@example.com");
-		SignedRequest signedRequest = SignedRequestFactory
-				.get2LeggedOAuthRequest("http://sp.example.com/",
-						new OAuthConsumer("consumer_key", "consumer_secret"),
-						additionalParams);
+		SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
+				new OAuthConsumer("consumer_key", "consumer_secret"),
+				additionalParams);
 		HttpResponse response = signedRequest.doGet(
 				"http://sp.example.com/api/?aaa=bbb", "UTF-8");
 		System.out.println(response.getStatusCode());

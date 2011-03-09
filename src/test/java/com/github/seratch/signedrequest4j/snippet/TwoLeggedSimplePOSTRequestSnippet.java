@@ -10,9 +10,8 @@ import java.util.Map;
 
 public class TwoLeggedSimplePOSTRequestSnippet {
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory
-				.get2LeggedOAuthRequest("http://sp.example.com/",
-						new OAuthConsumer("consumer_key", "consumer_secret"));
+		SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
+				new OAuthConsumer("consumer_key", "consumer_secret"));
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
 		HttpResponse response = signedRequest.doPost(

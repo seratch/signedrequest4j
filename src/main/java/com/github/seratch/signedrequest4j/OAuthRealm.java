@@ -16,9 +16,22 @@
 package com.github.seratch.signedrequest4j;
 
 /**
- * Not String Value
+ * OAuth Realm
  *
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
  */
-public interface NotString {
+public class OAuthRealm {
+
+	private final String realm;
+
+	public OAuthRealm(String realm) {
+		this.realm = realm;
+	}
+
+	@Override
+	public String toString() {
+		return this.realm;
+	}
+
 }

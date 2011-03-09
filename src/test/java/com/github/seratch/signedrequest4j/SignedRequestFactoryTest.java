@@ -24,7 +24,7 @@ public class SignedRequestFactoryTest {
 	public void get2LeggedOAuthRequest_A$String$OAuthConsumer$SignatureMethod()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		// when
@@ -38,7 +38,7 @@ public class SignedRequestFactoryTest {
 	public void get2LeggedOAuthRequest_A$String$OAuthConsumer$SignatureMethod$Map()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
@@ -53,7 +53,7 @@ public class SignedRequestFactoryTest {
 	public void get2LeggedOAuthRequest_A$String$OAuthConsumer()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key",
 				"consumer_secret");
 		// when
@@ -68,7 +68,7 @@ public class SignedRequestFactoryTest {
 	public void get2LeggedOAuthRequest_A$String$OAuthConsumer$Map()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key",
 				"consumer_secret");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
@@ -83,7 +83,7 @@ public class SignedRequestFactoryTest {
 	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		OAuthToken token = new OAuthToken("token", "token_secret");
 		// when
@@ -97,7 +97,7 @@ public class SignedRequestFactoryTest {
 	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken$Map()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		OAuthToken token = new OAuthToken("token", "token_secret");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
@@ -112,7 +112,7 @@ public class SignedRequestFactoryTest {
 	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken$SignatureMethod()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		OAuthToken token = new OAuthToken("token", "token_secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
@@ -127,7 +127,7 @@ public class SignedRequestFactoryTest {
 	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken$SignatureMethod$Map()
 			throws Exception {
 		// given
-		String realm = null;
+		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		OAuthToken token = new OAuthToken("token", "token_secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;

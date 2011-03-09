@@ -36,7 +36,7 @@ class SignedRequestImpl implements SignedRequest {
     /**
      * 2 Legged OAuth Request
      */
-    public SignedRequestImpl(String realm, OAuthConsumer consumer,
+    public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
                              SignatureMethod signatureMethod) {
         this(realm, consumer, null, signatureMethod);
     }
@@ -44,13 +44,13 @@ class SignedRequestImpl implements SignedRequest {
     /**
      * 2 Legged OAuth Request
      */
-    public SignedRequestImpl(String realm, OAuthConsumer consumer,
+    public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
                              SignatureMethod signatureMethod,
                              Map<String, Object> additionalParameters) {
         this(realm, consumer, null, signatureMethod, additionalParameters);
     }
 
-    public SignedRequestImpl(String realm, OAuthConsumer consumer,
+    public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
                              OAuthToken token, SignatureMethod signatureMethod) {
         this.realm = realm;
         this.token = token;
@@ -59,7 +59,7 @@ class SignedRequestImpl implements SignedRequest {
         this.signatureMethod = signatureMethod;
     }
 
-    public SignedRequestImpl(String realm, OAuthConsumer consumer,
+    public SignedRequestImpl(OAuthRealm realm, OAuthConsumer consumer,
                              OAuthToken token, SignatureMethod signatureMethod,
                              Map<String, Object> additionalParameters) {
         this.realm = realm;
@@ -70,7 +70,7 @@ class SignedRequestImpl implements SignedRequest {
         this.additionalParameters = additionalParameters;
     }
 
-    private String realm;
+    private OAuthRealm realm;
 
     private String consumerKey;
 
