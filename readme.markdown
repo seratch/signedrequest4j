@@ -69,7 +69,6 @@ No additional jars required.
     import com.github.seratch.signedrequest4j.SignedRequestFactory;
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
 ### 3-legged OAuth
@@ -77,9 +76,8 @@ No additional jars required.
     import com.github.seratch.signedrequest4j.OAuthToken;
     
     SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
-            "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"),
-            new OAuthToken("access_token"));
+            new OAuthToken("access_token", "token_secret"));
 
 ### OAuth Signature with Additional Parameters
 
@@ -91,33 +89,28 @@ No additional jars required.
     
     // 2-legged OAuth
     SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/", 
-            new OAuthConsumer("consumer_key", "consumer_secret"), 
+            new OAuthConsumer("consumer_key", "consumer_secret"),
             additionalParams);
     
     // 3-legged OAuth
     SignedRequest signedRequest3 = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/", 
-            new OAuthConsumer("consumer_key", "consumer_secret"), 
+            new OAuthConsumer("consumer_key", "consumer_secret"),
             new OAuthToken("access_token", "token_secret"),
             additionalParams);
 
 ### Signature Method: HMAC-SHA1(default)
 
     SignedRequest signedRequest1 = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
     import com.github.seratch.signedrequest4j.SignatureMethod;
     SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.HMAC_SHA1);
 
 ### Signature Method: RSA-SHA1
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.RSA_SHA1)
     signedRequest.setRsaPrivateKeyValue("-----BEGIN RSA PRIVATE KEY-----\n...");
@@ -125,7 +118,6 @@ No additional jars required.
 ### Signature Method : PLAINTEXT
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
-            "http://sp.example.com/",
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.PLAINTEXT)
 
