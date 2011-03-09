@@ -46,9 +46,4 @@ public class OAuthConsumer implements NotString {
         return consumerSecret;
     }
 
-    @Override
-     public String toString() {
-         throw new IllegalAccessError();
-     }
-
 }

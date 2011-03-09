@@ -20,21 +20,6 @@ public class OAuthTokenTest {
 	}
 
 	@Test
-	public void toString_A$() throws Exception {
-		String token = "tokenvalue";
-		String tokenSecret = "secret";
-		OAuthToken target = new OAuthToken(token, tokenSecret);
-		// given
-		// when
-		try {
-			target.toString();
-			fail();
-		} catch (IllegalAccessError e) {
-
-		}
-	}
-
-	@Test
 	public void getToken_A$() throws Exception {
 		String token = "t";
 		String tokenSecret = "ts";

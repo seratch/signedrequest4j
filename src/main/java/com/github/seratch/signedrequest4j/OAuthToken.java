@@ -39,9 +39,4 @@ public class OAuthToken implements NotString {
         return this.tokenSecret;
     }
 
-    @Override
-     public String toString() {
-         throw new IllegalAccessError();
-     }
-
 }

@@ -43,16 +43,4 @@ public class OAuthConsumerTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test
-	public void toString_A$() throws Exception {
-		String consumerKey = "aaaa";
-		String consumerSecret = "sdfas";
-		OAuthConsumer target = new OAuthConsumer(consumerKey, consumerSecret);
-		try {
-			target.toString();
-			fail();
-		} catch (IllegalAccessError e) {
-		}
-	}
-
 }
