@@ -249,11 +249,11 @@ public class SignedRequestImplTest {
         HttpMethod method = HttpMethod.GET;
         String charset = "UTF-8";
         // when
-//        HttpResponse actual = target.doRequest(url, method, null, charset);
-//        // then
-//        assertNotNull(actual);
-//        System.out.println(actual.getHeaders());
-//        System.out.println(actual.getContent());
+        HttpResponse actual = target.doRequest(url, method, null, charset);
+        // then
+        assertNotNull(actual);
+        System.out.println(actual.getHeaders());
+        System.out.println(actual.getContent());
     }
 
     @Test

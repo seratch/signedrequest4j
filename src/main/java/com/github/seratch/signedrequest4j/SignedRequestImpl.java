@@ -215,7 +215,7 @@ class SignedRequestImpl implements SignedRequest {
     public HttpURLConnection getHttpURLConnection(String url, HttpMethod method)
             throws IOException {
         String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
-        Long oAuthTimestamp = System.currentTimeMillis();
+        Long oAuthTimestamp = System.currentTimeMillis()/ 1000;
         String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
         String authorizationHeader = getAuthorizationHeader(signature,
                 oAuthNonce, oAuthTimestamp);
