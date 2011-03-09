@@ -99,7 +99,7 @@ No additional jars required.
     SignedRequest signedRequest3 = SignedRequestFactory.get2LeggedOAuthRequest(
             "http://sp.example.com/", 
             new OAuthConsumer("consumer_key", "consumer_secret"), 
-            new OAuthToken("access_token"),
+            new OAuthToken("access_token", "token_secret"),
             additionalParams);
 
 ### Signature Method: HMAC-SHA1(default)
