@@ -1,5 +1,8 @@
 package com.github.seratch.signedrequest4j;
 
+import com.github.seratch.signedrequest4j.Base64.*;
+import static org.mockito.BDDMockito.*;
+
 import static org.junit.Assert.*;
 import com.github.seratch.signedrequest4j.Base64;
 import org.junit.Test;
@@ -25,6 +28,17 @@ public class Base64Test {
 		String actual = Base64.encode(bytes);
 		// then
 		String expected = "AQIDBAU=";
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void decode_A$String() throws Exception {
+		// given
+		String str = "AQIDBAU=";
+		// when
+		byte[] actual = Base64.decode(str);
+		// then
+		byte[] expected = new byte[] { 1, 2, 3, 4, 5 };
 		assertEquals(expected, actual);
 	}
 

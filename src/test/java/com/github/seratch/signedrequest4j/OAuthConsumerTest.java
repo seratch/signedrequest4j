@@ -1,7 +1,8 @@
 package com.github.seratch.signedrequest4j;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class OAuthConsumerTest {
 
@@ -40,6 +41,18 @@ public class OAuthConsumerTest {
 		// then
 		String expected = "sdfas";
 		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void toString_A$() throws Exception {
+		String consumerKey = "aaaa";
+		String consumerSecret = "sdfas";
+		OAuthConsumer target = new OAuthConsumer(consumerKey, consumerSecret);
+		try {
+			target.toString();
+			fail();
+		} catch (IllegalAccessError e) {
+		}
 	}
 
 }

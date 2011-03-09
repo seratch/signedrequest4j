@@ -396,4 +396,22 @@ public class SignedRequestImplTest {
 		assertNotNull(actual);
 	}
 
+	@Test
+	public void doDelete_A$String() throws Exception {
+		// SKIP
+		assertTrue(true);
+	}
+
+	@Test
+	public void doPut_A$String() throws Exception {
+		// SKIP
+		assertTrue(true);
+	}
+
+	@Test
+	public void doTrace_A$String() throws Exception {
+		// SKIP
+		assertTrue(true);
+	}
+
 }
