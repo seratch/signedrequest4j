@@ -4,7 +4,7 @@
 
 SignedRequest4J is a simple Java library supporting OAuth 1.0 signing. 
 
-With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP requests.
+With SignedRequest4J, you can easily execute 2-legged or 3-legged OAuth signed HTTP requests.
 
 ### 2-legged OAuth
 
@@ -101,6 +101,7 @@ No additional jars required.
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
     import com.github.seratch.signedrequest4j.SignatureMethod;
+    
     SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.HMAC_SHA1);
@@ -120,23 +121,18 @@ No additional jars required.
 
 ### Verifying signature
 
-    Map<String, Object> additionalParams = new HashMap<String, Object>();
-    additionalParams.put("xoauth_requestor_id", "user@example.com");
-    SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
-            new OAuthConsumer("consumer_key", "consumer_secret"),
-            new OAuthToken("access_token", "token_secret"),
-            additionalParams);
     String signature = signedRequest.getSignature(
-            "http://sp.example.com/",   // URL
+            "http://sp.example.com/",               // URL
             HttpMethod.GET,			    // HTTP method
             "nonce_value",			    // oauth_nonce value
             1272026745L				    // oauth_timestamp value
     );
+    
     if ("K7OrQ7UU+k94LnaezxFs4jBBekc=".equals(signature)) {
         System.out.println("Signature is valid.");
     }
 
-### HTTP/1.1 GET request
+### HTTP GET request
 
     HttpResponse response = signedRequest.doGet(
             "https://github.com/seratch/signedrequest4j", 
@@ -146,7 +142,7 @@ No additional jars required.
     System.out.println(response.getHeaders());
     System.out.println(response.getContent());
 
-### HTTP/1.1 POST request
+### HTTP POST request
 
     Map<String, Object> requestParameters = new HashMap<String, Object>();
     requestParameters.put("something", "updated");
@@ -155,23 +151,23 @@ No additional jars required.
             requestParameters,
             "UTF-8");
 
-### HTTP/1.1 PUT request
+### HTTP PUT request
     HttpResponse response = signedRequest.doPut(
             "https://github.com/seratch/signedrequest4j");
 
-### HTTP/1.1 DELETE request
+### HTTP DELETE request
     HttpResponse response = signedRequest.doDelete(
             "https://github.com/seratch/signedrequest4j");
 
-### HTTP/1.1 HEAD request
+### HTTP HEAD request
     HttpResponse response = signedRequest.doHead(
             "https://github.com/seratch/signedrequest4j");
 
-### HTTP/1.1 OPTIONS request
+### HTTP OPTIONS request
     HttpResponse response = signedRequest.doOptions(
             "https://github.com/seratch/signedrequest4j");
 
-### HTTP/1.1 TRACE request
+### HTTP TRACE request
     HttpResponse response = signedRequest.doTrace(
             "https://github.com/seratch/signedrequest4j");
 
