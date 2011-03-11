@@ -4,9 +4,9 @@
 
 SignedRequest4J is a simple Java library supporting OAuth 1.0 signing. 
 
-With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP requests.
+With SignedRequest4J, you can easily execute 2-legged or 3-legged OAuth signed HTTP requests.
 
-### 2-legged OAuth 
+### 2-legged OAuth
 
 * Service Provider, Consumer
 
@@ -20,7 +20,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 * Service Provider, Consumer, User
 
-* "OAuth" term mostly means 3-legged OAuth protocol
+* The term "OAuth" mostly means 3-legged OAuth
 
 * OAuth Core 1.0
 
@@ -36,7 +36,7 @@ With SignedRequest4J, you can easily make 2-legged/3-legged OAuth signed HTTP re
 
 No additional jars required.
 
-    ./download/signedrequest4j-1.0-SNAPSHOT.jar
+    ./download/signedrequest4j-1.0.jar
 
 ### via Maven
 
@@ -56,12 +56,12 @@ No additional jars required.
     <dependency>
       <groupId>com.github.seratch</groupId>
       <artifactId>signedrequest4j</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
 
 ## Snippets
 
-### 2-legged OAuth
+### 2-legged OAuth instance
 
     import com.github.seratch.signedrequest4j.HttpResponse;
     import com.github.seratch.signedrequest4j.OAuthConsumer;
@@ -71,7 +71,7 @@ No additional jars required.
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
-### 3-legged OAuth
+### 3-legged OAuth instance
 
     import com.github.seratch.signedrequest4j.OAuthToken;
     
@@ -79,7 +79,7 @@ No additional jars required.
             new OAuthConsumer("consumer_key", "consumer_secret"),
             new OAuthToken("access_token", "token_secret"));
 
-### OAuth Signature with Additional Parameters
+### Signature with additional parameters
 
     import java.util.HashMap;
     import java.util.Map;
@@ -87,59 +87,52 @@ No additional jars required.
     Map<String, Object> additionalParams = new HashMap<String, Object>();
     additionalParams.put("xoauth_requestor_id", "user@example.com");
     
-    // 2-legged OAuth
     SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
             additionalParams);
-    
-    // 3-legged OAuth
     SignedRequest signedRequest3 = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
             new OAuthToken("access_token", "token_secret"),
             additionalParams);
 
-### Signature Method: HMAC-SHA1(default)
+### Signature method : HMAC-SHA1 (default)
 
     SignedRequest signedRequest1 = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
     import com.github.seratch.signedrequest4j.SignatureMethod;
+    
     SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.HMAC_SHA1);
 
-### Signature Method: RSA-SHA1
+### Signature method : RSA-SHA1
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.RSA_SHA1)
     signedRequest.setRsaPrivateKeyValue("-----BEGIN RSA PRIVATE KEY-----\n...");
 
-### Signature Method : PLAINTEXT
+### Signature method : PLAINTEXT
 
     SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
             SignatureMethod.PLAINTEXT)
 
-### Verifying an OAuth Signature
+### Verifying signature
 
-    Map<String, Object> additionalParams = new HashMap<String, Object>();
-    additionalParams.put("xoauth_requestor_id", "user@example.com");
-    SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
-            new OAuthConsumer("consumer_key", "consumer_secret"),
-            new OAuthToken("access_token", "token_secret"),
-            additionalParams);
     String signature = signedRequest.getSignature(
-            "http://sp.example.com/",   // URL
-            HttpMethod.GET,			    // HTTP Method
-            "nonce_value",			    // oauth_nonce
-            1272026745L				    // oauth_timestamp
+            "http://sp.example.com/",               // URL
+            HttpMethod.GET,			    // HTTP method
+            "nonce_value",			    // oauth_nonce value
+            1272026745L				    // oauth_timestamp value
     );
+    
     if ("K7OrQ7UU+k94LnaezxFs4jBBekc=".equals(signature)) {
         System.out.println("Signature is valid.");
     }
 
-### GET HTTP/1.1
+### HTTP GET request
 
     HttpResponse response = signedRequest.doGet(
             "https://github.com/seratch/signedrequest4j", 
@@ -149,7 +142,7 @@ No additional jars required.
     System.out.println(response.getHeaders());
     System.out.println(response.getContent());
 
-### POST HTTP/1.1
+### HTTP POST request
 
     Map<String, Object> requestParameters = new HashMap<String, Object>();
     requestParameters.put("something", "updated");
@@ -158,27 +151,27 @@ No additional jars required.
             requestParameters,
             "UTF-8");
 
-### PUT HTTP/1.1
+### HTTP PUT request
     HttpResponse response = signedRequest.doPut(
             "https://github.com/seratch/signedrequest4j");
 
-### DELETE HTTP/1.1
+### HTTP DELETE request
     HttpResponse response = signedRequest.doDelete(
             "https://github.com/seratch/signedrequest4j");
 
-### HEAD HTTP/1.1
+### HTTP HEAD request
     HttpResponse response = signedRequest.doHead(
             "https://github.com/seratch/signedrequest4j");
 
-### OPTIONS HTTP/1.1
+### HTTP OPTIONS request
     HttpResponse response = signedRequest.doOptions(
             "https://github.com/seratch/signedrequest4j");
 
-### TRACE HTTP/1.1
+### HTTP TRACE request
     HttpResponse response = signedRequest.doTrace(
             "https://github.com/seratch/signedrequest4j");
 
-### HttpURLConnection(not connected yet)
+### Using HttpURLConnection(not connected yet)
 
     import com.github.seratch.signedrequest4j.HttpMethod;
     
