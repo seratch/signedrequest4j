@@ -15,6 +15,11 @@
  */
 package com.github.seratch.signedrequest4scala
 
+/**
+ * HTTP/1.1 Method Definitions
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ */
 case class HttpMethod(val name: String) {
   override def toString() = name
 }

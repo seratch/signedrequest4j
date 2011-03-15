@@ -15,6 +15,12 @@
  */
 package com.github.seratch.signedrequest4scala
 
+/**
+ * Signature Method
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ * @see <a href="http://tools.ietf.org/html/rfc5849#section-3.4">[RFC5849]</a>
+ */
 case class SignatureMethod(val name: String) {
   override def toString(): String = name
 }

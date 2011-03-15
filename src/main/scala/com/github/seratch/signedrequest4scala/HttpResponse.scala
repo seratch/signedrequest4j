@@ -15,4 +15,9 @@
  */
 package com.github.seratch.signedrequest4scala
 
+/**
+ * HTTP/1.1 Response
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ */
 case class HttpResponse(val statusCode: Int, val headers: Map[String, List[String]], val content: String)

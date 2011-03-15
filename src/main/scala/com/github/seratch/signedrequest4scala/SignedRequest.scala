@@ -17,6 +17,19 @@ package com.github.seratch.signedrequest4scala
 
 import java.net.HttpURLConnection
 
+/**
+ * <pre>
+ * Singed OAuth Request
+ *
+ * - 3 Legged OAuth Request
+ * http://oauth.net/core/1.0/#signing_process
+ *
+ * - 2 Legged Oauth Request a.k.a OAuth Consumer Request, OpenSocial Signed Request
+ * http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
+ * </pre>
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ */
 trait SignedRequest {
 
   /**
@@ -61,7 +74,7 @@ trait SignedRequest {
   def getSignature(url: String, method: HttpMethod, oAuthNonce: String, oAuthTimestamp: Long): String
 
   /**
-   * Do HTTP request and returns Http response
+   * HTTP/1.1 HTTP request and returns Http response
    *
    * @param url               Request URL
    * @param method            HTTP Method
@@ -73,7 +86,7 @@ trait SignedRequest {
   def doRequest(url: String, method: HttpMethod, requestParameters: Map[String, Any], charset: String): HttpResponse
 
   /**
-   * Do GET / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 GET request and returns Http response
    *
    * @param url     Request URL
    * @param charset Charset
@@ -83,7 +96,7 @@ trait SignedRequest {
   def doGet(url: String, charset: String): HttpResponse
 
   /**
-   * Do POST / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 POST request and returns Http response
    *
    * @param url               Request URL
    * @param requestParameters Request parameters
@@ -94,7 +107,7 @@ trait SignedRequest {
   def doPost(url: String, requestParameters: Map[String, Any], charset: String): HttpResponse
 
   /**
-   * Do PUT / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 PUT request and returns Http response
    *
    * @param url Request URL
    * @return HTTP Response
@@ -103,7 +116,7 @@ trait SignedRequest {
   def doPut(url: String): HttpResponse
 
   /**
-   * Do DELETE / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 DELETE request and returns Http response
    *
    * @param url Request URL
    * @return HTTP Response
@@ -112,7 +125,7 @@ trait SignedRequest {
   def doDelete(url: String): HttpResponse
 
   /**
-   * Do HEAD / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 HEAD request and returns Http response
    *
    * @param url Request URL
    * @return HTTP Response
@@ -121,7 +134,7 @@ trait SignedRequest {
   def doHead(url: String): HttpResponse
 
   /**
-   * Do OPTIONS / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 OPTIONS request and returns Http response
    *
    * @param url Request URL
    * @return HTTP Response
@@ -130,7 +143,7 @@ trait SignedRequest {
   def doOptions(url: String): HttpResponse
 
   /**
-   * Do TRACE / HTTP/1.1 request and returns Http response
+   * HTTP/1.1 TRACE request and returns Http response
    *
    * @param url Request URL
    * @return HTTP Response

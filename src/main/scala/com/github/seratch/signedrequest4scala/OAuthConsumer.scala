@@ -15,5 +15,11 @@
  */
 package com.github.seratch.signedrequest4scala
 
+/**
+ * OAuth Consumer
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
+ */
 case class OAuthConsumer(val consumerKey: String, val consumerSecret: String)
   extends com.github.seratch.signedrequest4j.OAuthConsumer(consumerKey, consumerSecret)

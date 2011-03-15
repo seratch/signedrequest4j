@@ -15,6 +15,28 @@
  */
 package com.github.seratch.signedrequest4scala
 
+/**
+ * <pre>
+ * Singed OAuth Request Factory
+ *
+ * - 3 Legged OAuth Request
+ * http://oauth.net/core/1.0/#signing_process
+ *
+ * SignedRequest req = SignedRequestFactory.get3LeggedOAuthRequest(
+ * 			"http://sp.example.com",
+ * 			new OAuthConsumer("consumer_key", "consumer_secret"),
+ * 			new OAuthToken("token_value"));
+ *
+ * - 2 Legged Oauth Request a.k.a OAuth Consumer Request, OpenSocial Signed Request
+ * http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
+ *
+ * SignedRequest req = SignedRequestFactory.get2LeggedOAuthRequest(
+ * 			"http://sp.example.com",
+ * 			new OAuthConsumer("consumer_key", "consumer_secret"));
+ * </pre>
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ */
 object SignedRequestFactory {
 
   /**

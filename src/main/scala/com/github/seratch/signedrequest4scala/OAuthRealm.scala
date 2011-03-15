@@ -15,5 +15,11 @@
  */
 package com.github.seratch.signedrequest4scala
 
+/**
+ * OAuth Realm
+ *
+ * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
+ * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
+ */
 case class OAuthRealm(val realm: String)
   extends com.github.seratch.signedrequest4j.OAuthRealm(realm)

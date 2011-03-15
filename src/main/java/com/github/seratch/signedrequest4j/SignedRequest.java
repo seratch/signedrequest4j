@@ -92,7 +92,7 @@ public interface SignedRequest {
             throws IOException;
 
     /**
-     * Do GET / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 GET request and returns Http response
      *
      * @param url     Request URL
      * @param charset Charset
@@ -102,7 +102,7 @@ public interface SignedRequest {
     HttpResponse doGet(String url, String charset) throws IOException;
 
     /**
-     * Do POST / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 POST request and returns Http response
      *
      * @param url               Request URL
      * @param requestParameters Request parameters
@@ -114,7 +114,7 @@ public interface SignedRequest {
                         String charset) throws IOException;
 
     /**
-     * Do PUT / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 PUT request and returns Http response
      *
      * @param url Request URL
      * @return HTTP Response
@@ -123,7 +123,7 @@ public interface SignedRequest {
     HttpResponse doPut(String url) throws IOException;
 
     /**
-     * Do DELETE / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 DELETE request and returns Http response
      *
      * @param url Request URL
      * @return HTTP Response
@@ -132,7 +132,7 @@ public interface SignedRequest {
     HttpResponse doDelete(String url) throws IOException;
 
     /**
-     * Do HEAD / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 HEAD request and returns Http response
      *
      * @param url Request URL
      * @return HTTP Response
@@ -141,7 +141,7 @@ public interface SignedRequest {
     HttpResponse doHead(String url) throws IOException;
 
     /**
-     * Do OPTIONS / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 OPTIONS request and returns Http response
      *
      * @param url Request URL
      * @return HTTP Response
@@ -150,7 +150,7 @@ public interface SignedRequest {
     HttpResponse doOptions(String url) throws IOException;
 
     /**
-     * Do TRACE / HTTP/1.1 request and returns Http response
+     * HTTP/1.1 TRACE request and returns Http response
      *
      * @param url Request URL
      * @return HTTP Response
