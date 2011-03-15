@@ -116,9 +116,9 @@ No additional jars required.
 ### Verifying signature
     String signature = signedRequest.getSignature(
             "http://sp.example.com/",   // URL
-            HttpMethod.GET,			    // HTTP method
-            "nonce_value",			    // oauth_nonce value
-            1272026745L				    // oauth_timestamp value
+            HttpMethod.GET,             // HTTP method
+            "nonce_value",              // oauth_nonce value
+            1272026745L                 // oauth_timestamp value
     );
 
     if ("K7OrQ7UU+k94LnaezxFs4jBBekc=".equals(signature)) {
@@ -217,13 +217,12 @@ No additional jars required.
             "nonce_value",              // oauth_nonce value
             1272026745L                 // oauth_timestamp value
     )
-
     signature match {
         case "K7OrQ7UU+k94LnaezxFs4jBBekc=" => println("Signature is valid.")
     }
 
 ### HTTP GET request
-    val response = req.doGet(
+    val response = signedRequest.doGet(
              "https://github.com/seratch/signedrequest4j",
              "UTF-8")
     println(response.statusCode)
@@ -232,30 +231,25 @@ No additional jars required.
 
 ### HTTP POST request
     val requestParameters = Map("something" -> "updated")
-    val response = req.doPost(
+    val response = signedRequest.doPost(
             "https://github.com/seratch/signedrequest4j",
             requestParameters,
             "UTF-8")
 
 ### HTTP PUT request
-    val response = req.doPut(
-            "https://github.com/seratch/signedrequest4j")
+    val response = signedRequest.doPut("https://github.com/seratch/signedrequest4j")
 
 ### HTTP DELETE request
-    val response = req.doDelete(
-            "https://github.com/seratch/signedrequest4j")
+    val response = signedRequest.doDelete("https://github.com/seratch/signedrequest4j")
 
 ### HTTP HEAD request
-    val response = req.doHead(
-            "https://github.com/seratch/signedrequest4j")
+    val response = signedRequest.doHead("https://github.com/seratch/signedrequest4j")
 
 ### HTTP OPTIONS request
-    val response = req.doOptions(
-            "https://github.com/seratch/signedrequest4j")
+    val response = signedRequest.doOptions("https://github.com/seratch/signedrequest4j")
 
 ### HTTP TRACE request
-    val response = req.doTrace(
-            "https://github.com/seratch/signedrequest4j")
+    val response = signedRequest.doTrace("https://github.com/seratch/signedrequest4j")
 
 ### Using HttpURLConnection(not connected yet)
     val conn = req.getHttpURLConnection(
