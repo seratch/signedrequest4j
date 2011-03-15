@@ -1,10 +1,10 @@
-# SignedRequest4J / SignedRequest4Scala
+# SignedRequest4J/Scala
 
 ## What's this?
 
-SignedRequest4J / SignedRequest4Scala is a simple Java/Scala library supporting OAuth 1.0 signing.
+SignedRequest4J/Scala is a simple Java/Scala library supporting OAuth 1.0 signing.
 
-With SignedRequest4J / SignedRequest4Scala, you can easily execute 2-legged or 3-legged OAuth signed HTTP requests.
+With SignedRequest4J/Scala, you can easily execute 2-legged or 3-legged OAuth signed HTTP requests.
 
 ### 2-legged OAuth
 
