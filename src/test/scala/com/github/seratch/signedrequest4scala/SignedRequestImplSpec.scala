@@ -64,6 +64,25 @@ object SignedRequestImplSpec extends Specification {
       actual mustEqual "I/ci60MwaIR2x2mWvCZPFaWjaEI="
     }
   }
+  "#getSignature" should {
+    "be available" in {
+      val additionalparams = Map[String, Any]("xoauth_requestor_id" -> "user@example.com")
+      val signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
+        OAuthConsumer("consumer_key", "consumer_secret"),
+        OAuthToken("access_token", "token_secret"),
+        additionalparams);
+      val signature = signedRequest.getSignature(
+        "http://sp.example.com/", // URL
+        HttpMethod.GET, // HTTP method
+        "nonce_value", // oauth_nonce value
+        1272026745L // oauth_timestamp value
+      );
+      signature mustEqual "K7OrQ7UU+k94LnaezxFs4jBBekc="
+      signature match {
+        case "K7OrQ7UU+k94LnaezxFs4jBBekc=" => println("Signature is valid.")
+      }
+    }
+  }
 
   "#getSignature" should {
     "work as OAuth 1.0 Core Appendix A.1.  Documentation and Registration" in {
@@ -116,6 +135,41 @@ object SignedRequestImplSpec extends Specification {
       println(response.headers)
       println(response.content)
       response.statusCode mustEqual 200
+    }
+  }
+
+  "#doGet" should {
+    "be available" in {
+      val req = new SignedRequestImpl(null, OAuthConsumer("sdfsa", "sdfafa33333"), SignatureMethod.HMAC_SHA1)
+      req mustNotBe null
+      val params = Map[String, Any](
+        "hoge" -> "foo"
+      )
+      val response = req.doGet("http://seratch.net/", "UTF-8")
+      println(response.headers)
+      println(response.content)
+      response.statusCode mustEqual 200
+    }
+  }
+
+  "#doPost" should {
+    "be available" in {
+      val req = new SignedRequestImpl(null, OAuthConsumer("sdfsa", "sdfafa33333"), SignatureMethod.HMAC_SHA1)
+      req mustNotBe null
+      val params = Map("foo" -> "var")
+      val response = req.doPost("http://seratch.net/", params, "UTF-8")
+      println(response.headers)
+      println(response.content)
+      response.statusCode mustEqual 200
+    }
+  }
+
+  "#getHttpURLConnection" should {
+    "be available" in {
+      val req = new SignedRequestImpl(null, OAuthConsumer("sdfsa", "sdfafa33333"), SignatureMethod.HMAC_SHA1)
+      req mustNotBe null
+      val conn = req.getHttpURLConnection("http://seratch.net/", HttpMethod.GET)
+      conn mustNotBe null
     }
   }
 
