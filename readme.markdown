@@ -36,7 +36,7 @@ With SignedRequest4J/Scala, you can easily execute 2-legged or 3-legged OAuth si
 
 No additional jars required.
 
-    ./download/signedrequest4j-1.1.jar
+    ./download/signedrequest4j-1.*.jar
 
 ### via Maven
 
@@ -56,7 +56,7 @@ No additional jars required.
     <dependency>
       <groupId>com.github.seratch</groupId>
       <artifactId>signedrequest4j</artifactId>
-      <version>1.1</version>
+      <version>[1,)</version>
     </dependency>
 
 ## Snippets (Java)
@@ -168,6 +168,17 @@ No additional jars required.
     HttpURLConnection conn = signedRequest.getHttpURLConnection(
             "https://github.com/seratch/signedrequest4j",
             HttpMethod.GET);
+
+### Verifying signed requests
+
+    String authorizationHeader = request.getHeader("Authorization");
+    OAuthConsumer consumer = new OAuthConsumer("key","secret");
+
+    boolean verified = SignedRequestVerifier.verifyHMacGetRequest(
+        "http://localhost/test/", authorizationHeader, consumer);
+
+    boolean verified = SignedRequestVerifier.verify("http://localhost/test/",
+		authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 
 ## Snippets (Scala)
 
