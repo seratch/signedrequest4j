@@ -179,7 +179,6 @@ private[signedrequest4scala] class SignedRequestImpl
       }
       case _ =>
     }
-    conn.connect
     try {
       val headersInJava = conn.getHeaderFields
       val mapBuffer = new collection.mutable.HashMap[String, List[String]]

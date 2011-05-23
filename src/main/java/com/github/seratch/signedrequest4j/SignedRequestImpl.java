@@ -190,7 +190,6 @@ class SignedRequestImpl implements SignedRequest {
 				}
 			}
 		}
-		conn.connect();
 		HttpResponse response = new HttpResponse();
 		response.setStatusCode(conn.getResponseCode());
 		response.setHeaders(conn.getHeaderFields());
