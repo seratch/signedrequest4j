@@ -156,6 +156,7 @@ private[signedrequest4scala] class SignedRequestImpl
           writer = new OutputStreamWriter(os)
           requestParameters foreach {
             case (key, value) => {
+              writer.append("&")
               writer.append(key)
               writer.append("=")
               writer.append(value.toString)
