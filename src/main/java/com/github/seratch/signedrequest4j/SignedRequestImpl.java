@@ -171,6 +171,7 @@ class SignedRequestImpl implements SignedRequest {
 				os = conn.getOutputStream();
 				writer = new OutputStreamWriter(os);
 				for (String key : requestParameters.keySet()) {
+					writer.append("&");
 					writer.append(key);
 					writer.append("=");
 					writer.append(requestParameters.get(key).toString());
