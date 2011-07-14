@@ -295,29 +295,10 @@ private[signedrequest4scala] class SignedRequestImpl
     }
   }
 
-  private[signedrequest4scala]
-  def getNormalizedParameters(oAuthNonce: String, oAuthTimestamp: Long): List[Parameter] = {
-    val params = new ListBuffer[Parameter]
-    params.append(Parameter("oauth_consumer_key", consumer.getConsumerKey))
-    token match {
-      case null =>
-      case _ => params.append(Parameter("oauth_token", token.getToken))
-    }
-    params.append(Parameter("oauth_nonce", oAuthNonce))
-    params.append(Parameter("oauth_signature_method", signatureMethod))
-    params.append(Parameter("oauth_timestamp", oAuthTimestamp))
-    params.append(Parameter("oauth_version", oAuthVersion))
-    additionalParameters match {
-      case null =>
-      case _ => additionalParameters foreach {
-        case (key, value) => params.append(Parameter(key, OAuthEncoding.encode(value)))
-        case _ =>
-      }
-    }
-    params.toList sortBy (_.key)
-  }
-
-  private[signedrequest4scala]
+  /**
+   * {@inheritDoc}
+   */
+  override
   def getAuthorizationHeader(signature: String, oAuthNonce: String, oAuthTimestamp: Long): String = {
     val buf = new StringBuilder
     buf.append("OAuth ")
@@ -368,6 +349,28 @@ private[signedrequest4scala] class SignedRequestImpl
       }
     }
     buf.toString
+  }
+
+  private[signedrequest4scala]
+  def getNormalizedParameters(oAuthNonce: String, oAuthTimestamp: Long): List[Parameter] = {
+    val params = new ListBuffer[Parameter]
+    params.append(Parameter("oauth_consumer_key", consumer.getConsumerKey))
+    token match {
+      case null =>
+      case _ => params.append(Parameter("oauth_token", token.getToken))
+    }
+    params.append(Parameter("oauth_nonce", oAuthNonce))
+    params.append(Parameter("oauth_signature_method", signatureMethod))
+    params.append(Parameter("oauth_timestamp", oAuthTimestamp))
+    params.append(Parameter("oauth_version", oAuthVersion))
+    additionalParameters match {
+      case null =>
+      case _ => additionalParameters foreach {
+        case (key, value) => params.append(Parameter(key, OAuthEncoding.encode(value)))
+        case _ =>
+      }
+    }
+    params.toList sortBy (_.key)
   }
 
   private[signedrequest4scala]

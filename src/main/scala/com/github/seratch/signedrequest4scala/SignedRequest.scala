@@ -74,6 +74,16 @@ trait SignedRequest {
   def getSignature(url: String, method: HttpMethod, oAuthNonce: String, oAuthTimestamp: Long): String
 
   /**
+   * Returns Authorization Header String
+   *
+   * @param signature	  OAuth Signature
+   * @param oAuthNonce	 OAuth Nonce  Value
+   * @param oAuthTimestamp OAuth Timestamp Value
+   * @return Authorization Header String
+   */
+  def getAuthorizationHeader(signature: String, oAuthNonce: String, oAuthTimestamp: Long): String
+
+  /**
    * HTTP/1.1 HTTP request and returns Http response
    *
    * @param url               Request URL

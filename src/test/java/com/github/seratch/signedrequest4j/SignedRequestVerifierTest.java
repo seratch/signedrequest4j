@@ -1,5 +1,14 @@
 package com.github.seratch.signedrequest4j;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.github.seratch.signedrequest4j.SignedRequestVerifier.*;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

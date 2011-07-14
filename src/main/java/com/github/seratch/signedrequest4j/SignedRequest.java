@@ -78,6 +78,16 @@ public interface SignedRequest {
 						Long oAuthTimestamp);
 
 	/**
+	 * Returns Authorization Header String
+	 *
+	 * @param signature	  OAuth Signature
+	 * @param oAuthNonce	 OAuth Nonce  Value
+	 * @param oAuthTimestamp OAuth Timestamp Value
+	 * @return Authorization Header String
+	 */
+	String getAuthorizationHeader(String signature, String oAuthNonce, Long oAuthTimestamp);
+
+	/**
 	 * Do HTTP request and returns Http response
 	 *
 	 * @param url			   Request URL

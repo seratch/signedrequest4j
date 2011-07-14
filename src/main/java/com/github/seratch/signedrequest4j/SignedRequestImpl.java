@@ -331,31 +331,8 @@ class SignedRequestImpl implements SignedRequest {
 		}
 	}
 
-	List<Parameter> getNormalizedParameters(String oAuthNonce, Long oAuthTimestamp) {
-		List<Parameter> params = new ArrayList<Parameter>();
-		params.add(new Parameter("oauth_consumer_key", consumer.getConsumerKey()));
-		if (token != null) {
-			// 2 Legged OAuth does not need
-			params.add(new Parameter("oauth_token", token.getToken()));
-		}
-		params.add(new Parameter("oauth_nonce", oAuthNonce));
-		params.add(new Parameter("oauth_signature_method", signatureMethod));
-		params.add(new Parameter("oauth_timestamp", oAuthTimestamp));
-		params.add(new Parameter("oauth_version", oAuthVersion));
-		if (additionalParameters != null && additionalParameters.size() > 0) {
-			for (String key : additionalParameters.keySet()) {
-				params.add(new Parameter(key, OAuthEncoding.encode(additionalParameters.get(key))));
-			}
-		}
-		Collections.sort(params, new Comparator<Parameter>() {
-			public int compare(Parameter p1, Parameter p2) {
-				return p1.getKey().compareTo(p2.getKey());
-			}
-		});
-		return params;
-	}
-
-	String getAuthorizationHeader(String signature, String oAuthNonce, Long oAuthTimestamp) {
+	@Override
+	public String getAuthorizationHeader(String signature, String oAuthNonce, Long oAuthTimestamp) {
 		StringBuilder buf = new StringBuilder();
 		buf.append("OAuth ");
 		if (realm != null) {
@@ -396,6 +373,30 @@ class SignedRequestImpl implements SignedRequest {
 			}
 		}
 		return buf.toString();
+	}
+
+	List<Parameter> getNormalizedParameters(String oAuthNonce, Long oAuthTimestamp) {
+		List<Parameter> params = new ArrayList<Parameter>();
+		params.add(new Parameter("oauth_consumer_key", consumer.getConsumerKey()));
+		if (token != null) {
+			// 2 Legged OAuth does not need
+			params.add(new Parameter("oauth_token", token.getToken()));
+		}
+		params.add(new Parameter("oauth_nonce", oAuthNonce));
+		params.add(new Parameter("oauth_signature_method", signatureMethod));
+		params.add(new Parameter("oauth_timestamp", oAuthTimestamp));
+		params.add(new Parameter("oauth_version", oAuthVersion));
+		if (additionalParameters != null && additionalParameters.size() > 0) {
+			for (String key : additionalParameters.keySet()) {
+				params.add(new Parameter(key, OAuthEncoding.encode(additionalParameters.get(key))));
+			}
+		}
+		Collections.sort(params, new Comparator<Parameter>() {
+			public int compare(Parameter p1, Parameter p2) {
+				return p1.getKey().compareTo(p2.getKey());
+			}
+		});
+		return params;
 	}
 
 	String getResponseCotent(HttpURLConnection conn, String charset) throws IOException {
