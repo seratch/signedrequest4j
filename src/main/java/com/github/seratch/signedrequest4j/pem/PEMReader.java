@@ -38,86 +38,86 @@ import java.io.*;
  */
 public class PEMReader {
 
-    // Begin markers for all supported PEM files
-    public static final String PRIVATE_PKCS1_MARKER =
-            "-----BEGIN RSA PRIVATE KEY-----";
-    public static final String PRIVATE_PKCS8_MARKER =
-            "-----BEGIN PRIVATE KEY-----";
-    public static final String CERTIFICATE_X509_MARKER =
-            "-----BEGIN CERTIFICATE-----";
-    public static final String PUBLIC_X509_MARKER =
-            "-----BEGIN PUBLIC KEY-----";
+	// Begin markers for all supported PEM files
+	public static final String PRIVATE_PKCS1_MARKER =
+			"-----BEGIN RSA PRIVATE KEY-----";
+	public static final String PRIVATE_PKCS8_MARKER =
+			"-----BEGIN PRIVATE KEY-----";
+	public static final String CERTIFICATE_X509_MARKER =
+			"-----BEGIN CERTIFICATE-----";
+	public static final String PUBLIC_X509_MARKER =
+			"-----BEGIN PUBLIC KEY-----";
 
-    private static final String BEGIN_MARKER = "-----BEGIN ";
+	private static final String BEGIN_MARKER = "-----BEGIN ";
 
-    private InputStream stream;
-    private byte[] derBytes;
-    private String beginMarker;
+	private InputStream stream;
+	private byte[] derBytes;
+	private String beginMarker;
 
-    public PEMReader(InputStream inStream) throws IOException {
-        stream = inStream;
-        readFile();
-    }
+	public PEMReader(InputStream inStream) throws IOException {
+		stream = inStream;
+		readFile();
+	}
 
-    public PEMReader(byte[] buffer) throws IOException {
-        this(new ByteArrayInputStream(buffer));
-    }
+	public PEMReader(byte[] buffer) throws IOException {
+		this(new ByteArrayInputStream(buffer));
+	}
 
-    public PEMReader(String fileName) throws IOException {
-        this(new FileInputStream(fileName));
-    }
+	public PEMReader(String fileName) throws IOException {
+		this(new FileInputStream(fileName));
+	}
 
-    public byte[] getDerBytes() {
-        return derBytes;
-    }
+	public byte[] getDerBytes() {
+		return derBytes;
+	}
 
-    public String getBeginMarker() {
-        return beginMarker;
-    }
+	public String getBeginMarker() {
+		return beginMarker;
+	}
 
-    /**
-     * Read the PEM file and save the DER encoded octet
-     * stream and begin marker.
-     *
-     * @throws IOException
-     */
-    protected void readFile() throws IOException {
-        String line;
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(stream));
-        try {
-            while ((line = reader.readLine()) != null) {
-                if (line.indexOf(BEGIN_MARKER) != -1) {
-                    beginMarker = line.trim();
-                    String endMarker = beginMarker.replace("BEGIN", "END");
-                    derBytes = readBytes(reader, endMarker);
-                    return;
-                }
-            }
-            throw new IOException("Invalid PEM file: no begin marker");
-        } finally {
-            reader.close();
-        }
-    }
+	/**
+	 * Read the PEM file and save the DER encoded octet
+	 * stream and begin marker.
+	 *
+	 * @throws IOException
+	 */
+	protected void readFile() throws IOException {
+		String line;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(stream));
+		try {
+			while ((line = reader.readLine()) != null) {
+				if (line.indexOf(BEGIN_MARKER) != -1) {
+					beginMarker = line.trim();
+					String endMarker = beginMarker.replace("BEGIN", "END");
+					derBytes = readBytes(reader, endMarker);
+					return;
+				}
+			}
+			throw new IOException("Invalid PEM file: no begin marker");
+		} finally {
+			reader.close();
+		}
+	}
 
 
-    /**
-     * Read the lines between BEGIN and END marker and convert
-     * the Base64 encoded content into binary byte array.
-     *
-     * @return DER encoded octet stream
-     * @throws IOException
-     */
-    private byte[] readBytes(BufferedReader reader, String endMarker) throws IOException {
-        String line = null;
-        StringBuilder buf = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            if (line.indexOf(endMarker) != -1) {
-                return Base64.decode(buf.toString());
-            }
-            buf.append(line.trim());
-        }
-        throw new IOException("Invalid PEM file: No end marker");
-    }
+	/**
+	 * Read the lines between BEGIN and END marker and convert
+	 * the Base64 encoded content into binary byte array.
+	 *
+	 * @return DER encoded octet stream
+	 * @throws IOException
+	 */
+	private byte[] readBytes(BufferedReader reader, String endMarker) throws IOException {
+		String line = null;
+		StringBuilder buf = new StringBuilder();
+		while ((line = reader.readLine()) != null) {
+			if (line.indexOf(endMarker) != -1) {
+				return Base64.decode(buf.toString());
+			}
+			buf.append(line.trim());
+		}
+		throw new IOException("Invalid PEM file: No end marker");
+	}
 
 }

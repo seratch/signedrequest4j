@@ -1,9 +1,11 @@
 package com.github.seratch.signedrequest4j;
 
 import com.github.seratch.signedrequest4j.Base64.*;
+
 import static org.mockito.BDDMockito.*;
 
 import static org.junit.Assert.*;
+
 import com.github.seratch.signedrequest4j.Base64;
 import org.junit.Test;
 
@@ -23,7 +25,7 @@ public class Base64Test {
 	@Test
 	public void encode_A$byteArray() throws Exception {
 		// given
-		byte[] bytes = new byte[] { 1, 2, 3, 4, 5 };
+		byte[] bytes = new byte[]{1, 2, 3, 4, 5};
 		// when
 		String actual = Base64.encode(bytes);
 		// then
@@ -38,8 +40,8 @@ public class Base64Test {
 		// when
 		byte[] actual = Base64.decode(str);
 		// then
-		byte[] expected = new byte[] { 1, 2, 3, 4, 5 };
-		for(int i =0; i<expected.length; i++) {
+		byte[] expected = new byte[]{1, 2, 3, 4, 5};
+		for (int i = 0; i < expected.length; i++) {
 			assertEquals(expected[i], actual[i]);
 		}
 	}

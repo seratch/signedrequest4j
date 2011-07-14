@@ -23,28 +23,28 @@ package com.github.seratch.signedrequest4j;
  */
 public enum SignatureMethod {
 
-    /**
-     * HMAC-SHA1
-     */
-    HMAC_SHA1("HMAC-SHA1"),
-    /**
-     * RSA-SHA1
-     */
-    RSA_SHA1("RSA-SHA1"),
-    /**
-     * PLAINTEXT
-     */
-    PLAINTEXT("PLAINTEXT");
+	/**
+	 * HMAC-SHA1
+	 */
+	HMAC_SHA1("HMAC-SHA1"),
+	/**
+	 * RSA-SHA1
+	 */
+	RSA_SHA1("RSA-SHA1"),
+	/**
+	 * PLAINTEXT
+	 */
+	PLAINTEXT("PLAINTEXT");
 
-    private String str;
+	private String str;
 
-    private SignatureMethod(String str) {
-        this.str = str;
-    }
+	private SignatureMethod(String str) {
+		this.str = str;
+	}
 
-    @Override
-    public String toString() {
-        return this.str;
-    }
+	@Override
+	public String toString() {
+		return this.str;
+	}
 
 }

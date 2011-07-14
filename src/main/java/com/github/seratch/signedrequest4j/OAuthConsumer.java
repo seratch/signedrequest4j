@@ -23,27 +23,27 @@ package com.github.seratch.signedrequest4j;
  */
 public class OAuthConsumer implements NotString {
 
-    /**
-     * OAuth consumer key
-     */
-    private final String consumerKey;
+	/**
+	 * OAuth consumer key
+	 */
+	private final String consumerKey;
 
-    /**
-     * OAuth consumer secret
-     */
-    private final String consumerSecret;
+	/**
+	 * OAuth consumer secret
+	 */
+	private final String consumerSecret;
 
-    public OAuthConsumer(String consumerKey, String consumerSecret) {
-        this.consumerKey = consumerKey;
-        this.consumerSecret = consumerSecret;
-    }
+	public OAuthConsumer(String consumerKey, String consumerSecret) {
+		this.consumerKey = consumerKey;
+		this.consumerSecret = consumerSecret;
+	}
 
-    public String getConsumerKey() {
-        return consumerKey;
-    }
+	public String getConsumerKey() {
+		return consumerKey;
+	}
 
-    public String getConsumerSecret() {
-        return consumerSecret;
-    }
+	public String getConsumerSecret() {
+		return consumerSecret;
+	}
 
 }

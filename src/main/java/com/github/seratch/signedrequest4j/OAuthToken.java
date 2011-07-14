@@ -23,20 +23,20 @@ package com.github.seratch.signedrequest4j;
  */
 public class OAuthToken implements NotString {
 
-    private final String token;
-    private final String tokenSecret;
+	private final String token;
+	private final String tokenSecret;
 
-    public OAuthToken(String token, String tokenSecret) {
-        this.token = token;
-        this.tokenSecret = tokenSecret;
-    }
+	public OAuthToken(String token, String tokenSecret) {
+		this.token = token;
+		this.tokenSecret = tokenSecret;
+	}
 
-    public String getToken() {
-        return this.token;
-    }
+	public String getToken() {
+		return this.token;
+	}
 
-    public String getTokenSecret() {
-        return this.tokenSecret;
-    }
+	public String getTokenSecret() {
+		return this.tokenSecret;
+	}
 
 }

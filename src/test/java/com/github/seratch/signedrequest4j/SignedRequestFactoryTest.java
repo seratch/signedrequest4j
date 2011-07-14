@@ -1,6 +1,7 @@
 package com.github.seratch.signedrequest4j;
 
 import com.github.seratch.signedrequest4j.SignedRequestFactory.*;
+
 import static org.mockito.BDDMockito.*;
 
 import static org.junit.Assert.*;
@@ -144,7 +145,7 @@ public class SignedRequestFactoryTest {
 
 	@Test
 	public void get2LeggedOAuthRequest_A$OAuthConsumer() throws Exception {
-		OAuthConsumer consumer = new OAuthConsumer(null,null);
+		OAuthConsumer consumer = new OAuthConsumer(null, null);
 		SignedRequest actual = SignedRequestFactory.get2LeggedOAuthRequest(consumer);
 		assertNotNull(actual);
 	}
@@ -239,7 +240,7 @@ public class SignedRequestFactoryTest {
 	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthToken() throws Exception {
 		// given
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token);
 		// then
@@ -251,7 +252,7 @@ public class SignedRequestFactoryTest {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token);
 		// then
@@ -262,7 +263,7 @@ public class SignedRequestFactoryTest {
 	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthToken$Map() throws Exception {
 		// given
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, additionalParameters);
@@ -275,7 +276,7 @@ public class SignedRequestFactoryTest {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token, additionalParameters);
@@ -289,7 +290,7 @@ public class SignedRequestFactoryTest {
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, signatureMethod);
 		// then
@@ -302,7 +303,7 @@ public class SignedRequestFactoryTest {
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token, signatureMethod);
 		// then
@@ -314,7 +315,7 @@ public class SignedRequestFactoryTest {
 		// given
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, signatureMethod, additionalParameters);
@@ -328,7 +329,7 @@ public class SignedRequestFactoryTest {
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda","sdfsf");
+		OAuthToken token = new OAuthToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// e.g. : given(mocked.called()).willReturn(1);
 		// when

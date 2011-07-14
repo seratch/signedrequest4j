@@ -1,6 +1,7 @@
 package com.github.seratch.signedrequest4j;
 
 import static org.junit.Assert.*;
+
 import com.github.seratch.signedrequest4j.HttpMethod;
 import org.junit.Test;
 

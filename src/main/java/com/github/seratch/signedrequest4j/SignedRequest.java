@@ -34,128 +34,128 @@ import java.util.Map;
  */
 public interface SignedRequest {
 
-    /**
-     * Returns Signed {@link HttpURLConnection} instance.
-     *
-     * @param url    Request URL
-     * @param method HTTP Method
-     * @return Signed {@link HttpURLConnection} instance
-     * @throws IOException
-     */
-    HttpURLConnection getHttpURLConnection(String url, HttpMethod method)
-            throws IOException;
+	/**
+	 * Returns Signed {@link HttpURLConnection} instance.
+	 *
+	 * @param url	Request URL
+	 * @param method HTTP Method
+	 * @return Signed {@link HttpURLConnection} instance
+	 * @throws IOException
+	 */
+	HttpURLConnection getHttpURLConnection(String url, HttpMethod method)
+			throws IOException;
 
-    /**
-     * Set RSA Private Key Value
-     *
-     * @param rsaPrivateKeyValue RSA Private Key PEM Value
-     * @return Self
-     */
-    public SignedRequest setRsaPrivateKeyValue(String rsaPrivateKeyValue);
+	/**
+	 * Set RSA Private Key Value
+	 *
+	 * @param rsaPrivateKeyValue RSA Private Key PEM Value
+	 * @return Self
+	 */
+	public SignedRequest setRsaPrivateKeyValue(String rsaPrivateKeyValue);
 
-    /**
-     * Returns OAuth Signature Base String.
-     *
-     * @param url            Request URL
-     * @param method         HTTP Method
-     * @param oAuthNonce     OAuth Nonce Value
-     * @param oAuthTimestamp OAuth Timestamp Value
-     * @return OAuth Signature Base String
-     */
-    String getSignatureBaseString(String url, HttpMethod method,
-                                  String oAuthNonce, Long oAuthTimestamp);
+	/**
+	 * Returns OAuth Signature Base String.
+	 *
+	 * @param url			Request URL
+	 * @param method		 HTTP Method
+	 * @param oAuthNonce	 OAuth Nonce Value
+	 * @param oAuthTimestamp OAuth Timestamp Value
+	 * @return OAuth Signature Base String
+	 */
+	String getSignatureBaseString(String url, HttpMethod method,
+								  String oAuthNonce, Long oAuthTimestamp);
 
-    /**
-     * Returns OAuth Signature.
-     *
-     * @param url            Request URL
-     * @param method         HTTP Method
-     * @param oAuthNonce     OAuth Nonce Value
-     * @param oAuthTimestamp OAuth Timestamp Value
-     * @return OAuth Signature
-     */
-    String getSignature(String url, HttpMethod method, String oAuthNonce,
-                        Long oAuthTimestamp);
+	/**
+	 * Returns OAuth Signature.
+	 *
+	 * @param url			Request URL
+	 * @param method		 HTTP Method
+	 * @param oAuthNonce	 OAuth Nonce Value
+	 * @param oAuthTimestamp OAuth Timestamp Value
+	 * @return OAuth Signature
+	 */
+	String getSignature(String url, HttpMethod method, String oAuthNonce,
+						Long oAuthTimestamp);
 
-    /**
-     * Do HTTP request and returns Http response
-     *
-     * @param url               Request URL
-     * @param method            HTTP Method
-     * @param requestParameters Request parameters(OPTIONAL)
-     * @param charset           Charset
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doRequest(String url, HttpMethod method,
-                           Map<String, Object> requestParameters, String charset)
-            throws IOException;
+	/**
+	 * Do HTTP request and returns Http response
+	 *
+	 * @param url			   Request URL
+	 * @param method			HTTP Method
+	 * @param requestParameters Request parameters(OPTIONAL)
+	 * @param charset		   Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doRequest(String url, HttpMethod method,
+						   Map<String, Object> requestParameters, String charset)
+			throws IOException;
 
-    /**
-     * HTTP/1.1 GET request and returns Http response
-     *
-     * @param url     Request URL
-     * @param charset Charset
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doGet(String url, String charset) throws IOException;
+	/**
+	 * HTTP/1.1 GET request and returns Http response
+	 *
+	 * @param url	 Request URL
+	 * @param charset Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doGet(String url, String charset) throws IOException;
 
-    /**
-     * HTTP/1.1 POST request and returns Http response
-     *
-     * @param url               Request URL
-     * @param requestParameters Request parameters
-     * @param charset           Charset
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doPost(String url, Map<String, Object> requestParameters,
-                        String charset) throws IOException;
+	/**
+	 * HTTP/1.1 POST request and returns Http response
+	 *
+	 * @param url			   Request URL
+	 * @param requestParameters Request parameters
+	 * @param charset		   Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doPost(String url, Map<String, Object> requestParameters,
+						String charset) throws IOException;
 
-    /**
-     * HTTP/1.1 PUT request and returns Http response
-     *
-     * @param url Request URL
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doPut(String url) throws IOException;
+	/**
+	 * HTTP/1.1 PUT request and returns Http response
+	 *
+	 * @param url Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doPut(String url) throws IOException;
 
-    /**
-     * HTTP/1.1 DELETE request and returns Http response
-     *
-     * @param url Request URL
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doDelete(String url) throws IOException;
+	/**
+	 * HTTP/1.1 DELETE request and returns Http response
+	 *
+	 * @param url Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doDelete(String url) throws IOException;
 
-    /**
-     * HTTP/1.1 HEAD request and returns Http response
-     *
-     * @param url Request URL
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doHead(String url) throws IOException;
+	/**
+	 * HTTP/1.1 HEAD request and returns Http response
+	 *
+	 * @param url Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doHead(String url) throws IOException;
 
-    /**
-     * HTTP/1.1 OPTIONS request and returns Http response
-     *
-     * @param url Request URL
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doOptions(String url) throws IOException;
+	/**
+	 * HTTP/1.1 OPTIONS request and returns Http response
+	 *
+	 * @param url Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doOptions(String url) throws IOException;
 
-    /**
-     * HTTP/1.1 TRACE request and returns Http response
-     *
-     * @param url Request URL
-     * @return HTTP Response
-     * @throws IOException
-     */
-    HttpResponse doTrace(String url) throws IOException;
+	/**
+	 * HTTP/1.1 TRACE request and returns Http response
+	 *
+	 * @param url Request URL
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doTrace(String url) throws IOException;
 
 }
