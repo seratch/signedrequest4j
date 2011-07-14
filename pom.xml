@@ -29,6 +29,10 @@
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>junithelper.org releases</id>
+            <url>http://junithelper.googlecode.com/svn/trunk/mvn-repo/releases</url>
+        </pluginRepository>
     </pluginRepositories>
 
     <distributionManagement>
@@ -81,6 +85,42 @@
         <testSourceDirectory>src/test/scala</testSourceDirectory>
         -->
         <plugins>
+            <plugin>
+                <groupId>org.junithelper</groupId>
+                <artifactId>maven-junithelper-plugin</artifactId>
+                <configuration>
+                    <!-- language:en/ja -->
+                    <language>en</language>
+                    <outputFileEncoding>UTF-8</outputFileEncoding>
+                    <directoryPathOfProductSourceCode>src/main/java</directoryPathOfProductSourceCode>
+                    <directoryPathOfTestSourceCode>src/test/java</directoryPathOfTestSourceCode>
+                    <!-- junitVersion:version3/version4 -->
+                    <junitVersion>version4</junitVersion>
+                    <testCaseClassNameToExtend>junit.framework.TestCase</testCaseClassNameToExtend>
+                    <isTemplateImplementationRequired>true</isTemplateImplementationRequired>
+                    <target_isAccessorExcluded>true</target_isAccessorExcluded>
+                    <target_isExceptionPatternRequired>true</target_isExceptionPatternRequired>
+                    <target_isPackageLocalMethodRequired>true</target_isPackageLocalMethodRequired>
+                    <target_isProtectedMethodRequired>true</target_isProtectedMethodRequired>
+                    <target_isPublicMethodRequired>true</target_isPublicMethodRequired>
+                    <target_regexpCsvForExclusion></target_regexpCsvForExclusion>
+                    <testMethodName_isArgsRequired>true</testMethodName_isArgsRequired>
+                    <testMethodName_isReturnRequired>false</testMethodName_isReturnRequired>
+                    <testMethodName_basicDelimiter>_</testMethodName_basicDelimiter>
+                    <testMethodName_argsAreaPrefix>A</testMethodName_argsAreaPrefix>
+                    <testMethodName_argsAreaDelimiter>$</testMethodName_argsAreaDelimiter>
+                    <testMethodName_returnAreaPrefix>R</testMethodName_returnAreaPrefix>
+                    <testMethodName_returnAreaDelimiter>$</testMethodName_returnAreaDelimiter>
+                    <testMethodName_exceptionAreaPrefix>T</testMethodName_exceptionAreaPrefix>
+                    <testMethodName_exceptionAreaDelimiter>$</testMethodName_exceptionAreaDelimiter>
+                    <!-- mockObjectFramework:Mockito/JMock2/JMockit/EasyMock -->
+                    <mockObjectFramework>Mockito</mockObjectFramework>
+                    <!-- testingPatternExplicitComment:ArrangeActAssert/GivenWhenThen -->
+                    <testingPatternExplicitComment></testingPatternExplicitComment>
+                    <isExtensionEnabled>false</isExtensionEnabled>
+                    <extensionConfigXML>junithelper-extension.xml</extensionConfigXML>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
