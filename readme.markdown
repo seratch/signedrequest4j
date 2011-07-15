@@ -71,11 +71,11 @@ No additional jars required.
             new OAuthConsumer("consumer_key", "consumer_secret"));
 
 ### 3-legged OAuth instance
-    import com.github.seratch.signedrequest4j.OAuthToken;
+    import com.github.seratch.signedrequest4j.OAuthAccessToken;
 
     SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
-            new OAuthToken("access_token", "token_secret"));
+            new OAuthAccessToken("token", "token_secret"));
 
 ### Signature with additional parameters
     import java.util.HashMap;
@@ -89,7 +89,7 @@ No additional jars required.
             additionalParams);
     SignedRequest signedRequest3 = SignedRequestFactory.get3LeggedOAuthRequest(
             new OAuthConsumer("consumer_key", "consumer_secret"),
-            new OAuthToken("access_token", "token_secret"),
+            new OAuthAccessToken("token", "token_secret"),
             additionalParams);
 
 ### Signature method HMAC-SHA1 (default)
@@ -191,7 +191,7 @@ No additional jars required.
 ### 3-legged OAuth instance
     val signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
             OAuthConsumer("consumer_key", "consumer_secret"),
-            OAuthToken("access_token", "token_secret"))
+            OAuthAccessToken("token", "token_secret"))
 
 ### Signature with additional parameters
     val additionalParams = Map("xoauth_requestor_id" -> "user@example.com")
@@ -201,7 +201,7 @@ No additional jars required.
             additionalParams)
     val signedRequest3 = SignedRequestFactory.get3LeggedOAuthRequest(
             OAuthConsumer("consumer_key", "consumer_secret"),
-            OAuthToken("access_token", "token_secret"),
+            OAuthAccessToken("token", "token_secret"),
             additionalParams)
 
 ### Signature method HMAC-SHA1 (default)
