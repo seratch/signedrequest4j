@@ -1,14 +1,5 @@
 package com.github.seratch.signedrequest4j;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.github.seratch.signedrequest4j.SignedRequestVerifier.*;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -46,7 +37,7 @@ public class SignedRequestVerifierTest {
 	}
 
 	@Test
-	public void verify_A$String$OAuthConsumer$OAuthToken$HttpMethod$SignatureMethod() throws Exception {
+	public void verify_A$String$OAuthConsumer$OAuthAccessToken$HttpMethod$SignatureMethod() throws Exception {
 		// given
 		String authorizationHeader = "OAuth oauth_token=\"t\"" +
 				",oauth_consumer_key=\"admin\"" +
@@ -56,9 +47,9 @@ public class SignedRequestVerifierTest {
 				",oauth_nonce=\"-5989898319858371717\"" +
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("admin", "test");
-		OAuthToken token = new OAuthToken("t", "ts");
+		OAuthAccessToken accessToken = new OAuthAccessToken("t", "ts");
 		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/?keywords=test",
-				authorizationHeader, consumer, token, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+				authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 		boolean expected = true;
 		assertEquals(expected, actual);
 	}

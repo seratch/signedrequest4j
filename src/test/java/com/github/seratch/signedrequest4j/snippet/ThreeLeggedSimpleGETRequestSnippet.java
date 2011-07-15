@@ -6,7 +6,7 @@ public class ThreeLeggedSimpleGETRequestSnippet {
 	public static void main(String[] args) throws Exception {
 		SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
 				new OAuthConsumer("consumer_key", "consumer_secret"),
-				new OAuthToken("access_token", "token_secret"));
+				new OAuthAccessToken("token", "token_secret"));
 		HttpResponse response = signedRequest.doGet(
 				"https://github.com/seratch/signedrequest4j", "UTF-8");
 		System.out.println(response.getStatusCode());

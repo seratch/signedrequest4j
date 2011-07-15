@@ -25,7 +25,7 @@ package com.github.seratch.signedrequest4scala
  * SignedRequest req = SignedRequestFactory.get3LeggedOAuthRequest(
  * 			"http://sp.example.com",
  * 			new OAuthConsumer("consumer_key", "consumer_secret"),
- * 			new OAuthToken("token_value"));
+ * 			new OAuthAccessToken("token_value"));
  *
  * - 2 Legged Oauth Request a.k.a OAuth Consumer Request, OpenSocial Signed Request
  * http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
@@ -137,8 +137,8 @@ object SignedRequestFactory {
    * @param consumer OAuth consumer
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(consumer: OAuthConsumer, token: OAuthToken): SignedRequest = {
-    new SignedRequestImpl(null, consumer, token, SignatureMethod.HMAC_SHA1)
+  def get3LeggedOAuthRequest(consumer: OAuthConsumer, accessToken: OAuthAccessToken): SignedRequest = {
+    new SignedRequestImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1)
   }
 
   /**
@@ -148,8 +148,8 @@ object SignedRequestFactory {
    * @param consumer OAuth consumer
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, token: OAuthToken): SignedRequest = {
-    new SignedRequestImpl(realm, consumer, token, SignatureMethod.HMAC_SHA1)
+  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, accessToken: OAuthAccessToken): SignedRequest = {
+    new SignedRequestImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1)
   }
 
   /**
@@ -159,8 +159,8 @@ object SignedRequestFactory {
    * @param additionalParameters Additional parameters(optional)
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(consumer: OAuthConsumer, token: OAuthToken, additionalParameters: Map[String, Any]): SignedRequest = {
-    new SignedRequestImpl(null, consumer, token, SignatureMethod.HMAC_SHA1, additionalParameters)
+  def get3LeggedOAuthRequest(consumer: OAuthConsumer, accessToken: OAuthAccessToken, additionalParameters: Map[String, Any]): SignedRequest = {
+    new SignedRequestImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters)
   }
 
   /**
@@ -171,8 +171,8 @@ object SignedRequestFactory {
    * @param additionalParameters Additional parameters(optional)
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, token: OAuthToken, additionalParameters: Map[String, Any]): SignedRequest = {
-    new SignedRequestImpl(realm, consumer, token, SignatureMethod.HMAC_SHA1, additionalParameters)
+  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, accessToken: OAuthAccessToken, additionalParameters: Map[String, Any]): SignedRequest = {
+    new SignedRequestImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters)
   }
 
   /**
@@ -182,8 +182,8 @@ object SignedRequestFactory {
    * @param signatureMethod Signature Method
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(consumer: OAuthConsumer, token: OAuthToken, signatureMethod: SignatureMethod): SignedRequest = {
-    new SignedRequestImpl(null, consumer, token, signatureMethod)
+  def get3LeggedOAuthRequest(consumer: OAuthConsumer, accessToken: OAuthAccessToken, signatureMethod: SignatureMethod): SignedRequest = {
+    new SignedRequestImpl(null, consumer, accessToken, signatureMethod)
   }
 
   /**
@@ -194,8 +194,8 @@ object SignedRequestFactory {
    * @param signatureMethod Signature Method
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, token: OAuthToken, signatureMethod: SignatureMethod): SignedRequest = {
-    new SignedRequestImpl(realm, consumer, token, signatureMethod)
+  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, accessToken: OAuthAccessToken, signatureMethod: SignatureMethod): SignedRequest = {
+    new SignedRequestImpl(realm, consumer, accessToken, signatureMethod)
   }
 
   /**
@@ -206,8 +206,8 @@ object SignedRequestFactory {
    * @param additionalParameters Additional parameters(optional)
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(consumer: OAuthConsumer, token: OAuthToken, signatureMethod: SignatureMethod, additionalParameters: Map[String, Any]): SignedRequest = {
-    new SignedRequestImpl(null, consumer, token, signatureMethod, additionalParameters)
+  def get3LeggedOAuthRequest(consumer: OAuthConsumer, accessToken: OAuthAccessToken, signatureMethod: SignatureMethod, additionalParameters: Map[String, Any]): SignedRequest = {
+    new SignedRequestImpl(null, consumer, accessToken, signatureMethod, additionalParameters)
   }
 
   /**
@@ -219,8 +219,8 @@ object SignedRequestFactory {
    * @param additionalParameters Additional parameters(optional)
    * @return {@link SignedRequest} instance.
    */
-  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, token: OAuthToken, signatureMethod: SignatureMethod, additionalParameters: Map[String, Any]): SignedRequest = {
-    new SignedRequestImpl(realm, consumer, token, signatureMethod, additionalParameters)
+  def get3LeggedOAuthRequest(realm: OAuthRealm, consumer: OAuthConsumer, accessToken: OAuthAccessToken, signatureMethod: SignatureMethod, additionalParameters: Map[String, Any]): SignedRequest = {
+    new SignedRequestImpl(realm, consumer, accessToken, signatureMethod, additionalParameters)
   }
 
 }

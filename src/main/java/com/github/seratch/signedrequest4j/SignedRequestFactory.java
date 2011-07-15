@@ -27,7 +27,7 @@ import java.util.Map;
  * SignedRequest req = SignedRequestFactory.get3LeggedOAuthRequest(
  * 			"http://sp.example.com",
  * 			new OAuthConsumer("consumer_key", "consumer_secret"),
- * 			new OAuthToken("token_value"));
+ * 			new OAuthAccessToken("token_value"));
  *
  * - 2 Legged Oauth Request a.k.a OAuth Consumer Request, OpenSocial Signed Request
  * http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html
@@ -148,8 +148,8 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthConsumer consumer, OAuthToken token) {
-		return new SignedRequestImpl(null, consumer, token, SignatureMethod.HMAC_SHA1);
+			OAuthConsumer consumer, OAuthAccessToken accessToken) {
+		return new SignedRequestImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1);
 	}
 
 	/**
@@ -160,8 +160,8 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token) {
-		return new SignedRequestImpl(realm, consumer, token, SignatureMethod.HMAC_SHA1);
+			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken) {
+		return new SignedRequestImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1);
 	}
 
 	/**
@@ -172,9 +172,9 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthConsumer consumer, OAuthToken token,
+			OAuthConsumer consumer, OAuthAccessToken accessToken,
 			Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(null, consumer, token, SignatureMethod.HMAC_SHA1, additionalParameters);
+		return new SignedRequestImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
 
 	/**
@@ -186,9 +186,9 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token,
+			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken,
 			Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(realm, consumer, token, SignatureMethod.HMAC_SHA1, additionalParameters);
+		return new SignedRequestImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
 
 	/**
@@ -199,8 +199,8 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod) {
-		return new SignedRequestImpl(null, consumer, token, signatureMethod);
+			OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod) {
+		return new SignedRequestImpl(null, consumer, accessToken, signatureMethod);
 	}
 
 	/**
@@ -212,8 +212,8 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod) {
-		return new SignedRequestImpl(realm, consumer, token, signatureMethod);
+			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod) {
+		return new SignedRequestImpl(realm, consumer, accessToken, signatureMethod);
 	}
 
 	/**
@@ -225,9 +225,9 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod,
+			OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod,
 			Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(null, consumer, token, signatureMethod, additionalParameters);
+		return new SignedRequestImpl(null, consumer, accessToken, signatureMethod, additionalParameters);
 	}
 
 	/**
@@ -240,9 +240,9 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest get3LeggedOAuthRequest(
-			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod,
+			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod,
 			Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(realm, consumer, token, signatureMethod, additionalParameters);
+		return new SignedRequestImpl(realm, consumer, accessToken, signatureMethod, additionalParameters);
 	}
 
 }

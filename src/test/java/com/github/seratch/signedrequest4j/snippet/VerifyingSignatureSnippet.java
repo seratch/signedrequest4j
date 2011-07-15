@@ -11,7 +11,7 @@ public class VerifyingSignatureSnippet {
 		additionalParams.put("xoauth_requestor_id", "user@example.com");
 		SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
 				new OAuthConsumer("consumer_key", "consumer_secret"),
-				new OAuthToken("access_token", "token_secret"),
+				new OAuthAccessToken("token", "token_secret"),
 				additionalParams);
 		String signature = signedRequest.getSignature(
 				"http://sp.example.com/",   // URL

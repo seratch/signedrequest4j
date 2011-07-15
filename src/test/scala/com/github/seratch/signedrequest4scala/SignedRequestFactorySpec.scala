@@ -80,7 +80,7 @@ object SignedRequestFactorySpec extends Specification {
     "be available" in {
       val signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
         OAuthConsumer("consumer_key", "consumer_secret"),
-        OAuthToken("access_token", "token_secret"))
+        OAuthAccessToken("access_token", "token_secret"))
       signedRequest mustNotBe null
     }
   }
@@ -90,7 +90,7 @@ object SignedRequestFactorySpec extends Specification {
       val additionalParams = Map("xoauth_requestor_id" -> "user@example.com")
       val signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
         OAuthConsumer("consumer_key", "consumer_secret"),
-        OAuthToken("access_token", "token_secret"),
+        OAuthAccessToken("access_token", "token_secret"),
         additionalParams)
       signedRequest mustNotBe null
     }

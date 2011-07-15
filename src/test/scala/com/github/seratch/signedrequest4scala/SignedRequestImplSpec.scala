@@ -12,7 +12,7 @@ object SignedRequestImplSpec extends Specification {
 
       val signedReq = SignedRequestFactory.get3LeggedOAuthRequest(
         OAuthConsumer(props.get("consumer_key").toString, props.get("consumer_secret").toString),
-        OAuthToken(props.get("access_token").toString, props.get("token_secret").toString)
+        OAuthAccessToken(props.get("access_token").toString, props.get("token_secret").toString)
       )
       val response = signedReq.doGet("http://api.twitter.com/1/statuses/home_timeline.xml", "UTF-8")
       println(response.statusCode)
@@ -69,7 +69,7 @@ object SignedRequestImplSpec extends Specification {
       val additionalparams = Map[String, Any]("xoauth_requestor_id" -> "user@example.com")
       val signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
         OAuthConsumer("consumer_key", "consumer_secret"),
-        OAuthToken("access_token", "token_secret"),
+        OAuthAccessToken("access_token", "token_secret"),
         additionalparams);
       val signature = signedRequest.getSignature(
         "http://sp.example.com/", // URL
@@ -93,7 +93,7 @@ object SignedRequestImplSpec extends Specification {
       val req = new SignedRequestImpl(
         null,
         OAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44"),
-        OAuthToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00"),
+        OAuthAccessToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00"),
         SignatureMethod.HMAC_SHA1,
         additionalparams
       )

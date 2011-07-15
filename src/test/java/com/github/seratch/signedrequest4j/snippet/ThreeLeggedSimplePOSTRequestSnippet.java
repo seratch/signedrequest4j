@@ -9,7 +9,7 @@ public class ThreeLeggedSimplePOSTRequestSnippet {
 	public static void main(String[] args) throws Exception {
 		SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
 				new OAuthConsumer("consumer_key", "consumer_secret"),
-				new OAuthToken("access_token", "token_secret"));
+				new OAuthAccessToken("token", "token_secret"));
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
 		HttpResponse response = signedRequest.doPost(

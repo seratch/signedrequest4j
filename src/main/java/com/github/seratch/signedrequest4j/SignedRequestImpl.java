@@ -51,19 +51,19 @@ class SignedRequestImpl implements SignedRequest {
 	}
 
 	public SignedRequestImpl(
-			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod) {
+			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod) {
 		this.realm = realm;
 		this.consumer = consumer;
-		this.token = token;
+		this.accessToken = accessToken;
 		this.signatureMethod = signatureMethod;
 	}
 
 	public SignedRequestImpl(
-			OAuthRealm realm, OAuthConsumer consumer, OAuthToken token, SignatureMethod signatureMethod,
+			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod,
 			Map<String, Object> additionalParameters) {
 		this.realm = realm;
 		this.consumer = consumer;
-		this.token = token;
+		this.accessToken = accessToken;
 		this.signatureMethod = signatureMethod;
 		this.additionalParameters = additionalParameters;
 	}
@@ -72,7 +72,7 @@ class SignedRequestImpl implements SignedRequest {
 
 	private OAuthConsumer consumer;
 
-	private OAuthToken token;
+	private OAuthAccessToken accessToken;
 
 	private SignatureMethod signatureMethod;
 
@@ -280,8 +280,8 @@ class SignedRequestImpl implements SignedRequest {
 		if (signatureMethod == SignatureMethod.HMAC_SHA1) {
 			String algorithm = "HmacSHA1";
 			String key = consumer.getConsumerSecret() + "&" +
-					((token != null && token.getTokenSecret() != null)
-							? token.getTokenSecret() : "");
+					((accessToken != null && accessToken.getTokenSecret() != null)
+							? accessToken.getTokenSecret() : "");
 			SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), algorithm);
 			try {
 				Mac mac = Mac.getInstance(algorithm);
@@ -340,9 +340,9 @@ class SignedRequestImpl implements SignedRequest {
 			buf.append(OAuthEncoding.encode(realm));
 			buf.append("\",");
 		}
-		if (token != null) {
+		if (accessToken != null) {
 			buf.append("oauth_token=\"");
-			buf.append(OAuthEncoding.encode(token.getToken()));
+			buf.append(OAuthEncoding.encode(accessToken.getToken()));
 			buf.append("\",");
 		}
 		buf.append("oauth_consumer_key=\"");
@@ -378,9 +378,9 @@ class SignedRequestImpl implements SignedRequest {
 	List<Parameter> getNormalizedParameters(String oAuthNonce, Long oAuthTimestamp) {
 		List<Parameter> params = new ArrayList<Parameter>();
 		params.add(new Parameter("oauth_consumer_key", consumer.getConsumerKey()));
-		if (token != null) {
+		if (accessToken != null) {
 			// 2 Legged OAuth does not need
-			params.add(new Parameter("oauth_token", token.getToken()));
+			params.add(new Parameter("oauth_token", accessToken.getToken()));
 		}
 		params.add(new Parameter("oauth_nonce", oAuthNonce));
 		params.add(new Parameter("oauth_signature_method", signatureMethod));

@@ -58,23 +58,23 @@ public class SignedRequestVerifier {
 	}
 
 	public static boolean verifyHMacGetRequest(
-			String url, String authorizationHeader, OAuthConsumer consumer, OAuthToken token) {
-		return verify(url, authorizationHeader, consumer, token, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
+		return verify(url, authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 	}
 
 	public static boolean verifyHMacPostRequest(
-			String url, String authorizationHeader, OAuthConsumer consumer, OAuthToken token) {
-		return verify(url, authorizationHeader, consumer, token, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
+			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
+		return verify(url, authorizationHeader, consumer, accessToken, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
 	public static boolean verify(
-			String url, String authorizationHeader, OAuthConsumer consumer, OAuthToken token,
+			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
 			HttpMethod httpMethod, SignatureMethod signatureMethod) {
 		if (authorizationHeader == null) {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
-		SignedRequest req = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, signatureMethod);
+		SignedRequest req = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, signatureMethod);
 		String signature = req.getSignature(url, httpMethod,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));

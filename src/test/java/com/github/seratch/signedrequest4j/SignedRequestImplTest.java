@@ -81,11 +81,11 @@ public class SignedRequestImplTest {
 			props.load(this.getClass().getClassLoader().getResourceAsStream("TwitterOAuth.properties"));
 			String consumerKey = (String) props.get("consumer_key");
 			String consumerSecret = (String) props.get("consumer_secret");
-			String token = (String) props.get("access_token");
+			String token = (String) props.get("token");
 			String tokenSecret = (String) props.get("token_secret");
 			signedRequest = new SignedRequestImpl(null,
 					new OAuthConsumer(consumerKey, consumerSecret),
-					new OAuthToken(token, tokenSecret),
+					new OAuthAccessToken(token, tokenSecret),
 					SignatureMethod.RSA_SHA1);
 			try {
 				signedRequest.getSignature(url, method, oAuthNonce,
@@ -159,7 +159,7 @@ public class SignedRequestImplTest {
 		SignedRequestImpl target = new SignedRequestImpl(
 				null,
 				new OAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44"),
-				new OAuthToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00"),
+				new OAuthAccessToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00"),
 				SignatureMethod.HMAC_SHA1,
 				additionalparams);
 		// given
@@ -247,9 +247,9 @@ public class SignedRequestImplTest {
 			String consumerKey = (String) props.get("consumer_key");
 			String consumerSecret = (String) props.get("consumer_secret");
 			OAuthConsumer consumer = new OAuthConsumer(consumerKey, consumerSecret);
-			String token = (String) props.get("access_token");
+			String token = (String) props.get("token");
 			String tokenSecret = (String) props.get("token_secret");
-			OAuthToken accessToken = new OAuthToken(token, tokenSecret);
+			OAuthAccessToken accessToken = new OAuthAccessToken(token, tokenSecret);
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 			SignedRequestImpl target = new SignedRequestImpl(realm, consumer, accessToken,
 					signatureMethod);

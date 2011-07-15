@@ -1,7 +1,5 @@
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.SignedRequestFactory.*;
-
 import static org.mockito.BDDMockito.*;
 
 import static org.junit.Assert.*;
@@ -84,61 +82,61 @@ public class SignedRequestFactoryTest {
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken()
+	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthAccessToken()
 			throws Exception {
 		// given
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token", "token_secret");
+		OAuthAccessToken accessToken = new OAuthAccessToken("accessToken", "token_secret");
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
-				realm, consumer, token);
+				realm, consumer, accessToken);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken$Map()
+	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthAccessToken$Map()
 			throws Exception {
 		// given
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token", "token_secret");
+		OAuthAccessToken accessToken = new OAuthAccessToken("accessToken", "token_secret");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
-				realm, consumer, token, additionalParameters);
+				realm, consumer, accessToken, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken$SignatureMethod()
+	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthAccessToken$SignatureMethod()
 			throws Exception {
 		// given
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token", "token_secret");
+		OAuthAccessToken accessToken = new OAuthAccessToken("accessToken", "token_secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
-				realm, consumer, token, signatureMethod);
+				realm, consumer, accessToken, signatureMethod);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthToken$SignatureMethod$Map()
+	public void get3LeggedOAuthRequest_A$String$OAuthConsumer$OAuthAccessToken$SignatureMethod$Map()
 			throws Exception {
 		// given
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("token", "token_secret");
+		OAuthAccessToken accessToken = new OAuthAccessToken("accessToken", "token_secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
 		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(
-				realm, consumer, token, signatureMethod, additionalParameters);
+				realm, consumer, accessToken, signatureMethod, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}
@@ -237,103 +235,103 @@ public class SignedRequestFactoryTest {
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthToken() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthAccessToken() throws Exception {
 		// given
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthToken() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthAccessToken() throws Exception {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, accessToken);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthToken$Map() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthAccessToken$Map() throws Exception {
 		// given
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, additionalParameters);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthToken$Map() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthAccessToken$Map() throws Exception {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token, additionalParameters);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, accessToken, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthToken$SignatureMethod() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthAccessToken$SignatureMethod() throws Exception {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, signatureMethod);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, signatureMethod);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthToken$SignatureMethod() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthAccessToken$SignatureMethod() throws Exception {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token, signatureMethod);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, accessToken, signatureMethod);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthToken$SignatureMethod$Map() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthConsumer$OAuthAccessToken$SignatureMethod$Map() throws Exception {
 		// given
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, token, signatureMethod, additionalParameters);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, signatureMethod, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}
 
 	@Test
-	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthToken$SignatureMethod$Map() throws Exception {
+	public void get3LeggedOAuthRequest_A$OAuthRealm$OAuthConsumer$OAuthAccessToken$SignatureMethod$Map() throws Exception {
 		// given
 		OAuthRealm realm = new OAuthRealm("aaa");
 		OAuthConsumer consumer = new OAuthConsumer("key", "secret");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		OAuthToken token = new OAuthToken("asda", "sdfsf");
+		OAuthAccessToken accessToken = new OAuthAccessToken("asda", "sdfsf");
 		Map<String, Object> additionalParameters = new HashMap<String, Object>();
 		// e.g. : given(mocked.called()).willReturn(1);
 		// when
-		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, token, signatureMethod, additionalParameters);
+		SignedRequest actual = SignedRequestFactory.get3LeggedOAuthRequest(realm, consumer, accessToken, signatureMethod, additionalParameters);
 		// then
 		assertNotNull(actual);
 	}

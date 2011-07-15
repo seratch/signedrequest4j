@@ -16,10 +16,10 @@
 package com.github.seratch.signedrequest4scala
 
 /**
- * OAuth Token
+ * OAuth Access Token
  *
  * @author <a href="mailto:seratch@gmail.com">Kazuhiro Sera</a>
  * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
  */
-case class OAuthToken(val token: String, val tokenSecret: String)
-  extends com.github.seratch.signedrequest4j.OAuthToken(token, tokenSecret)
+case class OAuthAccessToken(val token: String, val tokenSecret: String)
+  extends com.github.seratch.signedrequest4j.OAuthAccessToken(token, tokenSecret)

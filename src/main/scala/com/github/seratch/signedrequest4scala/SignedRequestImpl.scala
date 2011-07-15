@@ -31,7 +31,7 @@ private[signedrequest4scala] class SignedRequestImpl
 (
   val realm: OAuthRealm,
   val consumer: OAuthConsumer,
-  val token: OAuthToken,
+  val accessToken: OAuthAccessToken,
   val signatureMethod: SignatureMethod,
   val additionalParameters: Map[String, Any]
   )
@@ -61,9 +61,9 @@ private[signedrequest4scala] class SignedRequestImpl
 
   def this(realm: OAuthRealm,
            consumer: OAuthConsumer,
-           token: OAuthToken,
+           accessToken: OAuthAccessToken,
            signatureMethod: SignatureMethod) {
-    this (realm, consumer, token, signatureMethod, null)
+    this (realm, consumer, accessToken, signatureMethod, null)
   }
 
   /**
@@ -250,7 +250,7 @@ private[signedrequest4scala] class SignedRequestImpl
       case SignatureMethod.HMAC_SHA1 => {
         val algorithm = "HmacSHA1"
         val key = consumer.getConsumerSecret + "&" +
-          (if (token != null && token.getTokenSecret != null) token.getTokenSecret else "")
+          (if (accessToken != null && accessToken.getTokenSecret != null) accessToken.getTokenSecret else "")
         try {
           val mac = Mac.getInstance(algorithm)
           mac.init(new SecretKeySpec(key.getBytes, algorithm))
@@ -310,11 +310,11 @@ private[signedrequest4scala] class SignedRequestImpl
         buf.append("\",")
       }
     }
-    token match {
+    accessToken match {
       case null =>
       case _ => {
         buf.append("oauth_token=\"")
-        buf.append(OAuthEncoding.encode(token.getToken))
+        buf.append(OAuthEncoding.encode(accessToken.getToken))
         buf.append("\",")
       }
     }
@@ -355,9 +355,9 @@ private[signedrequest4scala] class SignedRequestImpl
   def getNormalizedParameters(oAuthNonce: String, oAuthTimestamp: Long): List[Parameter] = {
     val params = new ListBuffer[Parameter]
     params.append(Parameter("oauth_consumer_key", consumer.getConsumerKey))
-    token match {
+    accessToken match {
       case null =>
-      case _ => params.append(Parameter("oauth_token", token.getToken))
+      case _ => params.append(Parameter("oauth_token", accessToken.getToken))
     }
     params.append(Parameter("oauth_nonce", oAuthNonce))
     params.append(Parameter("oauth_signature_method", signatureMethod))
