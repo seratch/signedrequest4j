@@ -151,15 +151,16 @@ private[signedrequest4scala] class SignedRequestImpl
         var os: OutputStream = null
         var writer: OutputStreamWriter = null
         try {
+          conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
           conn.setDoOutput(true)
           os = conn.getOutputStream
           writer = new OutputStreamWriter(os)
           requestParameters foreach {
             case (key, value) => {
               writer.append("&")
-              writer.append(key)
+              writer.append(getUTF8EncodedValue(key))
               writer.append("=")
-              writer.append(value.toString)
+              writer.append(getUTF8EncodedValue(value.toString))
             }
           }
         }
@@ -411,4 +412,15 @@ private[signedrequest4scala] class SignedRequestImpl
     }
   }
 
+  private[signedrequest4scala]
+  def getUTF8EncodedValue(value: String): String = {
+    try {
+      return URLEncoder.encode(value, "UTF-8")
+    }
+    catch {
+      case tested: UnsupportedEncodingException => {
+      }
+    }
+    return value
+  }
 }
