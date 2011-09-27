@@ -399,61 +399,73 @@ public class SignedRequestImplTest {
 
     @Test
     public void doDelete_A$String() throws Exception {
-        final HttpServer deleteServer = new HttpServer(new DeleteHandler());
+        final HttpServer server = new HttpServer(new DeleteHandler());
         try {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    deleteServer.start();
+                    try {
+                        server.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             new Thread(runnable).start();
             OAuthRealm realm = null;
             SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-            SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER(), signatureMethod);
+            SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
             request.doDelete("http://localhost:8888/");
         } finally {
-            deleteServer.stop();
+            server.stop();
         }
     }
 
     @Test
     public void doPut_A$String() throws Exception {
-        final HttpServer deleteServer = new HttpServer(new PutHandler());
+        final HttpServer server = new HttpServer(new PutHandler());
         try {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    deleteServer.start();
+                    try {
+                        server.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             new Thread(runnable).start();
             OAuthRealm realm = null;
             SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-            SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER(), signatureMethod);
+            SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
             request.doPut("http://localhost:8888/");
         } finally {
-            deleteServer.stop();
+            server.stop();
         }
     }
 
     @Test
     public void doTrace_A$String() throws Exception {
-        final HttpServer deleteServer = new HttpServer(new TraceHandler());
+        final HttpServer server = new HttpServer(new TraceHandler());
         try {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    deleteServer.start();
+                    try {
+                        server.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             new Thread(runnable).start();
             OAuthRealm realm = null;
             SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-            SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER(), signatureMethod);
+            SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
             request.doTrace("http://localhost:8888/");
         } finally {
-            deleteServer.stop();
+            server.stop();
         }
     }
 
