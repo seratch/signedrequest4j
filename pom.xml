@@ -4,7 +4,7 @@
 
     <groupId>com.github.seratch</groupId>
     <artifactId>signedrequest4j</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
     <packaging>jar</packaging>
 
     <name>signedrequest4j</name>
@@ -76,6 +76,7 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
