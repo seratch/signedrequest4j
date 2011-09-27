@@ -146,7 +146,7 @@ class SignedRequestImpl implements SignedRequest {
      */
     @Override
     public HttpResponse doTrace(String url) throws IOException {
-        return doRequest(url, HttpMethod.DELETE, null, null);
+        return doRequest(url, HttpMethod.TRACE, null, null);
     }
 
     /**

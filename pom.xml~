@@ -4,7 +4,7 @@
 
     <groupId>com.github.seratch</groupId>
     <artifactId>signedrequest4j</artifactId>
-    <version>1.8</version>
+    <version>1.7</version>
     <packaging>jar</packaging>
 
     <name>signedrequest4j</name>
@@ -13,7 +13,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scala.version>2.9.1</scala.version>
-        <jetty.version>7.5.1.v20110908</jetty.version>
     </properties>
 
     <repositories>
@@ -39,11 +38,11 @@
     <distributionManagement>
         <repository>
             <id>repo</id>
-            <url>http://seratch.github.com/mvn-repo/releases</url>
+            <url>https://github.com/seratch/signedrequest4j/raw/master/mavenrepo/releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshot-repo</id>
-            <url>http://seratch.github.com/mvn-repo/snapshots</url>
+            <url>https://github.com/seratch/signedrequest4j/raw/master/mavenrepo/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -72,21 +71,48 @@
             <version>1.6.9</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
+        <!--
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <testSourceDirectory>src/test/scala</testSourceDirectory>
+        -->
         <plugins>
             <plugin>
                 <groupId>org.junithelper</groupId>
                 <artifactId>maven-junithelper-plugin</artifactId>
                 <configuration>
+                    <!-- language:en/ja -->
+                    <language>en</language>
+                    <outputFileEncoding>UTF-8</outputFileEncoding>
+                    <directoryPathOfProductSourceCode>src/main/java</directoryPathOfProductSourceCode>
+                    <directoryPathOfTestSourceCode>src/test/java</directoryPathOfTestSourceCode>
+                    <!-- junitVersion:version3/version4 -->
+                    <junitVersion>version4</junitVersion>
+                    <testCaseClassNameToExtend>junit.framework.TestCase</testCaseClassNameToExtend>
+                    <isTemplateImplementationRequired>true</isTemplateImplementationRequired>
+                    <target_isAccessorExcluded>true</target_isAccessorExcluded>
+                    <target_isExceptionPatternRequired>true</target_isExceptionPatternRequired>
+                    <target_isPackageLocalMethodRequired>true</target_isPackageLocalMethodRequired>
+                    <target_isProtectedMethodRequired>true</target_isProtectedMethodRequired>
+                    <target_isPublicMethodRequired>true</target_isPublicMethodRequired>
+                    <target_regexpCsvForExclusion></target_regexpCsvForExclusion>
+                    <testMethodName_isArgsRequired>true</testMethodName_isArgsRequired>
+                    <testMethodName_isReturnRequired>false</testMethodName_isReturnRequired>
+                    <testMethodName_basicDelimiter>_</testMethodName_basicDelimiter>
+                    <testMethodName_argsAreaPrefix>A</testMethodName_argsAreaPrefix>
+                    <testMethodName_argsAreaDelimiter>$</testMethodName_argsAreaDelimiter>
+                    <testMethodName_returnAreaPrefix>R</testMethodName_returnAreaPrefix>
+                    <testMethodName_returnAreaDelimiter>$</testMethodName_returnAreaDelimiter>
+                    <testMethodName_exceptionAreaPrefix>T</testMethodName_exceptionAreaPrefix>
+                    <testMethodName_exceptionAreaDelimiter>$</testMethodName_exceptionAreaDelimiter>
+                    <!-- mockObjectFramework:Mockito/JMock2/JMockit/EasyMock -->
                     <mockObjectFramework>Mockito</mockObjectFramework>
+                    <!-- testingPatternExplicitComment:ArrangeActAssert/GivenWhenThen -->
+                    <testingPatternExplicitComment></testingPatternExplicitComment>
                     <isExtensionEnabled>false</isExtensionEnabled>
+                    <extensionConfigXML>junithelper-extension.xml</extensionConfigXML>
                 </configuration>
             </plugin>
             <plugin>
