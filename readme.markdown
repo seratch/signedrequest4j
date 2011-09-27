@@ -32,25 +32,14 @@ With SignedRequest4J/Scala, you can easily execute 2-legged or 3-legged OAuth si
 
 ## How to install
 
-### Download
-
-No additional jars required.
-
-    ./download/signedrequest4j-1.*.jar
-
 ### via Maven
 
     <repositories>
-      ...
       <repository>
-        <id>signedrequest4j-releases</id>
-        <url>https://github.com/seratch/signedrequest4j/raw/master/mvn-repo/releases</url>
+        <id>seratch.github.com releases</id>
+        <name>seratch.github.com releases</name>
+	<url>http://seratch.github.com/mvn-repo/releases</url>
       </repository>
-      <repository>
-        <id>signedrequest4j-snapshots</id>
-        <url>https://github.com/seratch/signedrequest4j/raw/master/mvn-repo/snapshots</url>
-      </repository>
-      ...
     </repositories>
 
     <dependency>
