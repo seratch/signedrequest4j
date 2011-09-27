@@ -38,7 +38,7 @@ With SignedRequest4J/Scala, you can easily execute 2-legged or 3-legged OAuth si
       <repository>
         <id>seratch.github.com releases</id>
         <name>seratch.github.com releases</name>
-	<url>http://seratch.github.com/mvn-repo/releases</url>
+        <url>http://seratch.github.com/mvn-repo/releases</url>
       </repository>
     </repositories>
 
