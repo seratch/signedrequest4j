@@ -216,6 +216,7 @@ class SignedRequestImpl implements SignedRequest {
 
 	@Override
 	public HttpResponse doRequest(String url, HttpMethod method, RequestBody body, String charset) throws IOException {
+
 		// create http request
 		Request request = new Request(url);
 		request.setEnableThrowingIOException(true);
