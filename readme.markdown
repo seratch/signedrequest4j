@@ -164,13 +164,6 @@ requestParameters.put("something", "updated");
 HttpResponse response = signedRequest.doDelete("http://example.com/", requestParameters, "UTF-8");
 ```
 
-or
-
-```java
-RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
-HttpResponse response = signedRequest.doDelete("http://example.com/", body, "UTF-8");
-```
-
 ### HEAD
 
 ```java
