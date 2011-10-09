@@ -378,12 +378,14 @@ public class SignedRequestImplTest {
 				}
 			};
 			new Thread(runnable).start();
+			Thread.sleep(100L);
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 			SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
 			request.doDelete("http://localhost:8888/");
 		} finally {
 			server.stop();
+			Thread.sleep(100L);
 		}
 	}
 
@@ -402,12 +404,14 @@ public class SignedRequestImplTest {
 				}
 			};
 			new Thread(runnable).start();
+			Thread.sleep(100L);
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 			SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
 			request.doPut("http://localhost:8888/");
 		} finally {
 			server.stop();
+			Thread.sleep(100L);
 		}
 	}
 
@@ -426,12 +430,14 @@ public class SignedRequestImplTest {
 				}
 			};
 			new Thread(runnable).start();
+			Thread.sleep(100L);
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 			SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
 			request.doTrace("http://localhost:8888/");
 		} finally {
 			server.stop();
+			Thread.sleep(100L);
 		}
 	}
 
