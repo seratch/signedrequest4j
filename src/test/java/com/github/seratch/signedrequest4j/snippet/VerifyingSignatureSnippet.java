@@ -15,9 +15,9 @@ public class VerifyingSignatureSnippet {
 				additionalParams);
 		String signature = signedRequest.getSignature(
 				"http://sp.example.com/",   // URL
-				HttpMethod.GET,			 // HTTP Method
-				"nonce_value",			  // oauth_nonce
-				1272026745L				 // oauth_timestamp
+				HttpMethod.GET,             // HTTP Method
+				"nonce_value",              // oauth_nonce
+				1272026745L                 // oauth_timestamp
 		);
 		if ("K7OrQ7UU+k94LnaezxFs4jBBekc=".equals(signature)) {
 			System.out.println("Signature is valid.");

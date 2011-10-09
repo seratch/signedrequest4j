@@ -1,12 +1,9 @@
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.OAuthRealm.*;
-
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class OAuthRealmTest {

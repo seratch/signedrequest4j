@@ -52,7 +52,7 @@ class Asn1Object {
 	 * (sequence, choice, set).
 	 * </ul>
 	 *
-	 * @param tag	Tag or Identifier
+	 * @param tag    Tag or Identifier
 	 * @param length Length of the field
 	 * @param value  Encoded octet string for the field.
 	 */

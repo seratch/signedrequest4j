@@ -1,13 +1,12 @@
 package com.github.seratch.signedrequest4j;
 
-import static org.mockito.BDDMockito.*;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.BDDMockito.mock;
 
 public class SignedRequestFactoryTest {
 

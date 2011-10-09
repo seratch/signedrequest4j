@@ -8,29 +8,28 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public abstract class BasicHandler extends AbstractHandler {
 
-    public void _handle(Boolean isAllowed,
-                        HttpMethod method,
-                        Request baseRequest,
-                        HttpServletRequest request,
-                        HttpServletResponse response) throws Exception {
-        boolean isValid = SignedRequestVerifier.verify(
-                "http://localhost:8888/",
-                request.getHeader("Authorization"),
-                HttpServerSpec.SINGLETON_CONSUMER,
-                method,
-                SignatureMethod.HMAC_SHA1
-        );
-        if (isAllowed && isValid) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
-        response.getWriter().print("");
-        baseRequest.setHandled(true);
-    }
+	public void _handle(Boolean isAllowed,
+	                    HttpMethod method,
+	                    Request baseRequest,
+	                    HttpServletRequest request,
+	                    HttpServletResponse response) throws Exception {
+		boolean isValid = SignedRequestVerifier.verify(
+				"http://localhost:8888/",
+				request.getHeader("Authorization"),
+				HttpServerSpec.SINGLETON_CONSUMER,
+				method,
+				SignatureMethod.HMAC_SHA1
+		);
+		if (isAllowed && isValid) {
+			response.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		}
+		response.getWriter().print("");
+		baseRequest.setHandled(true);
+	}
 
 }
