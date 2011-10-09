@@ -186,6 +186,7 @@ HttpResponse response = signedRequest.doOptions("http://example.com/");
 ### TRACE
 
 ```java
+signedRequest.setHeader("Max-Forwards", "5");
 HttpResponse response = signedRequest.doTrace("http://example.com/");
 ```
 
