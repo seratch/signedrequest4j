@@ -59,23 +59,18 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
 ### 2-legged OAuth instance
 
 ```java
-import com.github.seratch.signedrequest4j.HttpResponse;
-import com.github.seratch.signedrequest4j.OAuthConsumer;
-import com.github.seratch.signedrequest4j.SignedRequest;
-import com.github.seratch.signedrequest4j.SignedRequestFactory;
+import com.github.seratch.signedrequest4j.*;
 
-SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"));
+OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
+SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer);
 ```
 
 ### 3-legged OAuth instance
 
 ```java
-import com.github.seratch.signedrequest4j.OAuthAccessToken;
-
-SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"),
-    new OAuthAccessToken("token", "token_secret"));
+OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
+OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
+SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken);
 ```
 
 ### Signature with additional parameters
@@ -87,126 +82,111 @@ import java.util.Map;
 Map<String, Object> additionalParams = new HashMap<String, Object>();
 additionalParams.put("xoauth_requestor_id", "user@example.com");
 
-SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"),
-    additionalParams);
-SignedRequest signedRequest3 = SignedRequestFactory.get3LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"),
-    new OAuthAccessToken("token", "token_secret"),
-    additionalParams);
+SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(consumer, additionalParams);
+SignedRequest signedRequest3 = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, additionalParams);
 ```
 
 ### Signature method HMAC-SHA1 (default)
 
 ```java
-SignedRequest signedRequest1 = SignedRequestFactory.get2LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"));
-
-import com.github.seratch.signedrequest4j.SignatureMethod;
-
-SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"),
-    SignatureMethod.HMAC_SHA1);
+SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.HMAC_SHA1);
 ```
 
 ### Signature method RSA-SHA1
 
 ```java
-SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"),
-    SignatureMethod.RSA_SHA1)
+SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.RSA_SHA1);
 signedRequest.setRsaPrivateKeyValue("-----BEGIN RSA PRIVATE KEY-----\n...");
 ```
 
 ### Signature method PLAINTEXT
 
 ```java
-SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
-    new OAuthConsumer("consumer_key", "consumer_secret"),
-    SignatureMethod.PLAINTEXT)
+SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.PLAINTEXT);
 ```
 
 ### Verifying signature
 
 ```java
 String signature = signedRequest.getSignature(
-    "http://example.com/",      // URL
-    HttpMethod.GET,             // HTTP method
-    "nonce_value",              // oauth_nonce value
-    1272026745L                 // oauth_timestamp value
-);
-
-if ("K7OrQ7UU+k94LnaezxFs4jBBekc=".equals(signature)) {
-System.out.println("Signature is valid.");
-}
+  "http://example.com/", // URL
+  HttpMethod.GET,        // HTTP method
+  "nonce_value",         // oauth_nonce value
+  1272026745L            // oauth_timestamp value
+); // "K7OrQ7UU+k94LnaezxFs4jBBekc="
 ```
 
-### HTTP GET request
+### GET
 
 ```java
-HttpResponse response = signedRequest.doGet(
-    "http://example.com/",
-    "UTF-8");
+HttpResponse response = signedRequest.doGet("http://example.com/", "UTF-8");
 
-System.out.println(response.getStatusCode());
-System.out.println(response.getHeaders());
-System.out.println(response.getContent());
+// response.getStatusCode();
+// response.getHeaders();
+// response.getContent();
 ```
 
-### HTTP POST request
+### POST
 
 ```java
 Map<String, Object> requestParameters = new HashMap<String, Object>();
 requestParameters.put("something", "updated");
-HttpResponse response = signedRequest.doPost(
-    "http://example.com/",
-    requestParameters,
-    "UTF-8");
+HttpResponse response = signedRequest.doPost("http://example.com/", requestParameters, "UTF-8");
 ```
 
-### HTTP PUT request
+or
 
 ```java
-HttpResponse response = signedRequest.doPut(
-    "http://example.com/");
+RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
+HttpResponse response = signedRequest.doPost("http://example.com/", body, "UTF-8");
 ```
 
-### HTTP DELETE request
+### PUT
 
 ```java
-HttpResponse response = signedRequest.doDelete(
-    "http://example.com/");
+Map<String, Object> requestParameters = new HashMap<String, Object>();
+requestParameters.put("something", "updated");
+HttpResponse response = signedRequest.doPut("http://example.com/", requestParameters, "UTF-8");
 ```
 
-### HTTP HEAD request
+or
 
 ```java
-HttpResponse response = signedRequest.doHead(
-    "http://example.com/");
+RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
+HttpResponse response = signedRequest.doPost("http://example.com/", body, "UTF-8");
 ```
 
-### HTTP OPTIONS request
+### DELETE
 
 ```java
-HttpResponse response = signedRequest.doOptions(
-    "http://example.com/");
+Map<String, Object> requestParameters = new HashMap<String, Object>();
+requestParameters.put("something", "updated");
+HttpResponse response = signedRequest.doDelete("http://example.com/", requestParameters, "UTF-8");
 ```
 
-### HTTP TRACE request
+or
 
 ```java
-HttpResponse response = signedRequest.doTrace(
-    "http://example.com/");
+RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
+HttpResponse response = signedRequest.doDelete("http://example.com/", body, "UTF-8");
 ```
 
-### Using HttpURLConnection(not connected yet)
+### HEAD
 
 ```java
-import com.github.seratch.signedrequest4j.HttpMethod;
+HttpResponse response = signedRequest.doHead("http://example.com/");
+```
 
-HttpURLConnection conn = signedRequest.getHttpURLConnection(
-    "http://example.com/",
-    HttpMethod.GET);
+### OPTIONS
+
+```java
+HttpResponse response = signedRequest.doOptions("http://example.com/");
+```
+
+### TRACE
+
+```java
+HttpResponse response = signedRequest.doTrace("http://example.com/");
 ```
 
 ### Verifying signed requests
