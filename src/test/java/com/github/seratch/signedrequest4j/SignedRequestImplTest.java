@@ -32,22 +32,6 @@ public class SignedRequestImplTest {
     }
 
     @Test
-    public void getHttpURLConnection_A$String$HttpMethod() throws Exception {
-        OAuthRealm realm = null;
-        OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
-        SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-        SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
-                signatureMethod);
-        // given
-        String url = "http://localhost:8080/";
-        HttpMethod method = HttpMethod.GET;
-        // when
-        HttpURLConnection actual = target.getHttpURLConnection(url, method);
-        // then
-        assertNotNull(actual);
-    }
-
-    @Test
     public void getGeneratedSignature_A$String$HttpMethod$String$Long_HMAC()
             throws Exception {
         OAuthRealm realm = null;
@@ -270,24 +254,6 @@ public class SignedRequestImplTest {
     }
 
     @Test
-    public void getResponseCotent_A$HttpURLConnection$String() throws Exception {
-        OAuthRealm realm = null;
-        OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
-        SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-        SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
-                signatureMethod);
-        // given
-        String url = "http://seratch.net/";
-        HttpMethod method = HttpMethod.GET;
-        HttpURLConnection conn = target.getHttpURLConnection(url, method);
-        String charset = "UTF-8";
-        // when
-        String actual = target.getResponseCotent(conn, charset);
-        // then
-        assertNotNull(actual);
-    }
-
-    @Test
     public void doGet_A$String$String() throws Exception {
         OAuthRealm realm = null;
         OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
@@ -352,6 +318,7 @@ public class SignedRequestImplTest {
         // given
         String url = "http://seratch.net/";
         Map<String, Object> requestParameters = new HashMap<String, Object>();
+        requestParameters.put("v","日本語");
         String charset = "UTF-8";
         // when
         HttpResponse actual = target.doPost(url, requestParameters, charset);

@@ -15,6 +15,8 @@
  */
 package com.github.seratch.signedrequest4j;
 
+import httpilot.*;
+
 import com.github.seratch.signedrequest4j.pem.PEMReader;
 import com.github.seratch.signedrequest4j.pem.PKCS1EncodedKeySpec;
 
@@ -22,7 +24,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.security.*;
 import java.security.spec.KeySpec;
@@ -82,6 +83,28 @@ class SignedRequestImpl implements SignedRequest {
     private Map<String, Object> additionalParameters;
 
     private String rsaPrivateKeyValue;
+
+    private int connectTimeoutMillis = 3000;
+
+    private int readTimeoutMillis = 10000;
+
+    /**
+     * {inheritDoc}
+     */
+    @Override
+    public SignedRequest setConnectTimeoutMillis(int millis) {
+        this.connectTimeoutMillis = millis;
+        return this;
+    }
+
+    /**
+     * {inheritDoc}
+     */
+    @Override
+    public SignedRequest setReadTimeoutMillis(int millis) {
+        this.readTimeoutMillis = millis;
+        return this;
+    }
 
     /**
      * {inheritDoc}
@@ -155,74 +178,34 @@ class SignedRequestImpl implements SignedRequest {
     @Override
     public HttpResponse doRequest(String url, HttpMethod method, Map<String, Object> requestParameters, String charset)
             throws IOException {
-        if (method == HttpMethod.GET && requestParameters != null
-                && requestParameters.size() > 0) {
-            for (String key : requestParameters.keySet()) {
-                String param = key + "=" + requestParameters.get(key);
-                url += (url.contains("?") ? "&" : "?") + param;
-            }
-        }
-        HttpURLConnection conn = getHttpURLConnection(url, method);
-        if (method == HttpMethod.POST && requestParameters != null
-                && requestParameters.size() > 0) {
-            OutputStream os = null;
-            OutputStreamWriter writer = null;
-            try {
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setDoOutput(true);
-                os = conn.getOutputStream();
-                writer = new OutputStreamWriter(os);
-                for (String key : requestParameters.keySet()) {
-                    writer.append("&");
-                    writer.append(getUTF8EncodedValue(key));
-                    writer.append("=");
-                    writer.append(getUTF8EncodedValue(requestParameters.get(key).toString()));
-                }
-            } finally {
-                if (writer != null) {
-                    try {
-                        writer.close();
-                    } catch (Exception e) {
-                    }
-                }
-                if (os != null) {
-                    try {
-                        os.close();
-                    } catch (Exception e) {
-                    }
-                }
-            }
-        }
-        HttpResponse response = new HttpResponse();
-        response.setStatusCode(conn.getResponseCode());
-        response.setHeaders(conn.getHeaderFields());
-        try {
-            response.setContent(getResponseCotent(conn, charset));
-        } catch (IOException e) {
-            throw e;
-        }
-        return response;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public HttpURLConnection getHttpURLConnection(String url, HttpMethod method) throws IOException {
+        // create http request
+        Request request = new Request(url);
+        request.setEnableThrowingIOException(true);
+        request.setConnectTimeoutMillis(connectTimeoutMillis);
+        request.setReadTimeoutMillis(readTimeoutMillis);
+        request.setCharset(charset);
+        request.setUserAgent("SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)");
+
         String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
         Long oAuthTimestamp = System.currentTimeMillis() / 1000;
         String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
-        String authorizationHeader = getAuthorizationHeader(signature,
-                oAuthNonce, oAuthTimestamp);
-        HttpURLConnection conn = (HttpURLConnection) new URL(url)
-                .openConnection();
-        conn.setConnectTimeout(3000);
-        conn.setReadTimeout(10000);
-        conn.setRequestProperty("User-Agent",
-                "SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)");
-        conn.setRequestMethod(method.toString());
-        conn.setRequestProperty("Authorization", authorizationHeader);
-        return conn;
+        String authorizationHeader = getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
+        request.setHeader("Authorization", authorizationHeader);
+
+        if (method == HttpMethod.GET) {
+            request.setQueryParams(requestParameters);
+        } else {
+            // message body
+            request.setFormParams(requestParameters);
+        }
+
+        Response response = HTTP.request(new Method(method.name()), request);
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setStatusCode(response.getStatus());
+        httpResponse.setHeaders(response.getHeaders());
+        httpResponse.setContent(response.getTextBody());
+        return httpResponse;
     }
 
     static class Parameter {
@@ -399,45 +382,6 @@ class SignedRequestImpl implements SignedRequest {
             }
         });
         return params;
-    }
-
-    String getResponseCotent(HttpURLConnection conn, String charset) throws IOException {
-        InputStream is = null;
-        BufferedReader br = null;
-        try {
-            is = conn.getInputStream();
-            Reader isr = (charset != null) ? new InputStreamReader(is, charset)
-                    : new InputStreamReader(is);
-            br = new BufferedReader(isr);
-            StringBuilder buf = new StringBuilder();
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                buf.append(line);
-                buf.append("\n");
-            }
-            return buf.toString();
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception e2) {
-                }
-            }
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (Exception e2) {
-                }
-            }
-        }
-    }
-
-    String getUTF8EncodedValue(String value) {
-        try {
-            return URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException tested) {
-        }
-        return value;
     }
 
 }
