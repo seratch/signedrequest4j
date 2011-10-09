@@ -120,16 +120,8 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doDelete(String url) throws IOException {
-		return doRequest(url, HttpMethod.DELETE, null, null);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public HttpResponse doGet(String url, String charset) throws IOException {
-		return doRequest(url, HttpMethod.GET, null, charset);
+		return doRequest(url, HttpMethod.GET, new HashMap<String, Object>(), charset);
 	}
 
 	/**
@@ -137,7 +129,7 @@ class SignedRequestImpl implements SignedRequest {
 	 */
 	@Override
 	public HttpResponse doHead(String url) throws IOException {
-		return doRequest(url, HttpMethod.HEAD, null, null);
+		return doRequest(url, HttpMethod.HEAD, new HashMap<String, Object>(), null);
 	}
 
 	/**
@@ -145,7 +137,7 @@ class SignedRequestImpl implements SignedRequest {
 	 */
 	@Override
 	public HttpResponse doOptions(String url) throws IOException {
-		return doRequest(url, HttpMethod.OPTIONS, null, null);
+		return doRequest(url, HttpMethod.OPTIONS, new HashMap<String, Object>(), null);
 	}
 
 	/**
@@ -161,16 +153,79 @@ class SignedRequestImpl implements SignedRequest {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HttpResponse doPut(String url) throws IOException {
-		return doRequest(url, HttpMethod.PUT, null, null);
+	public HttpResponse doPost(String url, RequestBody body, String charset)
+			throws IOException {
+		return doRequest(url, HttpMethod.POST, body, charset);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
+	public HttpResponse doDelete(String url, Map<String, Object> requestParameters, String charset) throws IOException {
+		return doRequest(url, HttpMethod.DELETE, requestParameters, charset);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public HttpResponse doDelete(String url, RequestBody body, String charset)
+			throws IOException {
+		return doRequest(url, HttpMethod.DELETE, body, charset);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public HttpResponse doPut(String url, Map<String, Object> requestParameters, String charset) throws IOException {
+		return doRequest(url, HttpMethod.PUT, requestParameters, charset);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public HttpResponse doPut(String url, RequestBody body, String charset)
+			throws IOException {
+		return doRequest(url, HttpMethod.PUT, body, charset);
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public HttpResponse doTrace(String url) throws IOException {
-		return doRequest(url, HttpMethod.TRACE, null, null);
+		return doRequest(url, HttpMethod.TRACE, new HashMap<String, Object>(), null);
+	}
+
+
+	@Override
+	public HttpResponse doRequest(String url, HttpMethod method, RequestBody body, String charset) throws IOException {
+		// create http request
+		Request request = new Request(url);
+		request.setEnableThrowingIOException(true);
+		request.setConnectTimeoutMillis(connectTimeoutMillis);
+		request.setReadTimeoutMillis(readTimeoutMillis);
+		request.setCharset(charset);
+		request.setUserAgent("SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)");
+
+		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
+		Long oAuthTimestamp = System.currentTimeMillis() / 1000;
+		String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
+		String authorizationHeader = getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
+		request.setHeader("Authorization", authorizationHeader);
+
+		request.setBody(body.getBody(), body.getContentType());
+
+		Response response = HTTP.request(new Method(method.name()), request);
+		HttpResponse httpResponse = new HttpResponse();
+		httpResponse.setStatusCode(response.getStatus());
+		httpResponse.setHeaders(response.getHeaders());
+		httpResponse.setContent(response.getTextBody());
+		return httpResponse;
 	}
 
 	/**

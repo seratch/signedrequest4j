@@ -242,7 +242,7 @@ public class SignedRequestImplTest {
 			HttpMethod method = HttpMethod.GET;
 			String charset = "UTF-8";
 			// when
-			HttpResponse actual = target.doRequest(url, method, null, charset);
+			HttpResponse actual = target.doRequest(url, method, new HashMap<String, Object>(), charset);
 			// then
 			assertNotNull(actual);
 			System.out.println(actual.getHeaders());
@@ -364,7 +364,7 @@ public class SignedRequestImplTest {
 	}
 
 	@Test
-	public void doDelete_A$String() throws Exception {
+	public void doDelete_A$String$Map$String() throws Exception {
 		final HttpServer server = new HttpServer(new DeleteHandler());
 		try {
 			Runnable runnable = new Runnable() {
@@ -382,7 +382,7 @@ public class SignedRequestImplTest {
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 			SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
-			request.doDelete("http://localhost:8888/");
+			request.doDelete("http://localhost:8888/", new HashMap<String, Object>(), "UTF-8");
 		} finally {
 			server.stop();
 			Thread.sleep(100L);
@@ -390,7 +390,7 @@ public class SignedRequestImplTest {
 	}
 
 	@Test
-	public void doPut_A$String() throws Exception {
+	public void doPut_A$String$Map$String() throws Exception {
 		final HttpServer server = new HttpServer(new PutHandler());
 		try {
 			Runnable runnable = new Runnable() {
@@ -408,7 +408,9 @@ public class SignedRequestImplTest {
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 			SignedRequest request = new SignedRequestImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
-			request.doPut("http://localhost:8888/");
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("k", "v");
+			request.doPut("http://localhost:8888/", params, "UTF-8");
 		} finally {
 			server.stop();
 			Thread.sleep(100L);
@@ -439,6 +441,133 @@ public class SignedRequestImplTest {
 			server.stop();
 			Thread.sleep(100L);
 		}
+	}
+
+	@Test
+	public void doPost_A$String$RequestBody$String() throws Exception {
+		final HttpServer server = new HttpServer(new PostHandler());
+		try {
+			Runnable runnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						server.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			new Thread(runnable).start();
+			Thread.sleep(100L);
+			OAuthRealm realm = null;
+			OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+			SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+					signatureMethod);
+			// given
+			String url = "http://localhost:8888/";
+			RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
+			String charset = "UTF-8";
+			// when
+			HttpResponse actual = target.doPost(url, body, charset);
+			// then
+			assertNotNull(actual);
+			assertTrue(200 == actual.getStatusCode());
+		} finally {
+			server.stop();
+			Thread.sleep(100L);
+		}
+	}
+
+	@Test
+	public void doDelete_A$String$RequestBody$String() throws Exception {
+		final HttpServer server = new HttpServer(new DeleteHandler());
+		try {
+			Runnable runnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						server.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			new Thread(runnable).start();
+			Thread.sleep(100L);
+			OAuthRealm realm = null;
+			OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+			SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+					signatureMethod);
+			// given
+			String url = "http://localhost:8888/";
+			RequestBody body = new RequestBody(null, "text/plain");
+			String charset = "UTF-8";
+			// when
+			HttpResponse actual = target.doDelete(url, body, charset);
+			// then
+			assertNotNull(actual);
+			assertTrue(200 == actual.getStatusCode());
+		} finally {
+			server.stop();
+			Thread.sleep(100L);
+		}
+	}
+
+	@Test
+	public void doPut_A$String$RequestBody$String() throws Exception {
+		final HttpServer server = new HttpServer(new PutHandler());
+		try {
+			Runnable runnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						server.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			new Thread(runnable).start();
+			Thread.sleep(100L);
+			OAuthRealm realm = null;
+			OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+			SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+					signatureMethod);
+			// given
+			String url = "http://localhost:8888/";
+			RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
+			String charset = "UTF-8";
+			// when
+			HttpResponse actual = target.doPut(url, body, charset);
+			// then
+			assertNotNull(actual);
+			assertTrue(200 == actual.getStatusCode());
+		} finally {
+			server.stop();
+			Thread.sleep(100L);
+		}
+	}
+
+	@Test
+	public void doRequest_A$String$HttpMethod$RequestBody$String() throws Exception {
+		OAuthRealm realm = null;
+		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
+		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+		SignedRequestImpl target = new SignedRequestImpl(realm, consumer,
+				signatureMethod);
+		// given
+		String url = "http://seratch.net/";
+		HttpMethod method = HttpMethod.POST;
+		RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
+		String charset = "UTF-8";
+		// when
+		HttpResponse actual = target.doRequest(url, method, body, charset);
+		// then
+		assertNotNull(actual);
+		assertTrue(200 == actual.getStatusCode());
 	}
 
 }

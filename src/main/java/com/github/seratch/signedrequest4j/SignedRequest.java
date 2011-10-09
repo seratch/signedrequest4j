@@ -42,8 +42,7 @@ public interface SignedRequest {
 	 * @param oAuthTimestamp OAuth Timestamp Value
 	 * @return OAuth Signature Base String
 	 */
-	String getSignatureBaseString(String url, HttpMethod method,
-	                              String oAuthNonce, Long oAuthTimestamp);
+	String getSignatureBaseString(String url, HttpMethod method, String oAuthNonce, Long oAuthTimestamp);
 
 	/**
 	 * Returns OAuth Signature.
@@ -54,8 +53,7 @@ public interface SignedRequest {
 	 * @param oAuthTimestamp OAuth Timestamp Value
 	 * @return OAuth Signature
 	 */
-	String getSignature(String url, HttpMethod method, String oAuthNonce,
-	                    Long oAuthTimestamp);
+	String getSignature(String url, HttpMethod method, String oAuthNonce, Long oAuthTimestamp);
 
 	/**
 	 * Returns Authorization Header String
@@ -77,8 +75,21 @@ public interface SignedRequest {
 	 * @return HTTP Response
 	 * @throws IOException
 	 */
-	HttpResponse doRequest(String url, HttpMethod method,
-	                       Map<String, Object> requestParameters, String charset)
+	HttpResponse doRequest(String url, HttpMethod method, Map<String, Object> requestParameters, String charset)
+			throws IOException;
+
+	/**
+	 * Do HTTP request and returns Http response
+	 *
+	 *
+	 * @param url     Request URL
+	 * @param method  HTTP Method
+	 * @param body    body(bytes)
+	 * @param charset Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doRequest(String url, HttpMethod method, RequestBody body, String charset)
 			throws IOException;
 
 	/**
@@ -100,26 +111,62 @@ public interface SignedRequest {
 	 * @return HTTP Response
 	 * @throws IOException
 	 */
-	HttpResponse doPost(String url, Map<String, Object> requestParameters,
-	                    String charset) throws IOException;
+	HttpResponse doPost(String url, Map<String, Object> requestParameters, String charset) throws IOException;
+
+	/**
+	 * HTTP/1.1 POST request and returns Http response
+	 *
+	 * @param url     Request URL
+	 * @param body    Request body
+	 * @param charset Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doPost(String url, RequestBody body, String charset) throws IOException;
 
 	/**
 	 * HTTP/1.1 PUT request and returns Http response
 	 *
-	 * @param url Request URL
+	 * @param url               Request URL
+	 * @param requestParameters Request parameters
+	 * @param charset           Charset
 	 * @return HTTP Response
 	 * @throws IOException
 	 */
-	HttpResponse doPut(String url) throws IOException;
+	HttpResponse doPut(String url, Map<String, Object> requestParameters, String charset) throws IOException;
+
+	/**
+	 * HTTP/1.1 PUT request and returns Http response
+	 *
+	 * @param url     Request URL
+	 * @param body    Request body
+	 * @param charset Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doPut(String url, RequestBody body, String charset) throws IOException;
 
 	/**
 	 * HTTP/1.1 DELETE request and returns Http response
 	 *
-	 * @param url Request URL
+	 * @param url               Request URL
+	 * @param requestParameters Request parameters
+	 * @param charset           Charset
 	 * @return HTTP Response
 	 * @throws IOException
 	 */
-	HttpResponse doDelete(String url) throws IOException;
+	HttpResponse doDelete(String url, Map<String, Object> requestParameters, String charset) throws IOException;
+
+	/**
+	 * HTTP/1.1 DELETE request and returns Http response
+	 *
+	 * @param url     Request URL
+	 * @param body    Request body
+	 * @param charset Charset
+	 * @return HTTP Response
+	 * @throws IOException
+	 */
+	HttpResponse doDelete(String url, RequestBody body, String charset) throws IOException;
 
 	/**
 	 * HTTP/1.1 HEAD request and returns Http response
