@@ -34,6 +34,14 @@ import java.util.Map;
 public interface SignedRequest {
 
 	/**
+	 * Overwrite request header value
+	 *
+	 * @param name  Header name
+	 * @param value Header value
+	 */
+	void setHeader(String name, String value);
+
+	/**
 	 * Returns OAuth Signature Base String.
 	 *
 	 * @param url            Request URL
@@ -80,7 +88,6 @@ public interface SignedRequest {
 
 	/**
 	 * Do HTTP request and returns Http response
-	 *
 	 *
 	 * @param url     Request URL
 	 * @param method  HTTP Method

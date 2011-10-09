@@ -36,6 +36,8 @@ import java.util.*;
  */
 class SignedRequestImpl implements SignedRequest {
 
+	private static final String USER_AGENT = "SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)";
+
 	/**
 	 * 2 Legged OAuth Request
 	 */
@@ -88,6 +90,16 @@ class SignedRequestImpl implements SignedRequest {
 	private int connectTimeoutMillis = 3000;
 
 	private int readTimeoutMillis = 10000;
+
+	private Map<String, String> headersToOverwrite = new HashMap<String, String>();
+
+	/**
+	 * {inheritDoc}
+	 */
+	@Override
+	public void setHeader(String name, String value) {
+		headersToOverwrite.put(name, value);
+	}
 
 	/**
 	 * {inheritDoc}
@@ -207,10 +219,13 @@ class SignedRequestImpl implements SignedRequest {
 		// create http request
 		Request request = new Request(url);
 		request.setEnableThrowingIOException(true);
+		request.setUserAgent(USER_AGENT);
 		request.setConnectTimeoutMillis(connectTimeoutMillis);
 		request.setReadTimeoutMillis(readTimeoutMillis);
 		request.setCharset(charset);
-		request.setUserAgent("SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)");
+		for (String name : headersToOverwrite.keySet()) {
+			request.setHeader(name, headersToOverwrite.get(name));
+		}
 
 		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
 		Long oAuthTimestamp = System.currentTimeMillis() / 1000;
@@ -238,10 +253,13 @@ class SignedRequestImpl implements SignedRequest {
 		// create http request
 		Request request = new Request(url);
 		request.setEnableThrowingIOException(true);
+		request.setUserAgent(USER_AGENT);
 		request.setConnectTimeoutMillis(connectTimeoutMillis);
 		request.setReadTimeoutMillis(readTimeoutMillis);
 		request.setCharset(charset);
-		request.setUserAgent("SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)");
+		for (String name : headersToOverwrite.keySet()) {
+			request.setHeader(name, headersToOverwrite.get(name));
+		}
 
 		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
 		Long oAuthTimestamp = System.currentTimeMillis() / 1000;
