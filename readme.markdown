@@ -18,6 +18,25 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
 
     <a href="http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html">http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html</a>
 
+```
+End User  Consumer                     Provider
+   |         |                            |
+   |         | consumer_key               |
+   |         | [consumer_secret]          |
+   |         |                            |
+   |         | ---(HTTP)----------------> | <<Verify the signature>>
+   |         | Authorization header       | Authorization header
+   |         |                            | consumer_key
+   |         |                            | [consumer_secret]
+   |         |                            |
+   |         | <----------------(HTTP)--- | <Valid>
+   |         |                     200 OK |
+   |         |                            |
+   |         | <----------------(HTTP)--- | <Invalid>
+   |         |           401 Unauthorized |
+   |         |                            |
+```
+
 ### 3-legged OAuth
 
 * Service Provider, Consumer, User
@@ -31,6 +50,30 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
 * RFC 5849: The OAuth 1.0 Protocol
 
     <a href="http://tools.ietf.org/html/rfc5849">http://tools.ietf.org/html/rfc5849</a>
+
+```
+End User  Consumer                     Provider
+   |         |                            |
+   |         | token                      |
+   |         | [token_secret]             |
+   |         | consumer_key               |
+   |         | [consumer_secret]          |
+   |         |                            |
+   |         | ---(HTTP)----------------> | <<Verify the signature>>
+   |         | Authorization header       | Authorization header
+   |         |                            | token
+   |         |                            | [token_secret]
+   |         |                            | consumer_key
+   |         |                            | [consumer_secret]
+   |         |                            |
+   |         | <----------------(HTTP)--- | <Valid>
+   |         |                     200 OK |
+   |         |                            |
+   |         | <----------------(HTTP)--- | <Invalid>
+   |         |           401 Unauthorized |
+   |         |                            |
+```
+
 
 ## How to install
 
@@ -105,25 +148,27 @@ signedRequest.setRsaPrivateKeyValue("-----BEGIN RSA PRIVATE KEY-----\n...");
 SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.PLAINTEXT);
 ```
 
-### Verifying signature
+### Getting the signature string
 
 ```java
-String signature = signedRequest.getSignature(
-  "http://example.com/", // URL
-  HttpMethod.GET,        // HTTP method
-  "nonce_value",         // oauth_nonce value
-  1272026745L            // oauth_timestamp value
-); // "K7OrQ7UU+k94LnaezxFs4jBBekc="
+String Url = "http://example.com/";
+HttpMethod method = HttpMethod.GET;
+String nonce = "nonce_value";
+long timestamp = 1272026745L;
+String signature = signedRequest.getSignature(url, method, nonce, timestamp);
+// -> "K7OrQ7UU+k94LnaezxFs4jBBekc="
 ```
+
+## Sending requests
 
 ### GET
 
 ```java
 HttpResponse response = signedRequest.doGet("http://example.com/", "UTF-8");
-
-// response.getStatusCode();
-// response.getHeaders();
-// response.getContent();
+response.getStatusCode(); // -> int
+response.getHeaders();    // -> Map<String, List<String>>
+response.getBody();       // -> byte[]
+response.getTextBody();   // -> String
 ```
 
 ### POST
@@ -137,8 +182,10 @@ HttpResponse response = signedRequest.doPost("http://example.com/", requestParam
 or
 
 ```java
-RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
-HttpResponse response = signedRequest.doPost("http://example.com/", body, "UTF-8");
+byte[] body = "abc".getBytes();
+String contentType = "text/plain";
+RequestBody reuestBody = new RequestBody(body, contentType);
+HttpResponse response = signedRequest.doPost("http://example.com/", reuestBody, "UTF-8");
 ```
 
 ### PUT
@@ -152,8 +199,10 @@ HttpResponse response = signedRequest.doPut("http://example.com/", requestParame
 or
 
 ```java
-RequestBody body = new RequestBody("abc".getBytes(), "text/plain");
-HttpResponse response = signedRequest.doPost("http://example.com/", body, "UTF-8");
+byte[] body = "abc".getBytes();
+String contentType = "text/plain";
+RequestBody reuestBody = new RequestBody(body, contentType);
+HttpResponse response = signedRequest.doPost("http://example.com/", reuestBody, "UTF-8");
 ```
 
 ### DELETE
@@ -183,21 +232,21 @@ signedRequest.setHeader("Max-Forwards", "5");
 HttpResponse response = signedRequest.doTrace("http://example.com/");
 ```
 
-### Verifying signed requests
+## Verifying the signature of the request
 
 ```java
+String url = "http://localhost/test/";
 String authorizationHeader = request.getHeader("Authorization");
 OAuthConsumer consumer = new OAuthConsumer("key","secret");
 
-boolean verified = SignedRequestVerifier.verifyHMacGetRequest(
-"http://localhost/test/", authorizationHeader, consumer);
-
-boolean verified = SignedRequestVerifier.verify("http://localhost/test/",
-	authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+boolean isValid = SignedRequestVerifier.verifyHMacGetRequest(url, authorizationHeader, consumer);
 ```
 
-## Contributors
+or
 
-* <a href="https://github.com/seratch">Kazuhiro Sera</a> &lt;seratch at gmail.com&gt;
-* <a href="https://github.com/dewaken">Kenichi Dewa</a>
+```java
+boolean isValid = SignedRequestVerifier.verify(url, authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+```
+
+
 
