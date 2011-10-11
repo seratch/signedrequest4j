@@ -96,7 +96,7 @@ public class SignedRequestImplTest {
 			System.out.println(signedRequest.getAuthorizationHeader(actual, "hogehoge", 12345L));
 			HttpResponse response = signedRequest.doGet(url, "UTF-8");
 			System.out.println(response.getHeaders());
-			System.out.println(response.getContent());
+			System.out.println(response.getTextBody());
 		} catch (NullPointerException e) {
 			System.out.println("RSA_PrivateKey.txt not found, test skipped.");
 		}
@@ -246,7 +246,7 @@ public class SignedRequestImplTest {
 			// then
 			assertNotNull(actual);
 			System.out.println(actual.getHeaders());
-			System.out.println(actual.getContent());
+			System.out.println(actual.getTextBody());
 		} catch (NullPointerException e) {
 			System.out.println("TwitterOAuth.properties not found, test skipped.");
 		}
@@ -269,7 +269,7 @@ public class SignedRequestImplTest {
 		// e.g. : verify(mocked).called();
 		assertNotNull(actual);
 		assertTrue(200 == actual.getStatusCode());
-		assertTrue(actual.getContent().length() > 0);
+		assertTrue(actual.getTextBody().length() > 0);
 	}
 
 	@Test

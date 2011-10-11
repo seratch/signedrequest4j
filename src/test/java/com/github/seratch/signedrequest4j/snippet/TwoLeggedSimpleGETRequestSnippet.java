@@ -13,6 +13,6 @@ public class TwoLeggedSimpleGETRequestSnippet {
 				"https://github.com/seratch/signedrequest4j", "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());
-		System.out.println(response.getContent());
+		System.out.println(response.getTextBody());
 	}
 }

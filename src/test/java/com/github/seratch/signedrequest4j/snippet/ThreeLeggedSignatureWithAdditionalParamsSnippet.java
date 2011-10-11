@@ -16,6 +16,6 @@ public class ThreeLeggedSignatureWithAdditionalParamsSnippet {
 		HttpResponse response = signedRequest.doGet("http://sp.example.com/api/?aaa=bbb", "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());
-		System.out.println(response.getContent());
+		System.out.println(response.getTextBody());
 	}
 }
