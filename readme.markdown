@@ -101,6 +101,8 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
 
 ## Snippets
 
+See also: https://github.com/seratch/signedrequest4j/tree/master/src/test/java/com/github/seratch/signedrequest4j/snippet
+
 ### 2-legged OAuth instance
 
 ```java
