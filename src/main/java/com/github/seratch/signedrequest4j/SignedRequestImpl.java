@@ -18,6 +18,7 @@ package com.github.seratch.signedrequest4j;
 import com.github.seratch.signedrequest4j.pem.PEMReader;
 import com.github.seratch.signedrequest4j.pem.PKCS1EncodedKeySpec;
 import httpilot.HTTP;
+import httpilot.HTTPIOException;
 import httpilot.Method;
 import httpilot.Request;
 import httpilot.Response;
@@ -236,12 +237,21 @@ class SignedRequestImpl implements SignedRequest {
 
 		request.setBody(body.getBody(), body.getContentType());
 
-		Response response = HTTP.request(new Method(method.name()), request);
-		HttpResponse httpResponse = new HttpResponse();
-		httpResponse.setStatusCode(response.getStatus());
-		httpResponse.setHeaders(response.getHeaders());
-		httpResponse.setContent(response.getTextBody());
-		return httpResponse;
+		try {
+			Response response = HTTP.request(new Method(method.name()), request);
+			HttpResponse httpResponse = new HttpResponse();
+			httpResponse.setStatusCode(response.getStatus());
+			httpResponse.setHeaders(response.getHeaders());
+			httpResponse.setContent(response.getTextBody());
+			return httpResponse;
+		} catch (HTTPIOException ex) {
+			HttpResponse httpResponse = new HttpResponse();
+			httpResponse.setStatusCode(ex.getResponse().getStatus());
+			httpResponse.setHeaders(ex.getResponse().getHeaders());
+			httpResponse.setContent(ex.getResponse().getTextBody());
+			throw new HttpException(ex.getMessage(), httpResponse);
+		}
+
 	}
 
 	/**
@@ -275,12 +285,21 @@ class SignedRequestImpl implements SignedRequest {
 			request.setFormParams(requestParameters);
 		}
 
-		Response response = HTTP.request(new Method(method.name()), request);
-		HttpResponse httpResponse = new HttpResponse();
-		httpResponse.setStatusCode(response.getStatus());
-		httpResponse.setHeaders(response.getHeaders());
-		httpResponse.setContent(response.getTextBody());
-		return httpResponse;
+		try {
+			Response response = HTTP.request(new Method(method.name()), request);
+			HttpResponse httpResponse = new HttpResponse();
+			httpResponse.setStatusCode(response.getStatus());
+			httpResponse.setHeaders(response.getHeaders());
+			httpResponse.setContent(response.getTextBody());
+			return httpResponse;
+		} catch (HTTPIOException ex) {
+			HttpResponse httpResponse = new HttpResponse();
+			httpResponse.setStatusCode(ex.getResponse().getStatus());
+			httpResponse.setHeaders(ex.getResponse().getHeaders());
+			httpResponse.setContent(ex.getResponse().getTextBody());
+			throw new HttpException(ex.getMessage(), httpResponse);
+		}
+
 	}
 
 	static class Parameter {
