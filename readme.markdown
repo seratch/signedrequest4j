@@ -54,7 +54,7 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
 ```
   User          Consumer                     Provider
    |               |                            |
-   | ---(HTTP)---> | token                      |
+   | ------------> | token                      |
    |               | [token_secret]             |
    |               |                            |
    |               | consumer_key               |
@@ -72,7 +72,7 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
    |               |                            |
    |               | <----------------(HTTP)--- | <Invalid>
    |               |           401 Unauthorized |
-   | <---(HTTP)--- |                            |
+   | <------------ |                            |
    |               |                            |
 ```
 
