@@ -15,6 +15,7 @@
  */
 package com.github.seratch.signedrequest4j;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,9 @@ public class HttpResponse {
 
 	public Map<String, List<String>> headers = new HashMap<String, List<String>>();
 
-	private String content;
+	private String charset;
+
+	private byte[] body;
 
 	public Integer getStatusCode() {
 		return statusCode;
@@ -48,12 +51,32 @@ public class HttpResponse {
 		this.headers = headers;
 	}
 
-	public String getContent() {
-		return content;
+	public byte[] getBody() {
+		return body;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setBody(byte[] body) {
+		this.body = body;
+	}
+
+	public String getCharset() {
+		return charset;
+	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
+	}
+
+	public String getTextBody() {
+		if (charset != null) {
+			try {
+				return new String(body, charset);
+			} catch (UnsupportedEncodingException e) {
+				return new String(body);
+			}
+		} else {
+			return new String(body);
+		}
 	}
 
 }

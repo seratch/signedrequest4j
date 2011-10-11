@@ -242,13 +242,15 @@ class SignedRequestImpl implements SignedRequest {
 			HttpResponse httpResponse = new HttpResponse();
 			httpResponse.setStatusCode(response.getStatus());
 			httpResponse.setHeaders(response.getHeaders());
-			httpResponse.setContent(response.getTextBody());
+			httpResponse.setBody(response.getBody());
+			httpResponse.setCharset(response.getCharset());
 			return httpResponse;
 		} catch (HTTPIOException ex) {
 			HttpResponse httpResponse = new HttpResponse();
 			httpResponse.setStatusCode(ex.getResponse().getStatus());
 			httpResponse.setHeaders(ex.getResponse().getHeaders());
-			httpResponse.setContent(ex.getResponse().getTextBody());
+			httpResponse.setBody(ex.getResponse().getBody());
+			httpResponse.setCharset(ex.getResponse().getCharset());
 			throw new HttpException(ex.getMessage(), httpResponse);
 		}
 
@@ -290,13 +292,15 @@ class SignedRequestImpl implements SignedRequest {
 			HttpResponse httpResponse = new HttpResponse();
 			httpResponse.setStatusCode(response.getStatus());
 			httpResponse.setHeaders(response.getHeaders());
-			httpResponse.setContent(response.getTextBody());
+			httpResponse.setBody(response.getBody());
+			httpResponse.setCharset(response.getCharset());
 			return httpResponse;
 		} catch (HTTPIOException ex) {
 			HttpResponse httpResponse = new HttpResponse();
 			httpResponse.setStatusCode(ex.getResponse().getStatus());
 			httpResponse.setHeaders(ex.getResponse().getHeaders());
-			httpResponse.setContent(ex.getResponse().getTextBody());
+			httpResponse.setBody(ex.getResponse().getBody());
+			httpResponse.setCharset(ex.getResponse().getCharset());
 			throw new HttpException(ex.getMessage(), httpResponse);
 		}
 
