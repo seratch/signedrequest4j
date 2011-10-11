@@ -19,22 +19,22 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
     <a href="http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html">http://oauth.googlecode.com/svn/spec/ext/consumer_request/1.0/drafts/1/spec.html</a>
 
 ```
-End User  Consumer                     Provider
-   |         |                            |
-   |         | consumer_key               |
-   |         | [consumer_secret]          |
-   |         |                            |
-   |         | ---(HTTP)----------------> | <<Verify the signature>>
-   |         | Authorization header       | Authorization header
-   |         |                            | consumer_key
-   |         |                            | [consumer_secret]
-   |         |                            |
-   |         | <----------------(HTTP)--- | <Valid>
-   |         |                     200 OK |
-   |         |                            |
-   |         | <----------------(HTTP)--- | <Invalid>
-   |         |           401 Unauthorized |
-   |         |                            |
+  Consumer                     Provider
+     |                            |
+     | consumer_key               |
+     | [consumer_secret]          |
+     |                            |
+     | ---(HTTP)----------------> | <<Verify the signature>>
+     | Authorization header       | Authorization header
+     |                            | consumer_key
+     |                            | [consumer_secret]
+     |                            |
+     | <----------------(HTTP)--- | <Valid>
+     |                     200 OK |
+     |                            |
+     | <----------------(HTTP)--- | <Invalid>
+     |           401 Unauthorized |
+     |                            |
 ```
 
 ### 3-legged OAuth
@@ -52,26 +52,28 @@ End User  Consumer                     Provider
     <a href="http://tools.ietf.org/html/rfc5849">http://tools.ietf.org/html/rfc5849</a>
 
 ```
-End User  Consumer                     Provider
-   |         |                            |
-   |         | token                      |
-   |         | [token_secret]             |
-   |         | consumer_key               |
-   |         | [consumer_secret]          |
-   |         |                            |
-   |         | ---(HTTP)----------------> | <<Verify the signature>>
-   |         | Authorization header       | Authorization header
-   |         |                            | token
-   |         |                            | [token_secret]
-   |         |                            | consumer_key
-   |         |                            | [consumer_secret]
-   |         |                            |
-   |         | <----------------(HTTP)--- | <Valid>
-   |         |                     200 OK |
-   |         |                            |
-   |         | <----------------(HTTP)--- | <Invalid>
-   |         |           401 Unauthorized |
-   |         |                            |
+  User          Consumer                     Provider
+   |               |                            |
+   | ---(HTTP)---> | token                      |
+   |               | [token_secret]             |
+   |               |                            |
+   |               | consumer_key               |
+   |               | [consumer_secret]          |
+   |               |                            |
+   |               | ---(HTTP)----------------> | <<Verify the signature>>
+   |               | Authorization header       | Authorization header
+   |               |                            | token
+   |               |                            | [token_secret]
+   |               |                            | consumer_key
+   |               |                            | [consumer_secret]
+   |               |                            |
+   |               | <----------------(HTTP)--- | <Valid>
+   |               |                     200 OK |
+   |               |                            |
+   |               | <----------------(HTTP)--- | <Invalid>
+   |               |           401 Unauthorized |
+   | <---(HTTP)--- |                            |
+   |               |                            |
 ```
 
 
