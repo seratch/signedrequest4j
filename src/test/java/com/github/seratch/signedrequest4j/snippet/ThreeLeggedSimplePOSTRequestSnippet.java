@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ThreeLeggedSimplePOSTRequestSnippet {
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
+		SignedRequest signedRequest = SignedRequestFactory.create(
 				new OAuthConsumer("consumer_key", "consumer_secret"),
 				new OAuthAccessToken("token", "token_secret"));
 		Map<String, Object> requestParameters = new HashMap<String, Object>();

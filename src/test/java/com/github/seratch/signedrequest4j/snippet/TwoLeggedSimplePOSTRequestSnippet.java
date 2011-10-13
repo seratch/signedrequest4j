@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TwoLeggedSimplePOSTRequestSnippet {
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(
+		SignedRequest signedRequest = SignedRequestFactory.create(
 				new OAuthConsumer("consumer_key", "consumer_secret"));
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");

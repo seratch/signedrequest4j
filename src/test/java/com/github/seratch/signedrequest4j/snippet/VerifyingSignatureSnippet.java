@@ -9,7 +9,7 @@ public class VerifyingSignatureSnippet {
 	public static void main(String[] args) throws Exception {
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
 		additionalParams.put("xoauth_requestor_id", "user@example.com");
-		SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(
+		SignedRequest signedRequest = SignedRequestFactory.create(
 				new OAuthConsumer("consumer_key", "consumer_secret"),
 				new OAuthAccessToken("token", "token_secret"),
 				additionalParams);

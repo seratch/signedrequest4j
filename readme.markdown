@@ -109,7 +109,7 @@ See also: https://github.com/seratch/signedrequest4j/tree/master/src/test/java/c
 import com.github.seratch.signedrequest4j.*;
 
 OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
-SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer);
+SignedRequest twoLeggedOAuthRequest = SignedRequestFactory.create(consumer);
 ```
 
 ### 3-legged OAuth instance
@@ -117,7 +117,7 @@ SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consum
 ```java
 OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
 OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
-SignedRequest signedRequest = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken);
+SignedRequest threeLeggedOAuthRequest = SignedRequestFactory.create(consumer, accessToken);
 ```
 
 ### Signature with additional parameters
@@ -129,27 +129,27 @@ import java.util.Map;
 Map<String, Object> additionalParams = new HashMap<String, Object>();
 additionalParams.put("xoauth_requestor_id", "user@example.com");
 
-SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(consumer, additionalParams);
-SignedRequest signedRequest3 = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, additionalParams);
+SignedRequest signedRequest2 = SignedRequestFactory.create(consumer, additionalParams);
+SignedRequest signedRequest3 = SignedRequestFactory.create(consumer, accessToken, additionalParams);
 ```
 
 ### Signature method HMAC-SHA1 (default)
 
 ```java
-SignedRequest signedRequest2 = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.HMAC_SHA1);
+SignedRequest signedRequest2 = SignedRequestFactory.create(consumer, SignatureMethod.HMAC_SHA1);
 ```
 
 ### Signature method RSA-SHA1
 
 ```java
-SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.RSA_SHA1);
+SignedRequest signedRequest = SignedRequestFactory.create(consumer, SignatureMethod.RSA_SHA1);
 signedRequest.setRsaPrivateKeyValue("-----BEGIN RSA PRIVATE KEY-----\n...");
 ```
 
 ### Signature method PLAINTEXT
 
 ```java
-SignedRequest signedRequest = SignedRequestFactory.get2LeggedOAuthRequest(consumer, SignatureMethod.PLAINTEXT);
+SignedRequest signedRequest = SignedRequestFactory.create(consumer, SignatureMethod.PLAINTEXT);
 ```
 
 ### Getting the signature string

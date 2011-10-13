@@ -51,7 +51,7 @@ public class SignedRequestVerifier {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
-		SignedRequest req = SignedRequestFactory.get2LeggedOAuthRequest(consumer, signatureMethod);
+		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
 		String signature = req.getSignature(url, httpMethod,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
@@ -74,7 +74,7 @@ public class SignedRequestVerifier {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
-		SignedRequest req = SignedRequestFactory.get3LeggedOAuthRequest(consumer, accessToken, signatureMethod);
+		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
 		String signature = req.getSignature(url, httpMethod,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
