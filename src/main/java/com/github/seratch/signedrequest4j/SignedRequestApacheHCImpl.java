@@ -17,32 +17,57 @@ package com.github.seratch.signedrequest4j;
 
 import com.github.seratch.signedrequest4j.pem.PEMReader;
 import com.github.seratch.signedrequest4j.pem.PKCS1EncodedKeySpec;
-import httpilot.HTTP;
-import httpilot.HTTPIOException;
-import httpilot.Method;
-import httpilot.Request;
-import httpilot.Response;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.util.EntityUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.SecureRandom;
+import java.security.Signature;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Default implementation of {@link SignedRequest}
+ * Default implementation of {@link com.github.seratch.signedrequest4j.SignedRequest}
  */
-class SignedRequestImpl implements SignedRequest {
+public class SignedRequestApacheHCImpl implements SignedRequest {
 
 	private static final String USER_AGENT = "SignedRequest4J HTTP Fetcher (+https://github.com/seratch/signedrequest4j)";
 
 	/**
 	 * 2 Legged OAuth Request
 	 */
-	public SignedRequestImpl(
+	public SignedRequestApacheHCImpl(
 			OAuthRealm realm, OAuthConsumer consumer, SignatureMethod signatureMethod) {
 		this(realm, consumer, null, signatureMethod);
 	}
@@ -50,13 +75,13 @@ class SignedRequestImpl implements SignedRequest {
 	/**
 	 * 2 Legged OAuth Request
 	 */
-	public SignedRequestImpl(
+	public SignedRequestApacheHCImpl(
 			OAuthRealm realm, OAuthConsumer consumer, SignatureMethod signatureMethod,
 			Map<String, Object> additionalParameters) {
 		this(realm, consumer, null, signatureMethod, additionalParameters);
 	}
 
-	public SignedRequestImpl(
+	public SignedRequestApacheHCImpl(
 			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod) {
 		this.realm = realm;
 		this.consumer = consumer;
@@ -64,7 +89,7 @@ class SignedRequestImpl implements SignedRequest {
 		this.signatureMethod = signatureMethod;
 	}
 
-	public SignedRequestImpl(
+	public SignedRequestApacheHCImpl(
 			OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken, SignatureMethod signatureMethod,
 			Map<String, Object> additionalParameters) {
 		this.realm = realm;
@@ -218,13 +243,13 @@ class SignedRequestImpl implements SignedRequest {
 	@Override
 	public HttpResponse doRequest(String url, HttpMethod method, RequestBody body, String charset) throws IOException {
 
-		// create http request
-		Request request = new Request(url);
-		request.setEnableThrowingIOException(true);
-		request.setUserAgent(USER_AGENT);
-		request.setConnectTimeoutMillis(connectTimeoutMillis);
-		request.setReadTimeoutMillis(readTimeoutMillis);
-		request.setCharset(charset);
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpUriRequest request = getRequest(method, url);
+		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeoutMillis);
+		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, readTimeoutMillis);
+		httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, USER_AGENT);
+		httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, charset);
+
 		for (String name : headersToOverwrite.keySet()) {
 			request.setHeader(name, headersToOverwrite.get(name));
 		}
@@ -235,25 +260,21 @@ class SignedRequestImpl implements SignedRequest {
 		String authorizationHeader = getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
 		request.setHeader("Authorization", authorizationHeader);
 
-		request.setBody(body.getBody(), body.getContentType());
-
-		try {
-			Response response = HTTP.request(new Method(method.name()), request);
-			HttpResponse httpResponse = new HttpResponse();
-			httpResponse.setStatusCode(response.getStatus());
-			httpResponse.setHeaders(response.getHeaders());
-			httpResponse.setBody(response.getBody());
-			httpResponse.setCharset(response.getCharset());
-			return httpResponse;
-		} catch (HTTPIOException ex) {
-			HttpResponse httpResponse = new HttpResponse();
-			httpResponse.setStatusCode(ex.getResponse().getStatus());
-			httpResponse.setHeaders(ex.getResponse().getHeaders());
-			httpResponse.setBody(ex.getResponse().getBody());
-			httpResponse.setCharset(ex.getResponse().getCharset());
-			throw new HttpException(ex.getMessage(), httpResponse);
+		if (method == HttpMethod.POST) {
+			HttpPost postRequest = (HttpPost) request;
+			BasicHttpEntity entity = new BasicHttpEntity();
+			entity.setContent(new ByteArrayInputStream(body.getBody()));
+			entity.setContentType(body.getContentType());
+			postRequest.setEntity(entity);
+		} else if (method == HttpMethod.PUT) {
+			HttpPut putRequest = (HttpPut) request;
+			BasicHttpEntity entity = new BasicHttpEntity();
+			entity.setContent(new ByteArrayInputStream(body.getBody()));
+			entity.setContentType(body.getContentType());
+			putRequest.setEntity(entity);
 		}
 
+		return toReturnValue(httpClient.execute(request), charset);
 	}
 
 	/**
@@ -263,13 +284,23 @@ class SignedRequestImpl implements SignedRequest {
 	public HttpResponse doRequest(String url, HttpMethod method, Map<String, Object> requestParameters, String charset)
 			throws IOException {
 
-		// create http request
-		Request request = new Request(url);
-		request.setEnableThrowingIOException(true);
-		request.setUserAgent(USER_AGENT);
-		request.setConnectTimeoutMillis(connectTimeoutMillis);
-		request.setReadTimeoutMillis(readTimeoutMillis);
-		request.setCharset(charset);
+		HttpEntity entity = null;
+		if (method == HttpMethod.GET) {
+			List<NameValuePair> params = toNameValuePairList(requestParameters);
+			String queryString = URLEncodedUtils.format(params, "UTF-8");
+			url = url.contains("?") ? url + "&" + queryString : url + "?" + queryString;
+		} else {
+			List<NameValuePair> params = toNameValuePairList(requestParameters);
+			entity = new UrlEncodedFormEntity(params, "UTF-8");
+		}
+
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpUriRequest request = getRequest(method, url);
+		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeoutMillis);
+		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, readTimeoutMillis);
+		httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, USER_AGENT);
+		httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, charset);
+
 		for (String name : headersToOverwrite.keySet()) {
 			request.setHeader(name, headersToOverwrite.get(name));
 		}
@@ -280,30 +311,65 @@ class SignedRequestImpl implements SignedRequest {
 		String authorizationHeader = getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
 		request.setHeader("Authorization", authorizationHeader);
 
+		if (entity != null) {
+			if (method == HttpMethod.POST) {
+				HttpPost postRequest = (HttpPost) request;
+				postRequest.setEntity(entity);
+			} else if (method == HttpMethod.PUT) {
+				HttpPut putRequest = (HttpPut) request;
+				putRequest.setEntity(entity);
+			}
+		}
+
+		return toReturnValue(httpClient.execute(request), charset);
+
+	}
+
+	static List<NameValuePair> toNameValuePairList(Map<String, Object> params) {
+		List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+		for (String key : params.keySet()) {
+			Object value = params.get(key);
+			if (value != null) {
+				nameValuePairList.add(new BasicNameValuePair(key, value.toString()));
+			}
+		}
+		return nameValuePairList;
+	}
+
+	static HttpUriRequest getRequest(HttpMethod method, String url) {
 		if (method == HttpMethod.GET) {
-			request.setQueryParams(requestParameters);
+			return new HttpGet(url);
+		} else if (method == HttpMethod.POST) {
+			return new HttpPost(url);
+		} else if (method == HttpMethod.PUT) {
+			return new HttpPut(url);
+		} else if (method == HttpMethod.DELETE) {
+			return new HttpDelete(url);
+		} else if (method == HttpMethod.HEAD) {
+			return new HttpHead(url);
+		} else if (method == HttpMethod.OPTIONS) {
+			return new HttpOptions(url);
+		} else if (method == HttpMethod.TRACE) {
+			return new HttpTrace(url);
 		} else {
-			// message body
-			request.setFormParams(requestParameters);
+			return null;
 		}
+	}
 
-		try {
-			Response response = HTTP.request(new Method(method.name()), request);
-			HttpResponse httpResponse = new HttpResponse();
-			httpResponse.setStatusCode(response.getStatus());
-			httpResponse.setHeaders(response.getHeaders());
-			httpResponse.setBody(response.getBody());
-			httpResponse.setCharset(response.getCharset());
-			return httpResponse;
-		} catch (HTTPIOException ex) {
-			HttpResponse httpResponse = new HttpResponse();
-			httpResponse.setStatusCode(ex.getResponse().getStatus());
-			httpResponse.setHeaders(ex.getResponse().getHeaders());
-			httpResponse.setBody(ex.getResponse().getBody());
-			httpResponse.setCharset(ex.getResponse().getCharset());
-			throw new HttpException(ex.getMessage(), httpResponse);
+	static HttpResponse toReturnValue(org.apache.http.HttpResponse response, String charset) throws IOException {
+		HttpResponse httpResponse = new HttpResponse();
+		httpResponse.setStatusCode(response.getStatusLine().getStatusCode());
+		Map<String, String> responseHeaders = new HashMap<String, String>();
+		Header[] headers = response.getAllHeaders();
+		for (Header header : headers) {
+			responseHeaders.put(header.getName(), header.getValue());
 		}
-
+		httpResponse.setHeaders(responseHeaders);
+		if (response.getEntity() != null) {
+			httpResponse.setBody(EntityUtils.toByteArray(response.getEntity()));
+		}
+		httpResponse.setCharset(charset);
+		return httpResponse;
 	}
 
 	static class Parameter {

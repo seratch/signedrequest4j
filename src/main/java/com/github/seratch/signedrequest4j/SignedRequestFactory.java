@@ -48,7 +48,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthConsumer consumer) {
-		return new SignedRequestImpl(null, consumer, SignatureMethod.HMAC_SHA1);
+		return new SignedRequestApacheHCImpl(null, consumer, SignatureMethod.HMAC_SHA1);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer) {
-		return new SignedRequestImpl(realm, consumer, SignatureMethod.HMAC_SHA1);
+		return new SignedRequestApacheHCImpl(realm, consumer, SignatureMethod.HMAC_SHA1);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(null, consumer, SignatureMethod.HMAC_SHA1, additionalParameters);
+		return new SignedRequestApacheHCImpl(null, consumer, SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer,
 	                                   Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(realm, consumer,
+		return new SignedRequestApacheHCImpl(realm, consumer,
 				SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
 
@@ -95,7 +95,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, SignatureMethod signatureMethod) {
-		return new SignedRequestImpl(null, consumer, signatureMethod);
+		return new SignedRequestApacheHCImpl(null, consumer, signatureMethod);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer, SignatureMethod signatureMethod) {
-		return new SignedRequestImpl(realm, consumer, signatureMethod);
+		return new SignedRequestApacheHCImpl(realm, consumer, signatureMethod);
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, SignatureMethod signatureMethod,
 	                                   Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(null, consumer, signatureMethod, additionalParameters);
+		return new SignedRequestApacheHCImpl(null, consumer, signatureMethod, additionalParameters);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer, SignatureMethod signatureMethod,
 	                                   Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(realm, consumer, signatureMethod, additionalParameters);
+		return new SignedRequestApacheHCImpl(realm, consumer, signatureMethod, additionalParameters);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, OAuthAccessToken accessToken) {
-		return new SignedRequestImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1);
+		return new SignedRequestApacheHCImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class SignedRequestFactory {
 	 * @return {@link SignedRequest} instance.
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken) {
-		return new SignedRequestImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1);
+		return new SignedRequestApacheHCImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1);
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, OAuthAccessToken accessToken,
 	                                   Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters);
+		return new SignedRequestApacheHCImpl(null, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken,
 	                                   Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters);
+		return new SignedRequestApacheHCImpl(realm, consumer, accessToken, SignatureMethod.HMAC_SHA1, additionalParameters);
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, OAuthAccessToken accessToken,
 	                                   SignatureMethod signatureMethod) {
-		return new SignedRequestImpl(null, consumer, accessToken, signatureMethod);
+		return new SignedRequestApacheHCImpl(null, consumer, accessToken, signatureMethod);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken,
 	                                   SignatureMethod signatureMethod) {
-		return new SignedRequestImpl(realm, consumer, accessToken, signatureMethod);
+		return new SignedRequestApacheHCImpl(realm, consumer, accessToken, signatureMethod);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthConsumer consumer, OAuthAccessToken accessToken,
 	                                   SignatureMethod signatureMethod, Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(null, consumer, accessToken, signatureMethod, additionalParameters);
+		return new SignedRequestApacheHCImpl(null, consumer, accessToken, signatureMethod, additionalParameters);
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class SignedRequestFactory {
 	 */
 	public static SignedRequest create(OAuthRealm realm, OAuthConsumer consumer, OAuthAccessToken accessToken,
 	                                   SignatureMethod signatureMethod, Map<String, Object> additionalParameters) {
-		return new SignedRequestImpl(realm, consumer, accessToken, signatureMethod, additionalParameters);
+		return new SignedRequestApacheHCImpl(realm, consumer, accessToken, signatureMethod, additionalParameters);
 	}
 
 }

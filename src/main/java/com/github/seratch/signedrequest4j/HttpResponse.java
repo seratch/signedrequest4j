@@ -29,7 +29,7 @@ public class HttpResponse {
 
 	public Integer statusCode;
 
-	public Map<String, List<String>> headers = new HashMap<String, List<String>>();
+	public Map<String, String> headers = new HashMap<String, String>();
 
 	private String charset;
 
@@ -43,11 +43,11 @@ public class HttpResponse {
 		this.statusCode = statusCode;
 	}
 
-	public Map<String, List<String>> getHeaders() {
+	public Map<String, String> getHeaders() {
 		return headers;
 	}
 
-	public void setHeaders(Map<String, List<String>> headers) {
+	public void setHeaders(Map<String, String> headers) {
 		this.headers = headers;
 	}
 

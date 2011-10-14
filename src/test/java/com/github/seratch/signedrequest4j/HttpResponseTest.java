@@ -40,14 +40,14 @@ public class HttpResponseTest {
 	@Test
 	public void getHeaders_A$() throws Exception {
 		HttpResponse target = new HttpResponse();
-		Map<String, List<String>> actual = target.getHeaders();
+		Map<String, String> actual = target.getHeaders();
 		assertNotNull(actual);
 	}
 
 	@Test
 	public void setHeaders_A$Map() throws Exception {
 		HttpResponse target = new HttpResponse();
-		Map<String, List<String>> headers = target.getHeaders();
+		Map<String, String> headers = target.getHeaders();
 		target.setHeaders(headers);
 	}
 
