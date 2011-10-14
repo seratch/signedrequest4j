@@ -94,7 +94,7 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
   <dependency>
     <groupId>com.github.seratch</groupId>
     <artifactId>signedrequest4j</artifactId>
-    <version>[1,)</version>
+    <version>2.0</version>
   </dependency>
 </dependencies>
 ```
@@ -170,7 +170,7 @@ String signature = signedRequest.getSignature(url, method, nonce, timestamp);
 ```java
 HttpResponse response = signedRequest.doGet("http://example.com/", "UTF-8");
 response.getStatusCode(); // -> int
-response.getHeaders();    // -> Map<String, List<String>>
+response.getHeaders();    // -> Map<String, String>
 response.getBody();       // -> byte[]
 response.getTextBody();   // -> String
 ```
