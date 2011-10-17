@@ -17,6 +17,7 @@ package com.github.seratch.signedrequest4j;
 
 import com.github.seratch.signedrequest4j.pem.PEMReader;
 import com.github.seratch.signedrequest4j.pem.PKCS1EncodedKeySpec;
+import httpilot.HTTPIOException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -181,7 +182,12 @@ public class SignedRequestApacheHCImpl extends SignedRequestBaseImpl implements 
 			}
 		}
 
-		return toReturnValue(httpClient.execute(request), charset);
+		org.apache.http.HttpResponse apacheHCResponse = httpClient.execute(request);
+		if (apacheHCResponse.getStatusLine().getStatusCode() >= 400) {
+			HttpResponse httpResponse = toReturnValue(apacheHCResponse, charset);
+			throw new HttpException(apacheHCResponse.getStatusLine().getReasonPhrase(), httpResponse);
+		}
+		return toReturnValue(apacheHCResponse, charset);
 
 	}
 
