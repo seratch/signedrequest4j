@@ -133,7 +133,12 @@ public class SignedRequestApacheHCImpl extends SignedRequestBaseImpl implements 
 			putRequest.setEntity(entity);
 		}
 
-		return toReturnValue(httpClient.execute(request), charset);
+		org.apache.http.HttpResponse apacheHCResponse = httpClient.execute(request);
+		if (apacheHCResponse.getStatusLine().getStatusCode() >= 400) {
+			HttpResponse httpResponse = toReturnValue(apacheHCResponse, charset);
+			throw new HttpException(apacheHCResponse.getStatusLine().getReasonPhrase(), httpResponse);
+		}
+		return toReturnValue(apacheHCResponse, charset);
 	}
 
 	/**
