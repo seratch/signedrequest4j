@@ -146,7 +146,9 @@ public class SignedRequestApacheHCImpl extends SignedRequestBaseImpl implements 
 		if (method == HttpMethod.GET) {
 			List<NameValuePair> params = toNameValuePairList(requestParameters);
 			String queryString = URLEncodedUtils.format(params, "UTF-8");
-			url = url.contains("?") ? url + "&" + queryString : url + "?" + queryString;
+			if (queryString != null && !queryString.isEmpty()) {
+				url = url.contains("?") ? url + "&" + queryString : url + "?" + queryString;
+			}
 		} else {
 			List<NameValuePair> params = toNameValuePairList(requestParameters);
 			entity = new UrlEncodedFormEntity(params, "UTF-8");

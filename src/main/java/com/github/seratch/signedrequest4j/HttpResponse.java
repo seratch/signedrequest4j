@@ -68,7 +68,9 @@ public class HttpResponse {
 	}
 
 	public String getTextBody() {
-		if (charset != null) {
+		if (body == null) {
+			return null;
+		} else if (charset != null) {
 			try {
 				return new String(body, charset);
 			} catch (UnsupportedEncodingException e) {
