@@ -52,8 +52,9 @@ public class SignedRequestVerifier {
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
-		String signature = req.getSignature(url, httpMethod,
-				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
+		String nonce = elements.get("oauth_nonce");
+		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}
 

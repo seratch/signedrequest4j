@@ -1,6 +1,5 @@
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.SignedRequestHTTPilotImpl.Parameter;
 import org.junit.Test;
 import server.DeleteHandler;
 import server.HttpServer;
@@ -17,12 +16,13 @@ import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 public class SignedRequestApacheHCImplTest {
 
 	@Test
 	public void type() throws Exception {
-		assertNotNull(SignedRequestHTTPilotImpl.class);
+		assertNotNull(SignedRequestApacheHCImpl.class);
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		assertNotNull(target);
 	}
@@ -41,7 +41,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://localhost:8080/";
@@ -60,7 +60,7 @@ public class SignedRequestApacheHCImplTest {
 	@Test
 	public void getGeneratedSignature_A$String$HttpMethod$String$Long_RSA()
 			throws Exception {
-		SignedRequestHTTPilotImpl signedRequest = null;
+		SignedRequestApacheHCImpl signedRequest = null;
 		String url = "https://www.google.com/calendar/feeds/default/allcalendars/full";
 		HttpMethod method = HttpMethod.GET;
 		String oAuthNonce = String.valueOf(System.currentTimeMillis());
@@ -72,7 +72,7 @@ public class SignedRequestApacheHCImplTest {
 			String consumerSecret = (String) props.get("consumer_secret");
 			String token = (String) props.get("token");
 			String tokenSecret = (String) props.get("token_secret");
-			signedRequest = new SignedRequestHTTPilotImpl(null,
+			signedRequest = new SignedRequestApacheHCImpl(null,
 					new OAuthConsumer(consumerKey, consumerSecret),
 					new OAuthAccessToken(token, tokenSecret),
 					SignatureMethod.RSA_SHA1);
@@ -118,7 +118,7 @@ public class SignedRequestApacheHCImplTest {
 		additionalparams.put("administrator", "false");
 		additionalparams.put("number", "12345");
 		additionalparams.put("xoauth_requestor_id", "323sdfa");
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod, additionalparams);
 		// given
 		String url = "http://localhost:8080/";
@@ -145,7 +145,7 @@ public class SignedRequestApacheHCImplTest {
 		Map<String, Object> additionalparams = new HashMap<String, Object>();
 		additionalparams.put("file", "vacation.jpg");
 		additionalparams.put("size", "original");
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(
 				null,
 				new OAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44"),
 				new OAuthAccessToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00"),
@@ -172,7 +172,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.PLAINTEXT;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://localhost:8080/";
@@ -193,7 +193,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String signature = "signatureXXX";
@@ -212,7 +212,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
@@ -240,7 +240,7 @@ public class SignedRequestApacheHCImplTest {
 			String tokenSecret = (String) props.get("token_secret");
 			OAuthAccessToken accessToken = new OAuthAccessToken(token, tokenSecret);
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer, accessToken,
+			SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer, accessToken,
 					signatureMethod);
 			// given
 			String url = "http://api.twitter.com/1/statuses/home_timeline.xml";
@@ -250,6 +250,7 @@ public class SignedRequestApacheHCImplTest {
 			HttpResponse actual = target.doRequest(url, method, new HashMap<String, Object>(), charset);
 			// then
 			assertNotNull(actual);
+			assertThat(actual.getStatusCode(), is(200));
 			System.out.println(actual.getHeaders());
 			System.out.println(actual.getTextBody());
 		} catch (NullPointerException e) {
@@ -262,7 +263,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
@@ -282,7 +283,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
@@ -300,7 +301,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
@@ -317,7 +318,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
@@ -337,7 +338,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";
@@ -346,23 +347,6 @@ public class SignedRequestApacheHCImplTest {
 		Long oAuthTimestamp = 12345L;
 		// when
 		String actual = target.getSignatureBaseString(url, method, oAuthNonce,
-				oAuthTimestamp);
-		// then
-		assertNotNull(actual);
-	}
-
-	@Test
-	public void getNormalizedParameters_A$String$Long() throws Exception {
-		OAuthRealm realm = null;
-		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
-		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
-				signatureMethod);
-		// given
-		String oAuthNonce = "nonce";
-		Long oAuthTimestamp = 123L;
-		// when
-		List<Parameter> actual = target.getNormalizedParameters(oAuthNonce,
 				oAuthTimestamp);
 		// then
 		assertNotNull(actual);
@@ -386,7 +370,7 @@ public class SignedRequestApacheHCImplTest {
 			Thread.sleep(100L);
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequest request = new SignedRequestHTTPilotImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
+			SignedRequest request = new SignedRequestApacheHCImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
 			request.doDelete("http://localhost:8888/", new HashMap<String, Object>(), "UTF-8");
 		} finally {
 			server.stop();
@@ -412,7 +396,7 @@ public class SignedRequestApacheHCImplTest {
 			Thread.sleep(100L);
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequest request = new SignedRequestHTTPilotImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
+			SignedRequest request = new SignedRequestApacheHCImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("k", "v");
 			request.doPut("http://localhost:8888/", params, "UTF-8");
@@ -440,7 +424,7 @@ public class SignedRequestApacheHCImplTest {
 			Thread.sleep(100L);
 			OAuthRealm realm = null;
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequest request = new SignedRequestHTTPilotImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
+			SignedRequest request = new SignedRequestApacheHCImpl(realm, HttpServerSpec.SINGLETON_CONSUMER, signatureMethod);
 			request.doTrace("http://localhost:8888/");
 		} finally {
 			server.stop();
@@ -467,7 +451,7 @@ public class SignedRequestApacheHCImplTest {
 			OAuthRealm realm = null;
 			OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+			SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 					signatureMethod);
 			// given
 			String url = "http://localhost:8888/";
@@ -503,7 +487,7 @@ public class SignedRequestApacheHCImplTest {
 			OAuthRealm realm = null;
 			OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+			SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 					signatureMethod);
 			// given
 			String url = "http://localhost:8888/";
@@ -539,7 +523,7 @@ public class SignedRequestApacheHCImplTest {
 			OAuthRealm realm = null;
 			OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-			SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+			SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 					signatureMethod);
 			// given
 			String url = "http://localhost:8888/";
@@ -561,7 +545,7 @@ public class SignedRequestApacheHCImplTest {
 		OAuthRealm realm = null;
 		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
+		SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer,
 				signatureMethod);
 		// given
 		String url = "http://seratch.net/";

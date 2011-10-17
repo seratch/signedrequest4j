@@ -1,6 +1,5 @@
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.SignedRequestHTTPilotImpl.Parameter;
 import org.junit.Test;
 import server.*;
 
@@ -341,23 +340,6 @@ public class SignedRequestHTTPilotImplTest {
 		Long oAuthTimestamp = 12345L;
 		// when
 		String actual = target.getSignatureBaseString(url, method, oAuthNonce,
-				oAuthTimestamp);
-		// then
-		assertNotNull(actual);
-	}
-
-	@Test
-	public void getNormalizedParameters_A$String$Long() throws Exception {
-		OAuthRealm realm = null;
-		OAuthConsumer consumer = new OAuthConsumer("sdfsa", "sdfafa33333");
-		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
-		SignedRequestHTTPilotImpl target = new SignedRequestHTTPilotImpl(realm, consumer,
-				signatureMethod);
-		// given
-		String oAuthNonce = "nonce";
-		Long oAuthTimestamp = 123L;
-		// when
-		List<Parameter> actual = target.getNormalizedParameters(oAuthNonce,
 				oAuthTimestamp);
 		// then
 		assertNotNull(actual);
