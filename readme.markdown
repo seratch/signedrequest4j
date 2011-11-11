@@ -1,8 +1,8 @@
-# SignedRequest4J : A Java library supporting OAuth 1.0 signing
+# SignedRequest4J : A Java library supporting OAuth 1.0 signing and verifying
 
 ## What's this?
 
-SignedRequest4J is a Java library supporting OAuth 1.0 signing.
+SignedRequest4J is a Java library supporting OAuth 1.0 signing and verifying.
 
 This library supports sending OAuth 1.0 signed HTTP requests and verifying the signature of requests.
 
