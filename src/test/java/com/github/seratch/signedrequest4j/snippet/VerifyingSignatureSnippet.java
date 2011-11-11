@@ -19,7 +19,7 @@ public class VerifyingSignatureSnippet {
 		String oAuthNonce = "nonce_value";
 		Long oAuthTimestamp = 1272026745L;
 
-		// 2-Legged OAuth
+		// 2-Legged OAuth request
 		{
 			SignedRequest signedRequest = SignedRequestFactory.create(consumer, additionalParams);
 			String signature = signedRequest.getSignature(url, httpMethod, oAuthNonce, oAuthTimestamp);
@@ -33,6 +33,7 @@ public class VerifyingSignatureSnippet {
 
 		OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
 
+		// 3-Legged OAuth request
 		{
 			SignedRequest signedRequest = SignedRequestFactory.create(consumer, accessToken, additionalParams);
 			String signature = signedRequest.getSignature(url, httpMethod, oAuthNonce, oAuthTimestamp);

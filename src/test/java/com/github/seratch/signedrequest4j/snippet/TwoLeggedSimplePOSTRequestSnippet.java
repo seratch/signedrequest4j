@@ -9,16 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TwoLeggedSimplePOSTRequestSnippet {
+
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory.create(
-				new OAuthConsumer("consumer_key", "consumer_secret"));
+
+		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
+
+		SignedRequest signedRequest = SignedRequestFactory.create(consumer);
+
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
-		HttpResponse response = signedRequest.doPost(
-				"https://github.com/seratch/signedrequest4j",
-				requestParameters, "UTF-8");
+
+		HttpResponse response = signedRequest.doPost("https://github.com/seratch/signedrequest4j", requestParameters, "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());
 		System.out.println(response.getTextBody());
+
 	}
+
 }

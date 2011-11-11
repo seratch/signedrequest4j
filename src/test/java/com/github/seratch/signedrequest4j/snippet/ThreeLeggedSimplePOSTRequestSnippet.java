@@ -6,17 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ThreeLeggedSimplePOSTRequestSnippet {
+
 	public static void main(String[] args) throws Exception {
-		SignedRequest signedRequest = SignedRequestFactory.create(
-				new OAuthConsumer("consumer_key", "consumer_secret"),
-				new OAuthAccessToken("token", "token_secret"));
+
+		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
+		OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
+
+		SignedRequest signedRequest = SignedRequestFactory.create(consumer, accessToken);
+
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("something", "updated");
-		HttpResponse response = signedRequest.doPost(
-				"https://github.com/seratch/signedrequest4j",
-				requestParameters, "UTF-8");
+
+		HttpResponse response = signedRequest.doPost("https://github.com/seratch/signedrequest4j", requestParameters, "UTF-8");
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getHeaders());
 		System.out.println(response.getTextBody());
 	}
+
 }
