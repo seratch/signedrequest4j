@@ -60,6 +60,16 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 
 	protected Map<String, String> headersToOverwrite = new HashMap<String, String>();
 
+	@Override
+	public Map<String, Object> getAdditionalAuthorizationHeaderParams() {
+		return this.additionalParameters;
+	}
+
+	@Override
+	public void setAdditionalAuthorizationHeaderParams(Map<String, Object> additionalParams) {
+		this.additionalParameters = additionalParams;
+	}
+
 	/**
 	 * {inheritDoc}
 	 */
@@ -124,8 +134,7 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 	 */
 	@Override
 	public String getSignature(String url, HttpMethod method, String oAuthNonce, Long oAuthTimestamp) {
-		String baseString = getSignatureBaseString(url, method, oAuthNonce,
-				oAuthTimestamp);
+		String baseString = getSignatureBaseString(url, method, oAuthNonce, oAuthTimestamp);
 		if (signatureMethod == SignatureMethod.HMAC_SHA1) {
 			String algorithm = "HmacSHA1";
 			String consumerSecret = consumer.getConsumerSecret();

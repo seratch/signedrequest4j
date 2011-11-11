@@ -1,5 +1,14 @@
 package com.github.seratch.signedrequest4j;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import com.github.seratch.signedrequest4j.OAuthEncoding.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +41,14 @@ public class OAuthEncodingTest {
 		String actual = OAuthEncoding.normalizeURL(url);
 		String expected = "http://example.com/";
 		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void decode_A$String() throws Exception {
+		String encoded = "ab%2Bc~";
+		String actual = OAuthEncoding.decode(encoded);
+		String expected = "ab+c~";
+		assertThat(actual, is(equalTo(expected)));
 	}
 
 }

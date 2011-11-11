@@ -10,7 +10,7 @@ public class HttpException extends IOException {
 
 	private HttpResponse response;
 
-	public HttpException(java.lang.String message, HttpResponse response) {
+	public HttpException(String message, HttpResponse response) {
 		setMessage(message);
 		setResponse(response);
 	}

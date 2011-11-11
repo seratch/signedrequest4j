@@ -17,6 +17,7 @@ package com.github.seratch.signedrequest4j;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 /**
@@ -37,6 +38,15 @@ public class OAuthEncoding {
 		} catch (UnsupportedEncodingException ignore) {
 		}
 		return encoded;
+	}
+
+	public static String decode(String encoded) {
+		String decoded = "";
+		try {
+			decoded = URLDecoder.decode(encoded, "UTF-8");
+		} catch (UnsupportedEncodingException ignore) {
+		}
+		return decoded;
 	}
 
 	public static String normalizeURL(String url) {

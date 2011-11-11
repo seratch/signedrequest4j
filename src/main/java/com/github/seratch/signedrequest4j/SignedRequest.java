@@ -224,5 +224,18 @@ public interface SignedRequest {
 	 */
 	SignedRequest setRsaPrivateKeyValue(String rsaPrivateKeyValue);
 
+	/**
+	 * Returns additional parameters that are used for signature
+	 *
+	 * @return additional parameters
+	 */
+	Map<String, Object> getAdditionalAuthorizationHeaderParams();
+
+	/**
+	 * Set additional parameters that are used for signature
+	 *
+	 * @param additionalParams additional parameters
+	 */
+	void setAdditionalAuthorizationHeaderParams(Map<String, Object> additionalParams);
 
 }

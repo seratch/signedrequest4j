@@ -16,7 +16,9 @@
 package com.github.seratch.signedrequest4j;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * OAuth Signed Request Verifier
@@ -44,14 +46,35 @@ public class SignedRequestVerifier {
 		return verify(url, authorizationHeader, consumer, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
-	public static boolean verify(
-			String url, String authorizationHeader, OAuthConsumer consumer,
-			HttpMethod httpMethod, SignatureMethod signatureMethod) {
+	private static final Set<String> oAuthElementNames = new HashSet<String>();
+
+	static {
+		oAuthElementNames.add("oauth_consumer_key");
+		oAuthElementNames.add("oauth_signature_method");
+		oAuthElementNames.add("oauth_signature");
+		oAuthElementNames.add("oauth_timestamp");
+		oAuthElementNames.add("oauth_nonce");
+		oAuthElementNames.add("oauth_token");
+		oAuthElementNames.add("oauth_version");
+	}
+
+	public static boolean verify(String url, String authorizationHeader, OAuthConsumer consumer,
+	                             HttpMethod httpMethod, SignatureMethod signatureMethod) {
 		if (authorizationHeader == null) {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
+		Map<String, Object> additionalParams = new HashMap<String, Object>();
+		for (String name : elements.keySet()) {
+			String _name = name.replaceFirst("OAuth\\s+", "");
+			if (!oAuthElementNames.contains(_name)) {
+				System.out.println(name);
+				System.out.println(OAuthEncoding.decode(elements.get(name)));
+				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+			}
+		}
+		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String nonce = elements.get("oauth_nonce");
 		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
 		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
@@ -76,6 +99,14 @@ public class SignedRequestVerifier {
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
+		Map<String, Object> additionalParams = new HashMap<String, Object>();
+		for (String name : elements.keySet()) {
+			String _name = name.replaceFirst("OAuth\\s+", "");
+			if (!oAuthElementNames.contains(_name)) {
+				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+			}
+		}
+		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String signature = req.getSignature(url, httpMethod,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));

@@ -1,5 +1,14 @@
 package com.github.seratch.signedrequest4j;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
+import com.github.seratch.signedrequest4j.HttpResponse.*;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+
 import org.junit.Test;
 
 import java.util.List;

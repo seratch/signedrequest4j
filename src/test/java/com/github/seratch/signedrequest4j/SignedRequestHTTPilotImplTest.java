@@ -1,16 +1,20 @@
 package com.github.seratch.signedrequest4j;
 
 import org.junit.Test;
-import server.*;
+import server.DeleteHandler;
+import server.HttpServer;
+import server.HttpServerSpec;
+import server.PostHandler;
+import server.PutHandler;
+import server.TraceHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 public class SignedRequestHTTPilotImplTest {
