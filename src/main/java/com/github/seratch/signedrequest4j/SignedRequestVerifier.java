@@ -69,8 +69,6 @@ public class SignedRequestVerifier {
 		for (String name : elements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				System.out.println(name);
-				System.out.println(OAuthEncoding.decode(elements.get(name)));
 				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
 			}
 		}
