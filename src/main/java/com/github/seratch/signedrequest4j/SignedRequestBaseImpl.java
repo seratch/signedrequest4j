@@ -229,8 +229,6 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 				buf.append("\"");
 			}
 		}
-		// TODO
-		System.out.println(buf.toString());
 		return buf.toString();
 	}
 
