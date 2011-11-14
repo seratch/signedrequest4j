@@ -193,5 +193,22 @@ public class SignedRequestVerifierTest {
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void verifyPOST_A$String$OAuthConsumer$OAuthAccessToken$SignatureMethod_empty() throws Exception {
+		// given
+		String authorizationHeader = "OAuth oauth_consumer_key=\"admin\"" +
+				",oauth_signature_method=\"HMAC-SHA1\"" +
+				",oauth_signature=\"DTdPlCeeaEWJctXBhcCNCofj2g4%3D\"" +
+				",oauth_timestamp=\"1301921304\"" +
+				",oauth_nonce=\"-1425143696163906497\"" +
+				",oauth_version=\"1.0\"";
+		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
+		Map<String, Object> formParams = new HashMap<String, Object>();
+		formParams.put("xoauth_requestor_id", "");
+		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/",
+				authorizationHeader, consumer, SignatureMethod.HMAC_SHA1, formParams);
+		boolean expected = true;
+		assertEquals(expected, actual);
+	}
 
 }

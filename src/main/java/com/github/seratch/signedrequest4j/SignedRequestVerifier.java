@@ -32,8 +32,10 @@ public class SignedRequestVerifier {
 		Map<String, String> elements = new HashMap<String, String>();
 		String[] keyAndValueArray = authorizationHeader.split(",");
 		for (String keyAndValue : keyAndValueArray) {
-			String[] arr = keyAndValue.replaceAll("\"", "").split("=");
-			elements.put(arr[0].trim(), arr[1].trim());
+			String[] arr = keyAndValue.split("=");
+			String key = arr[0].trim().replaceAll("\"", "");
+			String value = arr[1].trim().replaceAll("\"", "");
+			elements.put(key, value);
 		}
 		return elements;
 	}
@@ -111,7 +113,10 @@ public class SignedRequestVerifier {
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		for (String key : formParams.keySet()) {
-			elements.put(key, formParams.get(key).toString());
+			Object value = formParams.get(key);
+			if (value != null) {
+				elements.put(key, value.toString());
+			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
@@ -191,7 +196,10 @@ public class SignedRequestVerifier {
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		for (String key : formParams.keySet()) {
-			elements.put(key, formParams.get(key).toString());
+			Object value = formParams.get(key);
+			if (value != null) {
+				elements.put(key, value.toString());
+			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();

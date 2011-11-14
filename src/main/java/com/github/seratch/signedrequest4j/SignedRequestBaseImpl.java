@@ -243,7 +243,10 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 		params.add(new Parameter("oauth_version", oAuthVersion));
 		if (additionalParameters != null && additionalParameters.size() > 0) {
 			for (String key : additionalParameters.keySet()) {
-				params.add(new Parameter(key, OAuthEncoding.encode(additionalParameters.get(key))));
+				Object parameter = additionalParameters.get(key);
+				if (parameter != null) {
+					params.add(new Parameter(key, OAuthEncoding.encode(parameter)));
+				}
 			}
 		}
 		Collections.sort(params, new Comparator<Parameter>() {
@@ -308,7 +311,9 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 	public HttpResponse doPost(String url, Map<String, Object> requestParameters, String charset)
 			throws IOException {
 		for (String key : requestParameters.keySet()) {
-			additionalParameters.put(key, requestParameters.get(key));
+			if (requestParameters.get(key) != null) {
+				additionalParameters.put(key, requestParameters.get(key));
+			}
 		}
 		return doRequest(url, HttpMethod.POST, requestParameters, charset);
 	}

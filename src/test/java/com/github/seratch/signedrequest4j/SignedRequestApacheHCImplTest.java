@@ -218,6 +218,7 @@ public class SignedRequestApacheHCImplTest {
 		HttpMethod method = HttpMethod.GET;
 		Map<String, Object> requestParameters = new HashMap<String, Object>();
 		requestParameters.put("hoge", "foo");
+		requestParameters.put("foo", null);
 		String charset = "UTF-8";
 		// when
 		HttpResponse actual = target.doRequest(url, method, requestParameters,
