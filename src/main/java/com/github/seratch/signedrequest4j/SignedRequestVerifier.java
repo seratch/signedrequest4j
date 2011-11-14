@@ -58,8 +58,9 @@ public class SignedRequestVerifier {
 		oAuthElementNames.add("oauth_version");
 	}
 
-	public static boolean verify(String url, String authorizationHeader, OAuthConsumer consumer,
-	                             HttpMethod httpMethod, SignatureMethod signatureMethod) {
+	@Deprecated
+	public static boolean verifyLegacyUncorrected(String url, String authorizationHeader, OAuthConsumer consumer,
+	                                              HttpMethod httpMethod, SignatureMethod signatureMethod) {
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -79,6 +80,54 @@ public class SignedRequestVerifier {
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}
 
+	public static boolean verify(String url, String authorizationHeader, OAuthConsumer consumer,
+	                             HttpMethod httpMethod, SignatureMethod signatureMethod) {
+		if (authorizationHeader == null) {
+			return false;
+		}
+		if (httpMethod.equals(HttpMethod.POST)) {
+			throw new IllegalArgumentException("Please use verifyPOST instead for POST requests.");
+		}
+		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
+		Map<String, Object> additionalParams = new HashMap<String, Object>();
+		for (String name : elements.keySet()) {
+			String _name = name.replaceFirst("OAuth\\s+", "");
+			if (!oAuthElementNames.contains(_name)) {
+				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+			}
+		}
+		req.setAdditionalAuthorizationHeaderParams(additionalParams);
+		String nonce = elements.get("oauth_nonce");
+		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
+		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+	}
+
+	public static boolean verifyPOST(String url, String authorizationHeader, OAuthConsumer consumer,
+	                                 SignatureMethod signatureMethod, Map<String, Object> formParams) {
+		if (authorizationHeader == null) {
+			return false;
+		}
+		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		for (String key : formParams.keySet()) {
+			elements.put(key, formParams.get(key).toString());
+		}
+		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
+		Map<String, Object> additionalParams = new HashMap<String, Object>();
+		for (String name : elements.keySet()) {
+			String _name = name.replaceFirst("OAuth\\s+", "");
+			if (!oAuthElementNames.contains(_name)) {
+				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+			}
+		}
+		req.setAdditionalAuthorizationHeaderParams(additionalParams);
+		String nonce = elements.get("oauth_nonce");
+		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		String signature = req.getSignature(url, HttpMethod.POST, nonce, timestamp);
+		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+	}
+
 	public static boolean verifyHMacGetRequest(
 			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
 		return verify(url, authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
@@ -89,7 +138,8 @@ public class SignedRequestVerifier {
 		return verify(url, authorizationHeader, consumer, accessToken, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
-	public static boolean verify(
+	@Deprecated
+	public static boolean verifyLegacyUncorrected(
 			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
 			HttpMethod httpMethod, SignatureMethod signatureMethod) {
 		if (authorizationHeader == null) {
@@ -106,6 +156,53 @@ public class SignedRequestVerifier {
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String signature = req.getSignature(url, httpMethod,
+				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
+		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+	}
+
+	public static boolean verify(
+			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
+			HttpMethod httpMethod, SignatureMethod signatureMethod) {
+		if (authorizationHeader == null) {
+			return false;
+		}
+		if (httpMethod.equals(HttpMethod.POST)) {
+			throw new IllegalArgumentException("Please use verifyPOST instead for POST requests.");
+		}
+		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
+		Map<String, Object> additionalParams = new HashMap<String, Object>();
+		for (String name : elements.keySet()) {
+			String _name = name.replaceFirst("OAuth\\s+", "");
+			if (!oAuthElementNames.contains(_name)) {
+				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+			}
+		}
+		req.setAdditionalAuthorizationHeaderParams(additionalParams);
+		String signature = req.getSignature(url, httpMethod,
+				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
+		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+	}
+
+	public static boolean verifyPOST(String url, String authorizationHeader, OAuthConsumer consumer,
+	                                 OAuthAccessToken accessToken, SignatureMethod signatureMethod, Map<String, Object> formParams) {
+		if (authorizationHeader == null) {
+			return false;
+		}
+		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		for (String key : formParams.keySet()) {
+			elements.put(key, formParams.get(key).toString());
+		}
+		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
+		Map<String, Object> additionalParams = new HashMap<String, Object>();
+		for (String name : elements.keySet()) {
+			String _name = name.replaceFirst("OAuth\\s+", "");
+			if (!oAuthElementNames.contains(_name)) {
+				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+			}
+		}
+		req.setAdditionalAuthorizationHeaderParams(additionalParams);
+		String signature = req.getSignature(url, HttpMethod.POST,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}

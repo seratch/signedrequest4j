@@ -278,13 +278,16 @@ public class SignedRequestApacheHCImplTest {
 			String charset = "UTF-8";
 			// when
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("status", "test");
-			HttpResponse actual = target.doPost(createUrl, params, charset);
-			// then
-			assertNotNull(actual);
-			assertThat(actual.getStatusCode(), is(200));
-			System.out.println(actual.getHeaders());
-			System.out.println(actual.getTextBody());
+			try {
+				HttpResponse actual = target.doPost(createUrl, params, charset);
+				// then
+				assertNotNull(actual);
+				assertThat(actual.getStatusCode(), is(200));
+				System.out.println(actual.getHeaders());
+				System.out.println(actual.getTextBody());
+			} catch (HttpException e) {
+				System.out.println(e.getResponse().getTextBody());
+			}
 
 			String destroyUrl = "http://api.twitter.com/1/favorites/destroy/134825511774994432.xml";
 			HttpResponse actual2 = target.doPost(destroyUrl, params, charset);
