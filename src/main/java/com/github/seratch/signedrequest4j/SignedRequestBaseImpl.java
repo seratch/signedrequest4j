@@ -52,6 +52,8 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 
 	protected Map<String, Object> additionalParameters = new HashMap<String, Object>();
 
+	protected Map<String, Object> postParameters = new HashMap<String, Object>();
+
 	protected String rsaPrivateKeyValue;
 
 	protected int connectTimeoutMillis = 3000;
@@ -227,6 +229,8 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 				buf.append("\"");
 			}
 		}
+		// TODO
+		System.out.println(buf.toString());
 		return buf.toString();
 	}
 
@@ -244,6 +248,14 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 		if (additionalParameters != null && additionalParameters.size() > 0) {
 			for (String key : additionalParameters.keySet()) {
 				Object parameter = additionalParameters.get(key);
+				if (parameter != null) {
+					params.add(new Parameter(key, OAuthEncoding.encode(parameter)));
+				}
+			}
+		}
+		if (postParameters != null && postParameters.size() > 0) {
+			for (String key : postParameters.keySet()) {
+				Object parameter = postParameters.get(key);
 				if (parameter != null) {
 					params.add(new Parameter(key, OAuthEncoding.encode(parameter)));
 				}
@@ -312,7 +324,7 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 			throws IOException {
 		for (String key : requestParameters.keySet()) {
 			if (requestParameters.get(key) != null) {
-				additionalParameters.put(key, requestParameters.get(key));
+				postParameters.put(key, requestParameters.get(key));
 			}
 		}
 		return doRequest(url, HttpMethod.POST, requestParameters, charset);
