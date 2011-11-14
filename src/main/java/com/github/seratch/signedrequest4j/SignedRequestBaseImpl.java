@@ -50,7 +50,7 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 
 	protected String oAuthVersion = "1.0";
 
-	protected Map<String, Object> additionalParameters;
+	protected Map<String, Object> additionalParameters = new HashMap<String, Object>();
 
 	protected String rsaPrivateKeyValue;
 
@@ -307,6 +307,9 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 	@Override
 	public HttpResponse doPost(String url, Map<String, Object> requestParameters, String charset)
 			throws IOException {
+		for (String key : requestParameters.keySet()) {
+			additionalParameters.put(key, requestParameters.get(key));
+		}
 		return doRequest(url, HttpMethod.POST, requestParameters, charset);
 	}
 

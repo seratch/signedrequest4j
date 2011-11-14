@@ -227,7 +227,7 @@ public class SignedRequestApacheHCImplTest {
 	}
 
 	@Test
-	public void doRequest_A$String$HttpMethod$Map$String_TwitterOAuth() throws Exception {
+	public void doRequest_A$String$HttpMethod$Map$String_TwitterOAuth_GET() throws Exception {
 		try {
 			OAuthRealm realm = new OAuthRealm("http://api.twitter.com");
 			Properties props = new Properties();
@@ -252,6 +252,48 @@ public class SignedRequestApacheHCImplTest {
 			assertThat(actual.getStatusCode(), is(200));
 			System.out.println(actual.getHeaders());
 			System.out.println(actual.getTextBody());
+		} catch (NullPointerException e) {
+			System.out.println("TwitterOAuth.properties not found, test skipped.");
+		}
+	}
+
+	@Test
+	public void doRequest_A$String$HttpMethod$Map$String_TwitterOAuth_POST() throws Exception {
+		try {
+			OAuthRealm realm = new OAuthRealm("http://api.twitter.com");
+			Properties props = new Properties();
+			props.load(this.getClass().getClassLoader().getResourceAsStream("TwitterOAuth.properties"));
+			String consumerKey = (String) props.get("consumer_key");
+			String consumerSecret = (String) props.get("consumer_secret");
+			OAuthConsumer consumer = new OAuthConsumer(consumerKey, consumerSecret);
+			String token = (String) props.get("token");
+			String tokenSecret = (String) props.get("token_secret");
+			OAuthAccessToken accessToken = new OAuthAccessToken(token, tokenSecret);
+			SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
+			SignedRequestApacheHCImpl target = new SignedRequestApacheHCImpl(realm, consumer, accessToken,
+					signatureMethod);
+			// given
+			String createUrl = "http://api.twitter.com/1/favorites/create/134825511774994432.xml";
+			HttpMethod method = HttpMethod.POST;
+			String charset = "UTF-8";
+			// when
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("status", "test");
+			HttpResponse actual = target.doPost(createUrl, params, charset);
+			// then
+			assertNotNull(actual);
+			assertThat(actual.getStatusCode(), is(200));
+			System.out.println(actual.getHeaders());
+			System.out.println(actual.getTextBody());
+
+			String destroyUrl = "http://api.twitter.com/1/favorites/destroy/134825511774994432.xml";
+			HttpResponse actual2 = target.doPost(destroyUrl, params, charset);
+			// then
+			assertNotNull(actual2);
+			assertThat(actual2.getStatusCode(), is(200));
+			System.out.println(actual2.getHeaders());
+			System.out.println(actual2.getTextBody());
+
 		} catch (NullPointerException e) {
 			System.out.println("TwitterOAuth.properties not found, test skipped.");
 		}
