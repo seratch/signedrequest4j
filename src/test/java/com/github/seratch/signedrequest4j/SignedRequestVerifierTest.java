@@ -134,7 +134,7 @@ public class SignedRequestVerifierTest {
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
 		OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
-		SignedRequestVerifier.verify("http://sp.example.com/","",
+		SignedRequestVerifier.verify("http://sp.example.com/", "",
 				authorizationHeader, consumer, accessToken, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
@@ -205,7 +205,7 @@ public class SignedRequestVerifierTest {
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
 		Map<String, String> formParams = new HashMap<String, String>();
 		formParams.put("xoauth_requestor_id", "");
-		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/",  "",
+		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/", "",
 				authorizationHeader, consumer, SignatureMethod.HMAC_SHA1, formParams);
 		boolean expected = true;
 		assertEquals(expected, actual);

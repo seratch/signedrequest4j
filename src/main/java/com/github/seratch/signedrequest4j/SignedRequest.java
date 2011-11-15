@@ -240,6 +240,7 @@ public interface SignedRequest {
 
 	/**
 	 * Read the query string and sadd to the signature base string
+	 *
 	 * @param url
 	 */
 	void readQueryStringAndAddToSignatureBaseString(String url);
