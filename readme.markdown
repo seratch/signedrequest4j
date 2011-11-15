@@ -243,13 +243,13 @@ String url = "http://localhost/test/";
 String authorizationHeader = request.getHeader("Authorization");
 OAuthConsumer consumer = new OAuthConsumer("key","secret");
 
-boolean isValid = SignedRequestVerifier.verifyHMacGetRequest(url, authorizationHeader, consumer);
+boolean isValid = SignedRequestVerifier.verifyHMacGetRequest(url, queryString, authorizationHeader, consumer);
 ```
 
 or
 
 ```java
-boolean isValid = SignedRequestVerifier.verify(url, authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+boolean isValid = SignedRequestVerifier.verify(url, queryString, authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 ```
 
 
