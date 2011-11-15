@@ -194,7 +194,7 @@ HttpResponse response = signedRequest.doPost("http://example.com/", reuestBody, 
 
 ## Verifying the signature of the request
 
-### 2-Legged OAuth
+### 2-legged OAuth
 
 ```java
 String url = "http://localhost/test/";
@@ -230,14 +230,14 @@ boolean isValid = SignedRequestVerifier.verifyPOST(
                     formParams);
 ```
 
-### 3-Legged OAuth
+### 3-legged OAuth
 
 ```java
 String url = "http://localhost/test/";
 String queryString = "foo=var";
 String authorizationHeader = request.getHeader("Authorization");
 OAuthConsumer consumer = new OAuthConsumer("key","secret");
-OAuthAccessToken accessToken = new OAuthAccessToekN("token", "token_secret");
+OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
 
 boolean isValid = SignedRequestVerifier.verify(
                     url,
@@ -256,7 +256,7 @@ String url = "http://localhost/test/";
 String queryString = "foo=var";
 String authorizationHeader = request.getHeader("Authorization");
 OAuthConsumer consumer = new OAuthConsumer("key","secret");
-OAuthAccessToken accessToken = new OAuthAccessToekN("token", "token_secret");
+OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
 Map<String, String> formParams = new HashMap<String, String>();
 formParams.put("fizz", "buzz");
 
