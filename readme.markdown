@@ -192,65 +192,84 @@ RequestBody reuestBody = new RequestBody(body, contentType);
 HttpResponse response = signedRequest.doPost("http://example.com/", reuestBody, "UTF-8");
 ```
 
-### PUT
-
-```java
-Map<String, Object> requestParameters = new HashMap<String, Object>();
-requestParameters.put("something", "updated");
-HttpResponse response = signedRequest.doPut("http://example.com/", requestParameters, "UTF-8");
-```
-
-or
-
-```java
-byte[] body = "abc".getBytes();
-String contentType = "text/plain";
-RequestBody reuestBody = new RequestBody(body, contentType);
-HttpResponse response = signedRequest.doPost("http://example.com/", reuestBody, "UTF-8");
-```
-
-### DELETE
-
-```java
-Map<String, Object> requestParameters = new HashMap<String, Object>();
-requestParameters.put("something", "updated");
-HttpResponse response = signedRequest.doDelete("http://example.com/", requestParameters, "UTF-8");
-```
-
-### HEAD
-
-```java
-HttpResponse response = signedRequest.doHead("http://example.com/");
-```
-
-### OPTIONS
-
-```java
-HttpResponse response = signedRequest.doOptions("http://example.com/");
-```
-
-### TRACE
-
-```java
-signedRequest.setHeader("Max-Forwards", "5");
-HttpResponse response = signedRequest.doTrace("http://example.com/");
-```
-
 ## Verifying the signature of the request
+
+### 2-Legged OAuth
 
 ```java
 String url = "http://localhost/test/";
+String queryString = "foo=var";
 String authorizationHeader = request.getHeader("Authorization");
 OAuthConsumer consumer = new OAuthConsumer("key","secret");
 
-boolean isValid = SignedRequestVerifier.verifyHMacGetRequest(url, queryString, authorizationHeader, consumer);
+boolean isValid = SignedRequestVerifier.verify(
+                    url,
+                    queryString,
+                    authorizationHeader,
+                    consumer,
+                    HttpMethod.GET,
+                    SignatureMethod.HMAC_SHA1);
 ```
 
 or
 
 ```java
-boolean isValid = SignedRequestVerifier.verify(url, queryString, authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+String url = "http://localhost/test/";
+String queryString = "foo=var";
+String authorizationHeader = request.getHeader("Authorization");
+OAuthConsumer consumer = new OAuthConsumer("key","secret");
+Map<String, String> formParams = new HashMap<String, String>();
+formParams.put("fizz", "buzz");
+
+boolean isValid = SignedRequestVerifier.verifyPOST(
+                    url,
+                    queryString,
+                    authorizationHeader,
+                    consumer,
+                    SignatureMethod.HMAC_SHA1,
+                    formParams);
 ```
+
+### 3-Legged OAuth
+
+```java
+String url = "http://localhost/test/";
+String queryString = "foo=var";
+String authorizationHeader = request.getHeader("Authorization");
+OAuthConsumer consumer = new OAuthConsumer("key","secret");
+OAuthAccessToken accessToken = new OAuthAccessToekN("token", "token_secret");
+
+boolean isValid = SignedRequestVerifier.verify(
+                    url,
+                    queryString,
+                    authorizationHeader,
+                    consumer,
+                    accessToken,
+                    HttpMethod.GET,
+                    SignatureMethod.HMAC_SHA1);
+```
+
+or
+
+```java
+String url = "http://localhost/test/";
+String queryString = "foo=var";
+String authorizationHeader = request.getHeader("Authorization");
+OAuthConsumer consumer = new OAuthConsumer("key","secret");
+OAuthAccessToken accessToken = new OAuthAccessToekN("token", "token_secret");
+Map<String, String> formParams = new HashMap<String, String>();
+formParams.put("fizz", "buzz");
+
+boolean isValid = SignedRequestVerifier.verifyPOST(
+                    url,
+                    queryString,
+                    authorizationHeader,
+                    consumer,
+                    accessToken,
+                    SignatureMethod.HMAC_SHA1,
+                    formParams);
+```
+
 
 
 
