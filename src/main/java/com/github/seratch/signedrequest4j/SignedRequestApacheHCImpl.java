@@ -15,9 +15,6 @@
  */
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.pem.PEMReader;
-import com.github.seratch.signedrequest4j.pem.PKCS1EncodedKeySpec;
-import httpilot.HTTPIOException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -39,21 +36,11 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
+import java.net.URLDecoder;
 import java.security.SecureRandom;
-import java.security.Signature;
-import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,6 +146,9 @@ public class SignedRequestApacheHCImpl extends SignedRequestBaseImpl implements 
 			List<NameValuePair> params = toNameValuePairList(requestParameters);
 			entity = new UrlEncodedFormEntity(params, "UTF-8");
 		}
+
+		// read get parameters for signature base string
+		readGetParameters(url);
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpUriRequest request = getRequest(method, url);

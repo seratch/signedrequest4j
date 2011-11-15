@@ -77,6 +77,9 @@ public class SignedRequestHTTPilotImpl extends SignedRequestBaseImpl implements 
 
 		// create http request
 		Request request = new Request(url);
+		// read get parameters for signature base string
+		readGetParameters(url);
+
 		request.setEnableThrowingIOException(true);
 		request.setUserAgent(USER_AGENT);
 		request.setConnectTimeoutMillis(connectTimeoutMillis);
@@ -122,11 +125,6 @@ public class SignedRequestHTTPilotImpl extends SignedRequestBaseImpl implements 
 			request.setHeader(name, headersToOverwrite.get(name));
 		}
 
-		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
-		Long oAuthTimestamp = System.currentTimeMillis() / 1000;
-		String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
-		String authorizationHeader = getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
-		request.setHeader("Authorization", authorizationHeader);
 
 		if (method == HttpMethod.GET) {
 			request.setQueryParams(requestParameters);
@@ -134,6 +132,15 @@ public class SignedRequestHTTPilotImpl extends SignedRequestBaseImpl implements 
 			// message body
 			request.setFormParams(requestParameters);
 		}
+		// read get parameters for signature base string
+		readGetParameters(request.getUrl());
+		readGetParameters(request.getQueryParams().toString());
+
+		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
+		Long oAuthTimestamp = System.currentTimeMillis() / 1000;
+		String signature = getSignature(url, method, oAuthNonce, oAuthTimestamp);
+		String authorizationHeader = getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
+		request.setHeader("Authorization", authorizationHeader);
 
 		try {
 			Response response = HTTP.request(new Method(method.name()), request);

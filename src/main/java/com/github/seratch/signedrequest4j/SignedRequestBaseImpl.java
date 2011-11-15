@@ -22,6 +22,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -51,6 +53,8 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 	protected String oAuthVersion = "1.0";
 
 	protected Map<String, Object> additionalParameters = new HashMap<String, Object>();
+
+	protected Map<String, Object> getParameters = new HashMap<String, Object>();
 
 	protected Map<String, Object> postParameters = new HashMap<String, Object>();
 
@@ -232,7 +236,28 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 		return buf.toString();
 	}
 
-	List<Parameter> getNormalizedParameters(String oAuthNonce, Long oAuthTimestamp) {
+
+	protected void readGetParameters(String url) {
+		// Add GET parameters for signature base string
+		String[] urlAndQueryString = url.split("\\?");
+		if (urlAndQueryString.length == 2) {
+			String queryString = urlAndQueryString[1];
+			String[] params = queryString.split("&");
+			for (String param : params) {
+				String[] keyAndValue = param.split("=");
+				if (keyAndValue.length == 2) {
+					try {
+						String key = URLDecoder.decode(keyAndValue[0], "UTF-8");
+						String value = URLDecoder.decode(keyAndValue[1], "UTF-8");
+						this.getParameters.put(key, value);
+					} catch (UnsupportedEncodingException e) {
+					}
+				}
+			}
+		}
+	}
+
+	protected List<Parameter> getNormalizedParameters(String oAuthNonce, Long oAuthTimestamp) {
 		List<Parameter> params = new ArrayList<Parameter>();
 		params.add(new Parameter("oauth_consumer_key", consumer.getConsumerKey()));
 		if (accessToken != null) {
@@ -246,6 +271,14 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 		if (additionalParameters != null && additionalParameters.size() > 0) {
 			for (String key : additionalParameters.keySet()) {
 				Object parameter = additionalParameters.get(key);
+				if (parameter != null) {
+					params.add(new Parameter(key, OAuthEncoding.encode(parameter)));
+				}
+			}
+		}
+		if (getParameters != null && getParameters.size() > 0) {
+			for (String key : getParameters.keySet()) {
+				Object parameter = getParameters.get(key);
 				if (parameter != null) {
 					params.add(new Parameter(key, OAuthEncoding.encode(parameter)));
 				}
@@ -267,7 +300,7 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 		return params;
 	}
 
-	static class Parameter {
+	protected static class Parameter {
 
 		private final String key;
 		private final Object value;
