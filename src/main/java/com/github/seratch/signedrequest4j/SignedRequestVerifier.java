@@ -116,10 +116,12 @@ public class SignedRequestVerifier {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
-		for (String key : formParams.keySet()) {
-			String value = formParams.get(key);
-			if (value != null) {
-				elements.put(key, value);
+		if (formParams != null) {
+			for (String key : formParams.keySet()) {
+				String value = formParams.get(key);
+				if (value != null) {
+					elements.put(key, value);
+				}
 			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
@@ -207,10 +209,12 @@ public class SignedRequestVerifier {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
-		for (String key : formParams.keySet()) {
-			String value = formParams.get(key);
-			if (value != null) {
-				elements.put(key, value);
+		if (formParams != null) {
+			for (String key : formParams.keySet()) {
+				String value = formParams.get(key);
+				if (value != null) {
+					elements.put(key, value);
+				}
 			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
