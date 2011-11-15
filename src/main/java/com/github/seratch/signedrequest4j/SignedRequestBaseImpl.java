@@ -237,7 +237,7 @@ public abstract class SignedRequestBaseImpl implements SignedRequest {
 	}
 
 
-	protected void readGetParameters(String url) {
+	public void readQueryStringAndAddToSignatureBaseString(String url) {
 		// Add GET parameters for signature base string
 		String[] urlAndQueryString = url.split("\\?");
 		if (urlAndQueryString.length == 2) {

@@ -20,7 +20,7 @@ public abstract class BasicHandler extends AbstractHandler {
 		boolean isValid = false;
 		if (method.equals(HttpMethod.POST)) {
 			isValid = SignedRequestVerifier.verifyPOST(
-					"http://localhost:8888/",
+					"http://localhost:8888/", request.getQueryString(),
 					request.getHeader("Authorization"),
 					HttpServerSpec.SINGLETON_CONSUMER,
 					SignatureMethod.HMAC_SHA1,
@@ -28,7 +28,7 @@ public abstract class BasicHandler extends AbstractHandler {
 			);
 		} else {
 			isValid = SignedRequestVerifier.verify(
-					"http://localhost:8888/",
+					"http://localhost:8888/", request.getQueryString(),
 					request.getHeader("Authorization"),
 					HttpServerSpec.SINGLETON_CONSUMER,
 					method,

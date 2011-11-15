@@ -15,21 +15,14 @@
  */
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.pem.PEMReader;
-import com.github.seratch.signedrequest4j.pem.PKCS1EncodedKeySpec;
 import httpilot.HTTP;
 import httpilot.HTTPIOException;
 import httpilot.Method;
 import httpilot.Request;
 import httpilot.Response;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.*;
-import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.*;
 
 /**
@@ -78,7 +71,7 @@ public class SignedRequestHTTPilotImpl extends SignedRequestBaseImpl implements 
 		// create http request
 		Request request = new Request(url);
 		// read get parameters for signature base string
-		readGetParameters(url);
+		readQueryStringAndAddToSignatureBaseString(url);
 
 		request.setEnableThrowingIOException(true);
 		request.setUserAgent(USER_AGENT);
@@ -133,8 +126,8 @@ public class SignedRequestHTTPilotImpl extends SignedRequestBaseImpl implements 
 			request.setFormParams(requestParameters);
 		}
 		// read get parameters for signature base string
-		readGetParameters(request.getUrl());
-		readGetParameters(request.getQueryParams().toString());
+		readQueryStringAndAddToSignatureBaseString(request.getUrl());
+		readQueryStringAndAddToSignatureBaseString(request.getQueryParams().toString());
 
 		String oAuthNonce = String.valueOf(new SecureRandom().nextLong());
 		Long oAuthTimestamp = System.currentTimeMillis() / 1000;

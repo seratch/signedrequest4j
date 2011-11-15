@@ -25,12 +25,12 @@ public class SignedRequestVerifierTest {
 		// given
 		String authorizationHeader = "OAuth oauth_consumer_key=\"admin\"" +
 				",oauth_signature_method=\"HMAC-SHA1\"" +
-				",oauth_signature=\"iok6KjvmOQStq1y4SyovV1%2FghNI%3D\"" +
+				",oauth_signature=\"t7L5ym9EKERK0wauFOJ%2BGlr3O50%3D\"" +
 				",oauth_timestamp=\"1301921304\"" +
 				",oauth_nonce=\"-1425143696163906497\"" +
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("admin", "test");
-		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/?keywords=test",
+		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/", "keywords=test",
 				authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -62,7 +62,7 @@ public class SignedRequestVerifierTest {
 				",oauth_nonce=\"-1425143696163906497\"" +
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("admin", "test");
-		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/?keywords=test",
+		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/", "keywords=test",
 				authorizationHeader, consumer, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -74,13 +74,13 @@ public class SignedRequestVerifierTest {
 		String authorizationHeader = "OAuth oauth_token=\"t\"" +
 				",oauth_consumer_key=\"admin\"" +
 				",oauth_signature_method=\"HMAC-SHA1\"" +
-				",oauth_signature=\"%2FiyrxzxDTh2FgMlJi0D9VONg4rM%3D\"" +
+				",oauth_signature=\"IdFtVx2dp0IMA7Yh6ZjkZU53SNQ%3D\"" +
 				",oauth_timestamp=\"1301923063\"" +
 				",oauth_nonce=\"-5989898319858371717\"" +
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("admin", "test");
 		OAuthAccessToken accessToken = new OAuthAccessToken("t", "ts");
-		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/?keywords=test",
+		boolean actual = SignedRequestVerifier.verify("http://localhost:8080/topics/", "keywords=test",
 				authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -97,7 +97,7 @@ public class SignedRequestVerifierTest {
 				",oauth_version=\"1.0\"" +
 				",xoauth_requestor_id=\"user%40example.com\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
-		boolean actual = SignedRequestVerifier.verify("http://sp.example.com/",
+		boolean actual = SignedRequestVerifier.verify("http://sp.example.com/", "",
 				authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -116,7 +116,7 @@ public class SignedRequestVerifierTest {
 				",xoauth_requestor_id=\"user%40example.com\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
 		OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
-		boolean actual = SignedRequestVerifier.verify("http://sp.example.com/",
+		boolean actual = SignedRequestVerifier.verify("http://sp.example.com/", "",
 				authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -134,7 +134,7 @@ public class SignedRequestVerifierTest {
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
 		OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
-		SignedRequestVerifier.verify("http://sp.example.com/",
+		SignedRequestVerifier.verify("http://sp.example.com/","",
 				authorizationHeader, consumer, accessToken, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
@@ -167,9 +167,9 @@ public class SignedRequestVerifierTest {
 				",xoauth_requestor_id=\"user%40example.com\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
 		OAuthAccessToken accessToken = new OAuthAccessToken("token", "token_secret");
-		Map<String, Object> formParams = new HashMap<String, Object>();
+		Map<String, String> formParams = new HashMap<String, String>();
 		formParams.put("xoauth_requestor_id", "user@example.com");
-		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/",
+		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/", "",
 				authorizationHeader, consumer, accessToken, SignatureMethod.HMAC_SHA1, formParams);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -185,9 +185,9 @@ public class SignedRequestVerifierTest {
 				",oauth_nonce=\"-1425143696163906497\"" +
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
-		Map<String, Object> formParams = new HashMap<String, Object>();
+		Map<String, String> formParams = new HashMap<String, String>();
 		formParams.put("xoauth_requestor_id", "user@example.com");
-		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/",
+		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/", "",
 				authorizationHeader, consumer, SignatureMethod.HMAC_SHA1, formParams);
 		boolean expected = true;
 		assertEquals(expected, actual);
@@ -203,9 +203,9 @@ public class SignedRequestVerifierTest {
 				",oauth_nonce=\"-1425143696163906497\"" +
 				",oauth_version=\"1.0\"";
 		OAuthConsumer consumer = new OAuthConsumer("consumer_key", "consumer_secret");
-		Map<String, Object> formParams = new HashMap<String, Object>();
+		Map<String, String> formParams = new HashMap<String, String>();
 		formParams.put("xoauth_requestor_id", "");
-		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/",
+		boolean actual = SignedRequestVerifier.verifyPOST("http://sp.example.com/",  "",
 				authorizationHeader, consumer, SignatureMethod.HMAC_SHA1, formParams);
 		boolean expected = true;
 		assertEquals(expected, actual);

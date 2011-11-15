@@ -238,4 +238,10 @@ public interface SignedRequest {
 	 */
 	void setAdditionalAuthorizationHeaderParams(Map<String, Object> additionalParams);
 
+	/**
+	 * Read the query string and sadd to the signature base string
+	 * @param url
+	 */
+	void readQueryStringAndAddToSignatureBaseString(String url);
+
 }

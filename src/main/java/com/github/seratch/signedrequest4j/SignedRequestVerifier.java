@@ -40,12 +40,12 @@ public class SignedRequestVerifier {
 		return elements;
 	}
 
-	public static boolean verifyHMacGetRequest(String url, String authorizationHeader, OAuthConsumer consumer) {
-		return verify(url, authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+	public static boolean verifyHMacGetRequest(String url, String queryString, String authorizationHeader, OAuthConsumer consumer) {
+		return verify(url, queryString, authorizationHeader, consumer, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 	}
 
-	public static boolean verifyHMacPostRequest(String url, String authorizationHeader, OAuthConsumer consumer) {
-		return verify(url, authorizationHeader, consumer, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
+	public static boolean verifyHMacPostRequest(String url, String queryString, String authorizationHeader, OAuthConsumer consumer) {
+		return verify(url, queryString, authorizationHeader, consumer, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
 	private static final Set<String> oAuthElementNames = new HashSet<String>();
@@ -82,7 +82,7 @@ public class SignedRequestVerifier {
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}
 
-	public static boolean verify(String url, String authorizationHeader, OAuthConsumer consumer,
+	public static boolean verify(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
 	                             HttpMethod httpMethod, SignatureMethod signatureMethod) {
 		if (authorizationHeader == null) {
 			return false;
@@ -102,20 +102,24 @@ public class SignedRequestVerifier {
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String nonce = elements.get("oauth_nonce");
 		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		if (queryString == null) {
+			queryString = "";
+		}
+		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}
 
-	public static boolean verifyPOST(String url, String authorizationHeader, OAuthConsumer consumer,
-	                                 SignatureMethod signatureMethod, Map<String, Object> formParams) {
+	public static boolean verifyPOST(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
+	                                 SignatureMethod signatureMethod, Map<String, String> formParams) {
 		if (authorizationHeader == null) {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		for (String key : formParams.keySet()) {
-			Object value = formParams.get(key);
+			String value = formParams.get(key);
 			if (value != null) {
-				elements.put(key, value.toString());
+				elements.put(key, value);
 			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
@@ -129,18 +133,22 @@ public class SignedRequestVerifier {
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String nonce = elements.get("oauth_nonce");
 		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		if (queryString == null) {
+			queryString = "";
+		}
+		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, HttpMethod.POST, nonce, timestamp);
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}
 
 	public static boolean verifyHMacGetRequest(
-			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
-		return verify(url, authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
+			String url, String queryString, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
+		return verify(url, queryString, authorizationHeader, consumer, accessToken, HttpMethod.GET, SignatureMethod.HMAC_SHA1);
 	}
 
 	public static boolean verifyHMacPostRequest(
-			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
-		return verify(url, authorizationHeader, consumer, accessToken, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
+			String url, String queryString, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken) {
+		return verify(url, queryString, authorizationHeader, consumer, accessToken, HttpMethod.POST, SignatureMethod.HMAC_SHA1);
 	}
 
 	@Deprecated
@@ -166,7 +174,7 @@ public class SignedRequestVerifier {
 	}
 
 	public static boolean verify(
-			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
+			String url, String queryString, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
 			HttpMethod httpMethod, SignatureMethod signatureMethod) {
 		if (authorizationHeader == null) {
 			return false;
@@ -184,21 +192,25 @@ public class SignedRequestVerifier {
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
+		if (queryString == null) {
+			queryString = "";
+		}
+		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, httpMethod,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
 	}
 
-	public static boolean verifyPOST(String url, String authorizationHeader, OAuthConsumer consumer,
-	                                 OAuthAccessToken accessToken, SignatureMethod signatureMethod, Map<String, Object> formParams) {
+	public static boolean verifyPOST(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
+	                                 OAuthAccessToken accessToken, SignatureMethod signatureMethod, Map<String, String> formParams) {
 		if (authorizationHeader == null) {
 			return false;
 		}
 		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
 		for (String key : formParams.keySet()) {
-			Object value = formParams.get(key);
+			String value = formParams.get(key);
 			if (value != null) {
-				elements.put(key, value.toString());
+				elements.put(key, value);
 			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
@@ -210,6 +222,10 @@ public class SignedRequestVerifier {
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
+		if (queryString == null) {
+			queryString = "";
+		}
+		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, HttpMethod.POST,
 				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
 		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));

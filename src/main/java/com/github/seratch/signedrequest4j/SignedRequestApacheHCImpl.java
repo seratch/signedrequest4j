@@ -38,7 +38,6 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,7 +147,7 @@ public class SignedRequestApacheHCImpl extends SignedRequestBaseImpl implements 
 		}
 
 		// read get parameters for signature base string
-		readGetParameters(url);
+		readQueryStringAndAddToSignatureBaseString(url);
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpUriRequest request = getRequest(method, url);

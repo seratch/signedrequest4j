@@ -14,6 +14,7 @@ public class VerifyingSignatureSnippet {
 		additionalParams.put("xoauth_requestor_id", "user@example.com");
 
 		String url = "http://sp.example.com/";
+		String queryString = null;
 		HttpMethod httpMethod = HttpMethod.GET;
 		SignatureMethod signatureMethod = SignatureMethod.HMAC_SHA1;
 		String oAuthNonce = "nonce_value";
@@ -25,7 +26,7 @@ public class VerifyingSignatureSnippet {
 			String signature = signedRequest.getSignature(url, httpMethod, oAuthNonce, oAuthTimestamp);
 			String authorizationHeader = signedRequest.getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
 			System.out.println(authorizationHeader);
-			boolean isValid = SignedRequestVerifier.verify(url, authorizationHeader, consumer, httpMethod, signatureMethod);
+			boolean isValid = SignedRequestVerifier.verify(url, queryString, authorizationHeader, consumer, httpMethod, signatureMethod);
 			if (isValid) {
 				System.out.println("Signature is valid.");
 			}
@@ -39,7 +40,7 @@ public class VerifyingSignatureSnippet {
 			String signature = signedRequest.getSignature(url, httpMethod, oAuthNonce, oAuthTimestamp);
 			String authorizationHeader = signedRequest.getAuthorizationHeader(signature, oAuthNonce, oAuthTimestamp);
 			System.out.println(authorizationHeader);
-			boolean isValid = SignedRequestVerifier.verify(url, authorizationHeader, consumer, accessToken, httpMethod, signatureMethod);
+			boolean isValid = SignedRequestVerifier.verify(url, queryString, authorizationHeader, consumer, accessToken, httpMethod, signatureMethod);
 			if (isValid) {
 				System.out.println("Signature is valid.");
 			}
