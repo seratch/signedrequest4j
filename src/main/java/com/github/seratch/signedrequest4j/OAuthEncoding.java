@@ -15,6 +15,9 @@
  */
 package com.github.seratch.signedrequest4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -28,6 +31,8 @@ import java.net.URLEncoder;
  */
 public class OAuthEncoding {
 
+	private static Logger log = LoggerFactory.getLogger(OAuthEncoding.class);
+
 	public static String encode(Object obj) {
 		if (obj == null) {
 			return "";
@@ -39,6 +44,9 @@ public class OAuthEncoding {
 					.replace("*", "%2A")
 					.replace("%7E", "~");
 		} catch (UnsupportedEncodingException ignore) {
+		}
+		if (log.isDebugEnabled()) {
+			log.debug("input: " + obj.toString() + ", encoded: " + encoded);
 		}
 		return encoded;
 	}
@@ -52,6 +60,9 @@ public class OAuthEncoding {
 			decoded = URLDecoder.decode(encoded, "UTF-8");
 		} catch (UnsupportedEncodingException ignore) {
 		} catch (IllegalArgumentException ignore) {
+		}
+		if (log.isDebugEnabled()) {
+			log.debug("encoded: " + encoded + ", decoded: " + decoded);
 		}
 		return decoded;
 	}
@@ -74,9 +85,16 @@ public class OAuthEncoding {
 			if (path == null || path.length() <= 0) {
 				path = "/"; // conforms to RFC 2616 section 3.2.2
 			}
+			String normalizedURL = scheme + "://" + authority + path;
+			if (log.isDebugEnabled()) {
+				log.debug("normalizedURL: " + normalizedURL);
+			}
 			// we know that there is no query and no fragment here.
-			return scheme + "://" + authority + path;
+			return normalizedURL;
 		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.debug("Exception occurred!", e);
+			}
 			return url;
 		}
 	}

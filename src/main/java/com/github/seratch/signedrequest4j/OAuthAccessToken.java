@@ -15,6 +15,9 @@
  */
 package com.github.seratch.signedrequest4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * OAuth Access Token
  *
@@ -23,12 +26,17 @@ package com.github.seratch.signedrequest4j;
  */
 public class OAuthAccessToken implements NotString {
 
+	private static Logger log = LoggerFactory.getLogger(OAuthAccessToken.class);
+
 	private final String token;
 	private final String tokenSecret;
 
 	public OAuthAccessToken(String token, String tokenSecret) {
 		this.token = token;
 		this.tokenSecret = tokenSecret;
+		if (log.isDebugEnabled()) {
+			log.debug("token: " + token + ", tokenSecret: " + tokenSecret);
+		}
 	}
 
 	public String getToken() {

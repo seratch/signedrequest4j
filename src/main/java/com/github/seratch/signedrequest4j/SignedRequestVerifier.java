@@ -15,6 +15,9 @@
  */
 package com.github.seratch.signedrequest4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,17 +31,19 @@ import java.util.Set;
  */
 public class SignedRequestVerifier {
 
+	private static Logger log = LoggerFactory.getLogger(SignedRequestVerifier.class);
+
 	public static Map<String, String> parseAuthorizationHeader(String authorizationHeader) {
-		Map<String, String> elements = new HashMap<String, String>();
+		Map<String, String> urlDecodedElements = new HashMap<String, String>();
 		String[] keyAndValueArray = authorizationHeader.split(",");
 		for (String keyAndValue : keyAndValueArray) {
 			String[] arr = keyAndValue.split("=");
 			String key = arr[0].trim().replaceAll("\"", "");
 			String value = arr[1].trim().replaceAll("\"", "");
 			// all the elements should be url-decoded.
-			elements.put(key, OAuthEncoding.decode(value));
+			urlDecodedElements.put(key, OAuthEncoding.decode(value));
 		}
-		return elements;
+		return urlDecodedElements;
 	}
 
 	public static boolean verifyHMacGetRequest(String url, String queryString, String authorizationHeader, OAuthConsumer consumer) {
@@ -64,6 +69,9 @@ public class SignedRequestVerifier {
 	@Deprecated
 	public static boolean verifyLegacyUncorrected(String url, String authorizationHeader, OAuthConsumer consumer,
 	                                              HttpMethod httpMethod, SignatureMethod signatureMethod) {
+		if (log.isDebugEnabled()) {
+			log.debug("AuthorizationHeader: " + authorizationHeader);
+		}
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -81,11 +89,15 @@ public class SignedRequestVerifier {
 		String nonce = urlDecodedElements.get("oauth_nonce");
 		Long timestamp = Long.valueOf(urlDecodedElements.get("oauth_timestamp"));
 		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
+		debugLogSignature(signature, signatureMethod, urlDecodedElements);
 		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verify(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
 	                             HttpMethod httpMethod, SignatureMethod signatureMethod) {
+		if (log.isDebugEnabled()) {
+			log.debug("AuthorizationHeader: " + authorizationHeader);
+		}
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -110,11 +122,15 @@ public class SignedRequestVerifier {
 		}
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
+		debugLogSignature(signature, signatureMethod, urlDecodedElements);
 		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verifyPOST(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
 	                                 SignatureMethod signatureMethod, Map<String, String> formParams) {
+		if (log.isDebugEnabled()) {
+			log.debug("AuthorizationHeader: " + authorizationHeader);
+		}
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -144,6 +160,7 @@ public class SignedRequestVerifier {
 		}
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, HttpMethod.POST, nonce, timestamp);
+		debugLogSignature(signature, signatureMethod, urlDecodedElements);
 		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
@@ -161,6 +178,9 @@ public class SignedRequestVerifier {
 	public static boolean verifyLegacyUncorrected(
 			String url, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
 			HttpMethod httpMethod, SignatureMethod signatureMethod) {
+		if (log.isDebugEnabled()) {
+			log.debug("AuthorizationHeader: " + authorizationHeader);
+		}
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -177,12 +197,16 @@ public class SignedRequestVerifier {
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String signature = req.getSignature(url, httpMethod,
 				urlDecodedElements.get("oauth_nonce"), Long.valueOf(urlDecodedElements.get("oauth_timestamp")));
+		debugLogSignature(signature, signatureMethod, urlDecodedElements);
 		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verify(
 			String url, String queryString, String authorizationHeader, OAuthConsumer consumer, OAuthAccessToken accessToken,
 			HttpMethod httpMethod, SignatureMethod signatureMethod) {
+		if (log.isDebugEnabled()) {
+			log.debug("AuthorizationHeader: " + authorizationHeader);
+		}
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -206,11 +230,15 @@ public class SignedRequestVerifier {
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, httpMethod,
 				urlDecodedElements.get("oauth_nonce"), Long.valueOf(urlDecodedElements.get("oauth_timestamp")));
+		debugLogSignature(signature, signatureMethod, urlDecodedElements);
 		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verifyPOST(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
 	                                 OAuthAccessToken accessToken, SignatureMethod signatureMethod, Map<String, String> formParams) {
+		if (log.isDebugEnabled()) {
+			log.debug("AuthorizationHeader: " + authorizationHeader);
+		}
 		if (authorizationHeader == null) {
 			return false;
 		}
@@ -239,7 +267,16 @@ public class SignedRequestVerifier {
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, HttpMethod.POST,
 				urlDecodedElements.get("oauth_nonce"), Long.valueOf(urlDecodedElements.get("oauth_timestamp")));
+		debugLogSignature(signature, signatureMethod, urlDecodedElements);
 		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
+	private static void debugLogSignature(String signature,
+	                              SignatureMethod signatureMethod,
+	                              Map<String, String> urlDecodedElements) {
+		if (log.isDebugEnabled()) {
+			log.debug("Signature by Verifier: " + signature + ", method: " + signatureMethod.toString());
+			log.debug("Signature in Authorization header: " + urlDecodedElements.get("oauth_signature"));
+		}
+	}
 }

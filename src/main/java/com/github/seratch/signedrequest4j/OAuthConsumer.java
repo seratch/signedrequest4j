@@ -15,6 +15,9 @@
  */
 package com.github.seratch.signedrequest4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * OAuth Consumer
  *
@@ -22,6 +25,8 @@ package com.github.seratch.signedrequest4j;
  * @see <a href="http://oauth.net/core/1.0/">OAuth Core 1.0</a>
  */
 public class OAuthConsumer implements NotString {
+
+	private static Logger log = LoggerFactory.getLogger(OAuthConsumer.class);
 
 	/**
 	 * OAuth consumer key
@@ -36,6 +41,9 @@ public class OAuthConsumer implements NotString {
 	public OAuthConsumer(String consumerKey, String consumerSecret) {
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;
+		if (log.isDebugEnabled()) {
+			log.debug("consumerKey: " + consumerKey + ", consumerSecret: " + consumerSecret);
+		}
 	}
 
 	public String getConsumerKey() {
