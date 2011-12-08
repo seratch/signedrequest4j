@@ -35,7 +35,8 @@ public class SignedRequestVerifier {
 			String[] arr = keyAndValue.split("=");
 			String key = arr[0].trim().replaceAll("\"", "");
 			String value = arr[1].trim().replaceAll("\"", "");
-			elements.put(key, value);
+			// all the elements should be url-decoded.
+			elements.put(key, OAuthEncoding.decode(value));
 		}
 		return elements;
 	}
@@ -66,20 +67,21 @@ public class SignedRequestVerifier {
 		if (authorizationHeader == null) {
 			return false;
 		}
-		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		Map<String, String> urlDecodedElements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
-		for (String name : elements.keySet()) {
+		for (String name : urlDecodedElements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+				// the element already should be url-encoded
+				additionalParams.put(name, urlDecodedElements.get(name));
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
-		String nonce = elements.get("oauth_nonce");
-		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		String nonce = urlDecodedElements.get("oauth_nonce");
+		Long timestamp = Long.valueOf(urlDecodedElements.get("oauth_timestamp"));
 		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
-		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verify(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
@@ -90,24 +92,25 @@ public class SignedRequestVerifier {
 		if (httpMethod.equals(HttpMethod.POST)) {
 			throw new IllegalArgumentException("Please use verifyPOST instead for POST requests.");
 		}
-		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		Map<String, String> urlDecodedElements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
-		for (String name : elements.keySet()) {
+		for (String name : urlDecodedElements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+				// the element already should be url-encoded
+				additionalParams.put(name, urlDecodedElements.get(name));
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
-		String nonce = elements.get("oauth_nonce");
-		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		String nonce = urlDecodedElements.get("oauth_nonce");
+		Long timestamp = Long.valueOf(urlDecodedElements.get("oauth_timestamp"));
 		if (queryString == null) {
 			queryString = "";
 		}
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, httpMethod, nonce, timestamp);
-		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verifyPOST(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
@@ -115,32 +118,33 @@ public class SignedRequestVerifier {
 		if (authorizationHeader == null) {
 			return false;
 		}
-		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		Map<String, String> urlDecodedElements = parseAuthorizationHeader(authorizationHeader);
 		if (formParams != null) {
 			for (String key : formParams.keySet()) {
 				String value = formParams.get(key);
 				if (value != null) {
-					elements.put(key, value);
+					urlDecodedElements.put(key, value);
 				}
 			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
-		for (String name : elements.keySet()) {
+		for (String name : urlDecodedElements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+				// the element already should be url-encoded
+				additionalParams.put(name, urlDecodedElements.get(name));
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
-		String nonce = elements.get("oauth_nonce");
-		Long timestamp = Long.valueOf(elements.get("oauth_timestamp"));
+		String nonce = urlDecodedElements.get("oauth_nonce");
+		Long timestamp = Long.valueOf(urlDecodedElements.get("oauth_timestamp"));
 		if (queryString == null) {
 			queryString = "";
 		}
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, HttpMethod.POST, nonce, timestamp);
-		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verifyHMacGetRequest(
@@ -160,19 +164,20 @@ public class SignedRequestVerifier {
 		if (authorizationHeader == null) {
 			return false;
 		}
-		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		Map<String, String> urlDecodedElements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
-		for (String name : elements.keySet()) {
+		for (String name : urlDecodedElements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+				// the element already should be url-encoded
+				additionalParams.put(name, urlDecodedElements.get(name));
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
 		String signature = req.getSignature(url, httpMethod,
-				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
-		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+				urlDecodedElements.get("oauth_nonce"), Long.valueOf(urlDecodedElements.get("oauth_timestamp")));
+		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verify(
@@ -184,13 +189,14 @@ public class SignedRequestVerifier {
 		if (httpMethod.equals(HttpMethod.POST)) {
 			throw new IllegalArgumentException("Please use verifyPOST instead for POST requests.");
 		}
-		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		Map<String, String> urlDecodedElements = parseAuthorizationHeader(authorizationHeader);
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
-		for (String name : elements.keySet()) {
+		for (String name : urlDecodedElements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+				// the element already should be url-encoded
+				additionalParams.put(name, urlDecodedElements.get(name));
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
@@ -199,8 +205,8 @@ public class SignedRequestVerifier {
 		}
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, httpMethod,
-				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
-		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+				urlDecodedElements.get("oauth_nonce"), Long.valueOf(urlDecodedElements.get("oauth_timestamp")));
+		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 	public static boolean verifyPOST(String url, String queryString, String authorizationHeader, OAuthConsumer consumer,
@@ -208,21 +214,22 @@ public class SignedRequestVerifier {
 		if (authorizationHeader == null) {
 			return false;
 		}
-		Map<String, String> elements = parseAuthorizationHeader(authorizationHeader);
+		Map<String, String> urlDecodedElements = parseAuthorizationHeader(authorizationHeader);
 		if (formParams != null) {
 			for (String key : formParams.keySet()) {
 				String value = formParams.get(key);
 				if (value != null) {
-					elements.put(key, value);
+					urlDecodedElements.put(key, value);
 				}
 			}
 		}
 		SignedRequest req = SignedRequestFactory.create(consumer, accessToken, signatureMethod);
 		Map<String, Object> additionalParams = new HashMap<String, Object>();
-		for (String name : elements.keySet()) {
+		for (String name : urlDecodedElements.keySet()) {
 			String _name = name.replaceFirst("OAuth\\s+", "");
 			if (!oAuthElementNames.contains(_name)) {
-				additionalParams.put(name, OAuthEncoding.decode(elements.get(name)));
+				// the element already should be url-encoded
+				additionalParams.put(name, urlDecodedElements.get(name));
 			}
 		}
 		req.setAdditionalAuthorizationHeaderParams(additionalParams);
@@ -231,8 +238,8 @@ public class SignedRequestVerifier {
 		}
 		req.readQueryStringAndAddToSignatureBaseString(url + "?" + queryString);
 		String signature = req.getSignature(url, HttpMethod.POST,
-				elements.get("oauth_nonce"), Long.valueOf(elements.get("oauth_timestamp")));
-		return OAuthEncoding.encode(signature).equals(elements.get("oauth_signature"));
+				urlDecodedElements.get("oauth_nonce"), Long.valueOf(urlDecodedElements.get("oauth_timestamp")));
+		return signature.equals(urlDecodedElements.get("oauth_signature"));
 	}
 
 }

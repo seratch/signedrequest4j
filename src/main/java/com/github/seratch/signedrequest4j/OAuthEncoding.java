@@ -29,7 +29,10 @@ import java.net.URLEncoder;
 public class OAuthEncoding {
 
 	public static String encode(Object obj) {
-		String encoded = "";
+		if (obj == null) {
+			return "";
+		}
+		String encoded = obj.toString();
 		try {
 			encoded = URLEncoder.encode(obj.toString(), "UTF-8")
 					.replace("+", "%20")
@@ -41,10 +44,14 @@ public class OAuthEncoding {
 	}
 
 	public static String decode(String encoded) {
-		String decoded = "";
+		if (encoded == null) {
+			return "";
+		}
+		String decoded = encoded;
 		try {
 			decoded = URLDecoder.decode(encoded, "UTF-8");
 		} catch (UnsupportedEncodingException ignore) {
+		} catch (IllegalArgumentException ignore) {
 		}
 		return decoded;
 	}
