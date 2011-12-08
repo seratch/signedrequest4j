@@ -1,6 +1,10 @@
 package com.github.seratch.signedrequest4j.snippet;
 
-import com.github.seratch.signedrequest4j.*;
+import com.github.seratch.signedrequest4j.HttpResponse;
+import com.github.seratch.signedrequest4j.OAuthAccessToken;
+import com.github.seratch.signedrequest4j.OAuthConsumer;
+import com.github.seratch.signedrequest4j.SignedRequest;
+import com.github.seratch.signedrequest4j.SignedRequestFactory;
 
 public class ThreeLeggedSimpleGETRequestSnippet {
 

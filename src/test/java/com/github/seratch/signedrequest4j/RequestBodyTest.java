@@ -1,13 +1,9 @@
 package com.github.seratch.signedrequest4j;
 
-import com.github.seratch.signedrequest4j.RequestBody.*;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import static org.mockito.BDDMockito.*;
 
 public class RequestBodyTest {
 

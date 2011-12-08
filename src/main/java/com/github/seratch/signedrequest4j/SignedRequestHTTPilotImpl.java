@@ -22,8 +22,8 @@ import httpilot.Request;
 import httpilot.Response;
 
 import java.io.IOException;
-import java.security.*;
-import java.util.*;
+import java.security.SecureRandom;
+import java.util.Map;
 
 /**
  * implementation of {@link SignedRequest} with HTTPilot

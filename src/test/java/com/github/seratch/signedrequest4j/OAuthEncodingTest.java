@@ -1,20 +1,9 @@
 package com.github.seratch.signedrequest4j;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
-import com.github.seratch.signedrequest4j.OAuthEncoding.*;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class OAuthEncodingTest {
 

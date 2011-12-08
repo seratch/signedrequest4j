@@ -27,7 +27,12 @@ package com.github.seratch.signedrequest4j.pem;
 
 import com.github.seratch.signedrequest4j.Base64;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * This class convert PEM into byte array. The begin marker

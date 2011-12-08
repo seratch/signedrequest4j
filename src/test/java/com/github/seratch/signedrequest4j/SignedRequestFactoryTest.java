@@ -5,8 +5,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.BDDMockito.mock;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 public class SignedRequestFactoryTest {
 

@@ -335,7 +335,7 @@ public class SignedRequestApacheHCImplTest {
 		}
 	}
 
-    @Ignore
+	@Ignore
 	@Test
 	public void doRequest_A$String$HttpMethod$Map$String_TwitterOAuth_POST2() throws Exception {
 		try {

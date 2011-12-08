@@ -17,7 +17,6 @@ package com.github.seratch.signedrequest4j;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -1,6 +1,12 @@
 package com.github.seratch.signedrequest4j.snippet;
 
-import com.github.seratch.signedrequest4j.*;
+import com.github.seratch.signedrequest4j.HttpMethod;
+import com.github.seratch.signedrequest4j.OAuthAccessToken;
+import com.github.seratch.signedrequest4j.OAuthConsumer;
+import com.github.seratch.signedrequest4j.SignatureMethod;
+import com.github.seratch.signedrequest4j.SignedRequest;
+import com.github.seratch.signedrequest4j.SignedRequestFactory;
+import com.github.seratch.signedrequest4j.SignedRequestVerifier;
 
 import java.util.HashMap;
 import java.util.Map;
