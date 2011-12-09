@@ -15,8 +15,7 @@
  */
 package com.github.seratch.signedrequest4j;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 /**
  * OAuth Consumer
@@ -26,7 +25,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OAuthConsumer implements NotString {
 
-	private static Logger log = LoggerFactory.getLogger(OAuthConsumer.class);
+	private static Logger log = Logger.getLogger(OAuthConsumer.class);
 
 	/**
 	 * OAuth consumer key

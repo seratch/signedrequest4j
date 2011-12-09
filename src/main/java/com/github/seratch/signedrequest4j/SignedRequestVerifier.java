@@ -15,8 +15,7 @@
  */
 package com.github.seratch.signedrequest4j;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +30,7 @@ import java.util.Set;
  */
 public class SignedRequestVerifier {
 
-	private static Logger log = LoggerFactory.getLogger(SignedRequestVerifier.class);
+	private static Logger log = Logger.getLogger(SignedRequestVerifier.class);
 
 	public static Map<String, String> parseAuthorizationHeader(String authorizationHeader) {
 		Map<String, String> urlDecodedElements = new HashMap<String, String>();
@@ -272,8 +271,8 @@ public class SignedRequestVerifier {
 	}
 
 	private static void debugLogSignature(String signature,
-	                              SignatureMethod signatureMethod,
-	                              Map<String, String> urlDecodedElements) {
+	                                      SignatureMethod signatureMethod,
+	                                      Map<String, String> urlDecodedElements) {
 		if (log.isDebugEnabled()) {
 			log.debug("Signature by Verifier: " + signature + ", method: " + signatureMethod.toString());
 			log.debug("Signature in Authorization header: " + urlDecodedElements.get("oauth_signature"));
