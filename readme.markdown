@@ -82,19 +82,11 @@ With SignedRequest4J, it's so simple to execute 2-legged or 3-legged OAuth 1.0 s
 ### via Maven
 
 ```xml
-<repositories>
-  <repository>
-    <id>seratch.github.com releases</id>
-    <name>seratch.github.com releases</name>
-    <url>http://seratch.github.com/mvn-repo/releases</url>
-  </repository>
-</repositories>
-
 <dependencies>
   <dependency>
     <groupId>com.github.seratch</groupId>
     <artifactId>signedrequest4j</artifactId>
-    <version>2.13</version>
+    <version>2.14</version>
   </dependency>
 </dependencies>
 ```
